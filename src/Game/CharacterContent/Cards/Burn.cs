@@ -39,7 +39,7 @@ public class Burn : MzmCharBaseCard
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay play)
     {
         await PlayCast();
-        await PowerCmd.Apply<StrengthPower>(Owner.Creature, DynamicVars["StrengthPower"].BaseValue, Owner.Creature, this, false);
+        await Sts2Compat.PowerApply<StrengthPower>(ctx, Owner.Creature, DynamicVars["StrengthPower"].BaseValue, Owner.Creature, this, false);
         if (Forms.IsMortisForm(Owner)) await CombatCounters.BumpMortisCard(ctx, Owner);
         else                            await CombatCounters.BumpMutsumiCard(ctx, Owner);
     }

@@ -64,7 +64,7 @@ public class NoStayingUp : MzmCharBaseCard
         await PlayCast();
         if (Forms.IsMortisForm(Owner))
         {
-            await PowerCmd.Apply<VigorPreservePower>(Owner.Creature,
+            await Sts2Compat.PowerApply<VigorPreservePower>(ctx, Owner.Creature,
                 DynamicVars["VigorPreservePower"].BaseValue, Owner.Creature, this, false);
             await CombatCounters.BumpMortisCard(ctx, Owner);
         }
@@ -73,7 +73,7 @@ public class NoStayingUp : MzmCharBaseCard
             var sp = Owner.Creature.GetPower<StrengthPower>();
             int bonus = sp != null ? (int)sp.Amount / 3 : 0;
             if (bonus > 0)
-                await PowerCmd.Apply<StrengthPower>(Owner.Creature, bonus, Owner.Creature, this, false);
+                await Sts2Compat.PowerApply<StrengthPower>(ctx, Owner.Creature, bonus, Owner.Creature, this, false);
             await CombatCounters.BumpMutsumiCard(ctx, Owner);
         }
     }

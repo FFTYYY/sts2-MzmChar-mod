@@ -48,7 +48,7 @@ public class InnerNoise : MzmCharBaseCard
             var picked = CardFactory.GetForCombat(Owner, candidates, 3, rng);
             foreach (var card in picked)
             {
-                await CardPileCmd.AddGeneratedCardToCombat(card, PileType.Hand, false, CardPilePosition.Top);
+                await Sts2Compat.AddGeneratedCardToCombat(card, PileType.Hand, Owner, CardPilePosition.Top, addedByPlayer: false);
             }
         }
         if (Forms.IsMortisForm(Owner)) await CombatCounters.BumpMortisCard(ctx, Owner);

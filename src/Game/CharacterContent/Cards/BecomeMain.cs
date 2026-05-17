@@ -55,7 +55,7 @@ public class BecomeMain : MzmCharBaseCard
 
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay play)
     {
-        await PowerCmd.Apply<NoSwitchThisTurnPower>(Owner.Creature, 1, Owner.Creature, this, false);
+        await Sts2Compat.PowerApply<NoSwitchThisTurnPower>(ctx, Owner.Creature, 1, Owner.Creature, this, false);
 
         if (Forms.IsMortisForm(Owner))
         {

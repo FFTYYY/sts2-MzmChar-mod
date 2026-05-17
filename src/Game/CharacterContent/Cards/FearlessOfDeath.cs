@@ -41,7 +41,7 @@ public class FearlessOfDeath : MzmCharBaseCard
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay play)
     {
         await PlayCast();
-        await PowerCmd.Apply<FearlessOfDeathPower>(Owner.Creature,
+        await Sts2Compat.PowerApply<FearlessOfDeathPower>(ctx, Owner.Creature,
             DynamicVars["ReviveHp"].BaseValue, Owner.Creature, this, false);
         if (Forms.IsMortisForm(Owner)) await CombatCounters.BumpMortisCard(ctx, Owner);
         else await CombatCounters.BumpMutsumiCard(ctx, Owner);

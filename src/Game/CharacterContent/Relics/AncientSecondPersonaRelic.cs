@@ -63,8 +63,8 @@ public class AncientSecondPersonaRelic : CustomRelicModel
         back.UpgradeInternal();
         back.FinalizeUpgradeInternal();
 
-        _ = await CardPileCmd.AddGeneratedCardsToCombat(
-            new List<CardModel> { front, back }, PileType.Hand, addedByPlayer: true);
+        await Sts2Compat.AddGeneratedCardsToCombat(
+            new List<CardModel> { front, back }, PileType.Hand, player, addedByPlayer: true);
     }
 
     public override Task AfterTurnEnd(PlayerChoiceContext choiceContext, CombatSide side)

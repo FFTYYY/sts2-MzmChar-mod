@@ -55,7 +55,7 @@ public class ThousandthPersona : MzmCharBaseCard, ITomeCard
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay play)
     {
         await PlayCast();
-        await PowerCmd.Apply<ThousandthPersonaPower>(Owner.Creature,
+        await Sts2Compat.PowerApply<ThousandthPersonaPower>(ctx, Owner.Creature,
             DynamicVars["ThousandthPersonaPower"].BaseValue, Owner.Creature, this, false);
         if (Forms.IsMortisForm(Owner)) await CombatCounters.BumpMortisCard(ctx, Owner);
         else await CombatCounters.BumpMutsumiCard(ctx, Owner);

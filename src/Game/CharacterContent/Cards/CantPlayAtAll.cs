@@ -52,16 +52,16 @@ public class CantPlayAtAll : MzmCharBaseCard
         await PlayCast();
         if (Forms.IsMortisForm(Owner))
         {
-            await PowerCmd.Apply<DexterityPower>(Owner.Creature,
+            await Sts2Compat.PowerApply<DexterityPower>(ctx, Owner.Creature,
                 DynamicVars["DexterityPower"].BaseValue, Owner.Creature, this, false);
-            await PowerCmd.Apply<StrengthPower>(Owner.Creature, -1, Owner.Creature, this, false);
+            await Sts2Compat.PowerApply<StrengthPower>(ctx, Owner.Creature, -1, Owner.Creature, this, false);
             await CombatCounters.BumpMortisCard(ctx, Owner);
         }
         else
         {
-            await PowerCmd.Apply<StrengthPower>(Owner.Creature,
+            await Sts2Compat.PowerApply<StrengthPower>(ctx, Owner.Creature,
                 DynamicVars["StrengthPower"].BaseValue, Owner.Creature, this, false);
-            await PowerCmd.Apply<DexterityPower>(Owner.Creature, -1, Owner.Creature, this, false);
+            await Sts2Compat.PowerApply<DexterityPower>(ctx, Owner.Creature, -1, Owner.Creature, this, false);
             await CombatCounters.BumpMutsumiCard(ctx, Owner);
         }
     }

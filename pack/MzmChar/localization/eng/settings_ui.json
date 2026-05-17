@@ -3,5 +3,5 @@
   "MZMCHAR-音频设置.title": "Audio",
   "MZMCHAR-ENABLE_CUSTOM_BGM.title": "Custom Combat BGM",
   "MZMCHAR-ENABLE_CUSTOM_BGM.hover.title": "Custom Combat BGM",
-  "MZMCHAR-ENABLE_CUSTOM_BGM.hover.desc": "Replace vanilla combat music with custom music. Vantom keeps its vanilla boss music."
+  "MZMCHAR-ENABLE_CUSTOM_BGM.hover.desc": "Replace vanilla combat music with custom music except boss fights."
 }

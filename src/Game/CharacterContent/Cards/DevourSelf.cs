@@ -107,7 +107,7 @@ public class DevourSelf : MzmCharBaseCard
             decimal mult = DynamicVars["MuMult"].BaseValue;
             int vigor = (int)Math.Floor(dex * mult);
             if (vigor > 0)
-                await PowerCmd.Apply<VigorPower>(Owner.Creature, vigor, Owner.Creature, this, false);
+                await Sts2Compat.PowerApply<VigorPower>(ctx, Owner.Creature, vigor, Owner.Creature, this, false);
             await CombatCounters.BumpMutsumiCard(ctx, Owner);
             await Forms.EnterMortis(Owner, this, ctx);
         }

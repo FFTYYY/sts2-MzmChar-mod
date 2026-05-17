@@ -46,7 +46,7 @@ public class ConcertPower : CustomPowerModel
         await PlayerCmd.GainEnergy(1, player);
 
         var hand = player.PlayerCombatState.Hand;
-        int slots = CardPile.maxCardsInHand - hand.Cards.Count;
+        int slots = Sts2Compat.MaxCardsInHand - hand.Cards.Count;
         if (slots <= 0) return;
 
         // 参考 SummonForth：PlayerCombatState.AllCards + filter `Pile.Type != Hand`

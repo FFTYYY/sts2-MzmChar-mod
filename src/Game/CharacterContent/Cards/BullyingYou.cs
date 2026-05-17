@@ -61,7 +61,7 @@ public class BullyingYou : MzmCharBaseCard
         if (newHp < 1) newHp = 1;
         await CreatureCmd.SetCurrentHp(play.Target, newHp);
 
-        await PowerCmd.Apply<VulnerablePower>(play.Target,
+        await Sts2Compat.PowerApply<VulnerablePower>(ctx, play.Target,
             DynamicVars["VulnerablePower"].BaseValue, Owner.Creature, this, false);
 
         if (Forms.IsMortisForm(Owner)) await CombatCounters.BumpMortisCard(ctx, Owner);

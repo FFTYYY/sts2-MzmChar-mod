@@ -46,7 +46,7 @@ public class HollowActor : MzmCharBaseCard
         int x = ResolveEnergyXValue();
         int amount = IsUpgraded ? (x + 1) : x;
         if (amount > 0)
-            await PowerCmd.Apply<TransformPersonaPower>(Owner.Creature, amount, Owner.Creature, this, false);
+            await Sts2Compat.PowerApply<TransformPersonaPower>(ctx, Owner.Creature, amount, Owner.Creature, this, false);
         if (Forms.IsMortisForm(Owner)) await CombatCounters.BumpMortisCard(ctx, Owner);
         else await CombatCounters.BumpMutsumiCard(ctx, Owner);
     }

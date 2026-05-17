@@ -48,7 +48,7 @@ public class MultipleMonster : MzmCharBaseCard
         await PlayCast();
         int switches = CombatCounters.PersonaSwitchesThisCombat[Owner];
         if (switches > 0)
-            await PowerCmd.Apply<TransformPersonaPower>(Owner.Creature, switches, Owner.Creature, this, false);
+            await Sts2Compat.PowerApply<TransformPersonaPower>(ctx, Owner.Creature, switches, Owner.Creature, this, false);
         if (Forms.IsMortisForm(Owner)) await CombatCounters.BumpMortisCard(ctx, Owner);
         else await CombatCounters.BumpMutsumiCard(ctx, Owner);
     }

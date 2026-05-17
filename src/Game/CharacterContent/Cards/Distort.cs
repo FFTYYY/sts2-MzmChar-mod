@@ -73,9 +73,9 @@ public class Distort : MzmCharBaseCard
         else
         {
             var dexLoss = DynamicVars["DexLoss"].BaseValue;
-            await PowerCmd.Apply<DexterityPower>(Owner.Creature, -dexLoss, Owner.Creature, this, false);
+            await Sts2Compat.PowerApply<DexterityPower>(ctx, Owner.Creature, -dexLoss, Owner.Creature, this, false);
             // 负 Amount → 回合结束 +dexLoss 恢复敏捷（合并的 TempDexterityPower 负号语义）
-            await PowerCmd.Apply<TempDexterityPower>(Owner.Creature, -dexLoss, Owner.Creature, this, true);
+            await Sts2Compat.PowerApply<TempDexterityPower>(ctx, Owner.Creature, -dexLoss, Owner.Creature, this, true);
             await PlayerCmd.GainEnergy(DynamicVars.Energy.IntValue, Owner);
             await CombatCounters.BumpMutsumiCard(ctx, Owner);
             await Forms.EnterMortis(Owner, this, ctx);

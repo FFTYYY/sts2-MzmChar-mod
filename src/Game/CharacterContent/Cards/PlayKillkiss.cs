@@ -70,7 +70,7 @@ public class PlayKillkiss : MzmCharBaseCard
         if (!IsInConcert())
         {
             await PlayCast();
-            await PowerCmd.Apply<PerformancePassionPower>(Owner.Creature, 1, Owner.Creature, this, false);
+            await Sts2Compat.PowerApply<PerformancePassionPower>(ctx, Owner.Creature, 1, Owner.Creature, this, false);
         }
         else if (Forms.IsMortisForm(Owner))
         {
@@ -84,7 +84,7 @@ public class PlayKillkiss : MzmCharBaseCard
         else
         {
             await PlayCast();
-            await PowerCmd.Apply<PlatingPower>(Owner.Creature, DynamicVars["PlatingValue"].BaseValue, Owner.Creature, this, false);
+            await Sts2Compat.PowerApply<PlatingPower>(ctx, Owner.Creature, DynamicVars["PlatingValue"].BaseValue, Owner.Creature, this, false);
         }
         if (Forms.IsMortisForm(Owner)) await CombatCounters.BumpMortisCard(ctx, Owner);
         else                            await CombatCounters.BumpMutsumiCard(ctx, Owner);

@@ -38,7 +38,7 @@ public class MoonForestUniform : MzmCharBaseCard
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay play)
     {
         await PlayCast();
-        await PowerCmd.Apply<MoonForestPower>(Owner.Creature, DynamicVars["MoonForestPower"].BaseValue, Owner.Creature, this, false);
+        await Sts2Compat.PowerApply<MoonForestPower>(ctx, Owner.Creature, DynamicVars["MoonForestPower"].BaseValue, Owner.Creature, this, false);
         if (Forms.IsMortisForm(Owner)) await CombatCounters.BumpMortisCard(ctx, Owner);
         else await CombatCounters.BumpMutsumiCard(ctx, Owner);
     }

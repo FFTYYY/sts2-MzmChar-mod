@@ -35,7 +35,7 @@ public class CutLine : MzmCharBaseCard
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay play)
     {
         await PlayCast();
-        await PowerCmd.Apply<CutLinePower>(Owner.Creature, 1, Owner.Creature, this, false);
+        await Sts2Compat.PowerApply<CutLinePower>(ctx, Owner.Creature, 1, Owner.Creature, this, false);
         if (Forms.IsMortisForm(Owner)) await CombatCounters.BumpMortisCard(ctx, Owner);
         else await CombatCounters.BumpMutsumiCard(ctx, Owner);
     }

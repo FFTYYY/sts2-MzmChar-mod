@@ -27,7 +27,11 @@ public class WontLastLongMuPower : CustomPowerModel
 {
     public override PowerType Type => PowerType.Debuff;
     public override PowerStackType StackType => PowerStackType.Counter;
+#if BETA
+    public override PowerInstanceType InstanceType => PowerInstanceType.Instanced;
+#else
     public override bool IsInstanced => true;
+#endif
 
     public override string? CustomPackedIconPath => "res://MzmChar/powers/wont_last_long_mu.png";
     public override string? CustomBigIconPath    => "res://MzmChar/powers/wont_last_long_mu.png";
@@ -61,8 +65,8 @@ public class WontLastLongMuPower : CustomPowerModel
         {
             Flash();
             // "本回合 -1 力量"：先 -1 Strength，再 TempStrengthPower(-1)（负 Amount = 回合末 +1 恢复）
-            await PowerCmd.Apply<StrengthPower>(Owner!, -1, Owner, null, true);
-            await PowerCmd.Apply<TempStrengthPower>(Owner!, -1, Owner, null, true);
+            await Sts2Compat.PowerApply<StrengthPower>(ctx, Owner!, -1, Owner!, null, true);
+            await Sts2Compat.PowerApply<TempStrengthPower>(ctx, Owner!, -1, Owner!, null, true);
 
             // 重置倒计时回阈值
             var d = GetInternalData<Data>();

@@ -60,11 +60,11 @@ public class Mutsumi : MzmCharBaseCard
             if (cs != null)
             {
                 foreach (var e in cs.HittableEnemies)
-                    await PowerCmd.Apply<WeakPower>(e, DynamicVars["MoWeak"].BaseValue, Owner.Creature, this, false);
+                    await Sts2Compat.PowerApply<WeakPower>(ctx, e, DynamicVars["MoWeak"].BaseValue, Owner.Creature, this, false);
             }
             var dex = DynamicVars["MoDex"].BaseValue;
-            await PowerCmd.Apply<DexterityPower>(Owner.Creature, dex, Owner.Creature, this, false);
-            await PowerCmd.Apply<TempDexterityPower>(Owner.Creature, dex, Owner.Creature, this, true);
+            await Sts2Compat.PowerApply<DexterityPower>(ctx, Owner.Creature, dex, Owner.Creature, this, false);
+            await Sts2Compat.PowerApply<TempDexterityPower>(ctx, Owner.Creature, dex, Owner.Creature, this, true);
             await CombatCounters.BumpMortisCard(ctx, Owner);
             await Forms.EnterMutsumi(Owner, this, ctx);
         }
@@ -74,8 +74,8 @@ public class Mutsumi : MzmCharBaseCard
             var str = DynamicVars["MuStr"].BaseValue;
             if (str > 0)
             {
-                await PowerCmd.Apply<StrengthPower>(Owner.Creature, str, Owner.Creature, this, false);
-                await PowerCmd.Apply<TempStrengthPower>(Owner.Creature, str, Owner.Creature, this, true);
+                await Sts2Compat.PowerApply<StrengthPower>(ctx, Owner.Creature, str, Owner.Creature, this, false);
+                await Sts2Compat.PowerApply<TempStrengthPower>(ctx, Owner.Creature, str, Owner.Creature, this, true);
             }
             await CombatCounters.BumpMutsumiCard(ctx, Owner);
             await Forms.EnterMortis(Owner, this, ctx);
@@ -85,10 +85,10 @@ public class Mutsumi : MzmCharBaseCard
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new CardLoc("睦头人",
-            "{MuSec}{MuOpen}小睦{MuClose}：获得{Block}点[gold]格挡[/gold]。{IfUpgraded:show:本回合获得{MuStr}点[gold]力量[/gold]。|}[gold]进入小墨[/gold]。{MuSecEnd}\n" +
+            "{MuSec}{MuOpen}小睦{MuClose}：获得{Block:diff()}点[gold]格挡[/gold]。{IfUpgraded:show:本回合获得{MuStr:diff()}点[gold]力量[/gold]。|}[gold]进入小墨[/gold]。{MuSecEnd}\n" +
             "{MoSec}{MoOpen}小墨{MoClose}：给所有敌人施加{MoWeak:diff()}层[gold]虚弱[/gold]。本回合获得{MoDex}点[gold]敏捷[/gold]。[gold]进入小睦[/gold]。{MoSecEnd}"),
         _ => new CardLoc("Mutsumi",
-            "{MuSec}{MuOpen}Mu{MuClose}: Gain {Block} [gold]Block[/gold].{IfUpgraded:show: This turn gain {MuStr} [gold]Strength[/gold].|} [gold]Enter Mo[/gold].{MuSecEnd}\n" +
+            "{MuSec}{MuOpen}Mu{MuClose}: Gain {Block:diff()} [gold]Block[/gold].{IfUpgraded:show: This turn gain {MuStr:diff()} [gold]Strength[/gold].|} [gold]Enter Mo[/gold].{MuSecEnd}\n" +
             "{MoSec}{MoOpen}Mo{MoClose}: Apply {MoWeak:diff()} [gold]Weak[/gold] to ALL enemies; this turn gain {MoDex} [gold]Dexterity[/gold]. [gold]Enter Mu[/gold].{MoSecEnd}"),
     };
 }

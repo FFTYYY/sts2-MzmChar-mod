@@ -45,10 +45,10 @@ public class SwitchPersona : MzmCharBaseCard
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay play)
     {
         // 本回合 +2 dex +2 strength
-        await PowerCmd.Apply<DexterityPower>(Owner.Creature, 2, Owner.Creature, this, false);
-        await PowerCmd.Apply<TempDexterityPower>(Owner.Creature, 2, Owner.Creature, this, true);
-        await PowerCmd.Apply<StrengthPower>(Owner.Creature, 2, Owner.Creature, this, false);
-        await PowerCmd.Apply<TempStrengthPower>(Owner.Creature, 2, Owner.Creature, this, true);
+        await Sts2Compat.PowerApply<DexterityPower>(ctx, Owner.Creature, 2, Owner.Creature, this, false);
+        await Sts2Compat.PowerApply<TempDexterityPower>(ctx, Owner.Creature, 2, Owner.Creature, this, true);
+        await Sts2Compat.PowerApply<StrengthPower>(ctx, Owner.Creature, 2, Owner.Creature, this, false);
+        await Sts2Compat.PowerApply<TempStrengthPower>(ctx, Owner.Creature, 2, Owner.Creature, this, true);
 
         if (Forms.IsMortisForm(Owner))
         {

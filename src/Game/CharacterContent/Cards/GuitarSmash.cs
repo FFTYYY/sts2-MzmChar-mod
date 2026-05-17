@@ -68,11 +68,11 @@ public class GuitarSmash : MzmCharBaseCard
         {
             await PlayCast();
             if (play.Target != null)
-                await PowerCmd.Apply<WeakPower>(play.Target,
+                await Sts2Compat.PowerApply<WeakPower>(ctx, play.Target,
                     DynamicVars["WeakPower"].BaseValue, Owner.Creature, this, false);
             var str = DynamicVars["MuStr"].BaseValue;
-            await PowerCmd.Apply<StrengthPower>(Owner.Creature, str, Owner.Creature, this, false);
-            await PowerCmd.Apply<TempStrengthPower>(Owner.Creature, str, Owner.Creature, this, true);
+            await Sts2Compat.PowerApply<StrengthPower>(ctx, Owner.Creature, str, Owner.Creature, this, false);
+            await Sts2Compat.PowerApply<TempStrengthPower>(ctx, Owner.Creature, str, Owner.Creature, this, true);
             await CombatCounters.BumpMutsumiCard(ctx, Owner);
         }
     }

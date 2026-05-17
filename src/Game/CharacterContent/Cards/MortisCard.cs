@@ -42,7 +42,7 @@ public class MortisCard : MzmCharBaseCard
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay play)
     {
         await PlayCast();
-        await PowerCmd.Apply<MortisCardPower>(Owner.Creature,
+        await Sts2Compat.PowerApply<MortisCardPower>(ctx, Owner.Creature,
             DynamicVars["Dmg"].BaseValue, Owner.Creature, this, false);
         if (Forms.IsMortisForm(Owner)) await CombatCounters.BumpMortisCard(ctx, Owner);
         else await CombatCounters.BumpMutsumiCard(ctx, Owner);

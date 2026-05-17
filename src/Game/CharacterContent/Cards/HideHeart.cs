@@ -51,7 +51,7 @@ public class HideHeart : MzmCharBaseCard
 
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay play)
     {
-        await PowerCmd.Apply<EnergyNextTurnPower>(Owner.Creature, DynamicVars.Energy.BaseValue, Owner.Creature, this, false);
+        await Sts2Compat.PowerApply<EnergyNextTurnPower>(ctx, Owner.Creature, DynamicVars.Energy.BaseValue, Owner.Creature, this, false);
         if (Forms.IsMortisForm(Owner))
         {
             await CombatCounters.BumpMortisCard(ctx, Owner);

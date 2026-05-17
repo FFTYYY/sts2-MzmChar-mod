@@ -77,9 +77,9 @@ public class ChaseCat : MzmCharBaseCard
     {
         "zhs" => new CardLoc("猫猫",
             "{MuSec}{MuOpen}小睦{MuClose}：抽{Cards:diff()}张牌。{MuSecEnd}\n" +
-            "{MoSec}{MoOpen}小墨{MoClose}：对随机敌人造成{Damage}点伤害{Hits}次。{MoSecEnd}"),
+            "{MoSec}{MoOpen}小墨{MoClose}：对随机敌人造成{Damage:diff()}点伤害{Hits}次。{MoSecEnd}"),
         _ => new CardLoc("Chase Cat",
             "{MuSec}{MuOpen}Mu{MuClose}: Draw {Cards:diff()}.{MuSecEnd}\n" +
-            "{MoSec}{MoOpen}Mo{MoClose}: Deal {Damage} damage to a random enemy, {Hits} times.{MoSecEnd}"),
+            "{MoSec}{MoOpen}Mo{MoClose}: Deal {Damage:diff()} damage to a random enemy, {Hits} times.{MoSecEnd}"),
     };
 }

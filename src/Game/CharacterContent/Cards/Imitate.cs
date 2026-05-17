@@ -90,7 +90,7 @@ public class Imitate : MzmCharBaseCard
             await CreatureCmd.GainBlock(Owner.Creature,
                 DynamicVars["MuBlock"].BaseValue, ValueProp.Move, play, false);
             if (play.Target != null)
-                await PowerCmd.Apply<WeakPower>(play.Target,
+                await Sts2Compat.PowerApply<WeakPower>(ctx, play.Target,
                     DynamicVars["WeakPower"].BaseValue, Owner.Creature, this, false);
             await CombatCounters.BumpMutsumiCard(ctx, Owner);
         }

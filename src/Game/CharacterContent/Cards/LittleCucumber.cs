@@ -60,7 +60,7 @@ public class LittleCucumber : MzmCharBaseCard
             var newHp = Owner.Creature.CurrentHp - (int)DynamicVars["MoHpLoss"].BaseValue;
             if (newHp < 1) newHp = 1;
             await CreatureCmd.SetCurrentHp(Owner.Creature, newHp);
-            await PowerCmd.Apply<StrengthPower>(Owner.Creature,
+            await Sts2Compat.PowerApply<StrengthPower>(ctx, Owner.Creature,
                 DynamicVars["MoStrGain"].BaseValue, Owner.Creature, this, false);
             await PlayerCmd.GainEnergy(DynamicVars.Energy.IntValue, Owner);
             await CombatCounters.BumpMortisCard(ctx, Owner);
@@ -68,7 +68,7 @@ public class LittleCucumber : MzmCharBaseCard
         else
         {
             await CreatureCmd.Heal(Owner.Creature, DynamicVars["MuHeal"].BaseValue, false);
-            await PowerCmd.Apply<StrengthPower>(Owner.Creature,
+            await Sts2Compat.PowerApply<StrengthPower>(ctx, Owner.Creature,
                 -DynamicVars["MuStrLoss"].BaseValue, Owner.Creature, this, false);
             await CombatCounters.BumpMutsumiCard(ctx, Owner);
         }

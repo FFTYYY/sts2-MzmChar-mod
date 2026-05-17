@@ -41,12 +41,12 @@ public class Megaphone : MzmCharBaseCard
         await PlayCast();
         if (Forms.IsMortisForm(Owner))
         {
-            await PowerCmd.Apply<MegaphoneMortisPower>(Owner.Creature, 1, Owner.Creature, this, false);
+            await Sts2Compat.PowerApply<MegaphoneMortisPower>(ctx, Owner.Creature, 1, Owner.Creature, this, false);
             await CombatCounters.BumpMortisCard(ctx, Owner);
         }
         else
         {
-            await PowerCmd.Apply<MegaphoneMutsumiPower>(Owner.Creature, 1, Owner.Creature, this, false);
+            await Sts2Compat.PowerApply<MegaphoneMutsumiPower>(ctx, Owner.Creature, 1, Owner.Creature, this, false);
             await CombatCounters.BumpMutsumiCard(ctx, Owner);
         }
     }

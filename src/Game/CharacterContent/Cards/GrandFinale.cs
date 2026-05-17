@@ -53,7 +53,7 @@ public class GrandFinale : MzmCharBaseCard
         if (!IsInConcert())
         {
             await PlayCast();
-            await PowerCmd.Apply<PerformancePassionPower>(Owner.Creature, 1, Owner.Creature, this, false);
+            await Sts2Compat.PowerApply<PerformancePassionPower>(ctx, Owner.Creature, 1, Owner.Creature, this, false);
         }
         else
         {

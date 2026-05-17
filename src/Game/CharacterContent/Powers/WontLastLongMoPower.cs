@@ -19,7 +19,11 @@ public class WontLastLongMoPower : CustomPowerModel
 {
     public override PowerType Type => PowerType.Debuff;
     public override PowerStackType StackType => PowerStackType.Counter;
+#if BETA
+    public override PowerInstanceType InstanceType => PowerInstanceType.Instanced;
+#else
     public override bool IsInstanced => true;
+#endif
 
     public override string? CustomPackedIconPath => "res://MzmChar/powers/wont_last_long_mo.png";
     public override string? CustomBigIconPath    => "res://MzmChar/powers/wont_last_long_mo.png";
@@ -50,8 +54,8 @@ public class WontLastLongMoPower : CustomPowerModel
         if (Amount <= 0)
         {
             Flash();
-            await PowerCmd.Apply<DexterityPower>(Owner!, -1, Owner, null, true);
-            await PowerCmd.Apply<TempDexterityPower>(Owner!, -1, Owner, null, true);
+            await Sts2Compat.PowerApply<DexterityPower>(ctx, Owner!, -1, Owner!, null, true);
+            await Sts2Compat.PowerApply<TempDexterityPower>(ctx, Owner!, -1, Owner!, null, true);
 
             var d = GetInternalData<Data>();
             int threshold = d?.Threshold ?? 1;

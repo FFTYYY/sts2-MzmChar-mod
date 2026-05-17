@@ -69,8 +69,8 @@ public class Catharsis : MzmCharBaseCard
         {
             await PlayCast();
             var str = DynamicVars["TempStr"].BaseValue;
-            await PowerCmd.Apply<StrengthPower>(Owner.Creature, str, Owner.Creature, this, false);
-            await PowerCmd.Apply<TempStrengthPower>(Owner.Creature, str, Owner.Creature, this, true);
+            await Sts2Compat.PowerApply<StrengthPower>(ctx, Owner.Creature, str, Owner.Creature, this, false);
+            await Sts2Compat.PowerApply<TempStrengthPower>(ctx, Owner.Creature, str, Owner.Creature, this, true);
             await CombatCounters.BumpMutsumiCard(ctx, Owner);
         }
     }

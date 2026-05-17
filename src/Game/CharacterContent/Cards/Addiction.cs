@@ -39,7 +39,7 @@ public class Addiction : MzmCharBaseCard
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay play)
     {
         await PlayCast();
-        await PowerCmd.Apply<AddictionPower>(Owner.Creature,
+        await Sts2Compat.PowerApply<AddictionPower>(ctx, Owner.Creature,
             DynamicVars["Block"].BaseValue, Owner.Creature, this, false);
         if (Forms.IsMortisForm(Owner)) await CombatCounters.BumpMortisCard(ctx, Owner);
         else                            await CombatCounters.BumpMutsumiCard(ctx, Owner);

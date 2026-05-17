@@ -29,8 +29,8 @@ public class DeathLakePower : CustomPowerModel
         int gain = 3 * (int)Amount;
         if (gain <= 0) return;
         Flash();
-        await PowerCmd.Apply<StrengthPower>(Owner, gain, Owner, null, false);
-        await PowerCmd.Apply<TempStrengthPower>(Owner, gain, Owner, null, true);
+        await Sts2Compat.PowerApply<StrengthPower>(ctx, Owner, gain, Owner, null, false);
+        await Sts2Compat.PowerApply<TempStrengthPower>(ctx, Owner, gain, Owner, null, true);
     }
 
     // 派生值（3×Amount）无法用框架自动注入显示 → desc 都不写具体数字（玩家从卡描述拿数）

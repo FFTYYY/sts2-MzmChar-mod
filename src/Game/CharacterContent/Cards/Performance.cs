@@ -67,9 +67,9 @@ public class Performance : MzmCharBaseCard
         {
             if (play.Target != null)
             {
-                await PowerCmd.Apply<WeakPower>(play.Target,
+                await Sts2Compat.PowerApply<WeakPower>(ctx, play.Target,
                     DynamicVars["WeakPower"].BaseValue, Owner.Creature, this, false);
-                await PowerCmd.Apply<VulnerablePower>(play.Target,
+                await Sts2Compat.PowerApply<VulnerablePower>(ctx, play.Target,
                     DynamicVars["VulnerablePower"].BaseValue, Owner.Creature, this, false);
             }
             await CombatCounters.BumpMutsumiCard(ctx, Owner);

@@ -27,7 +27,11 @@ public class PlantCucumberPower : CustomPowerModel
 {
     public override PowerType Type => PowerType.Buff;
     public override PowerStackType StackType => PowerStackType.None;   // IsInstanced + Amount 永远 1 → 不显示层数
+#if BETA
+    public override PowerInstanceType InstanceType => PowerInstanceType.Instanced;
+#else
     public override bool IsInstanced => true;
+#endif
 
     public override string? CustomPackedIconPath => "res://MzmChar/powers/cucumber.png";
     public override string? CustomBigIconPath    => "res://MzmChar/powers/cucumber.png";
@@ -50,7 +54,7 @@ public class PlantCucumberPower : CustomPowerModel
         Flash();
         if (Forms.IsMortisForm(player))
         {
-            await PowerCmd.Apply<VigorPower>(player.Creature, MoVigorPerStack * Amount, player.Creature, null, false);
+            await Sts2Compat.PowerApply<VigorPower>(ctx, player.Creature, MoVigorPerStack * Amount, player.Creature, null, false);
         }
         else
         {

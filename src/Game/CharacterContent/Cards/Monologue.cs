@@ -70,7 +70,7 @@ public class Monologue : MzmCharBaseCard
         if (!IsInConcert())
         {
             await PlayCast();
-            await PowerCmd.Apply<PerformancePassionPower>(Owner.Creature, 1, Owner.Creature, this, false);
+            await Sts2Compat.PowerApply<PerformancePassionPower>(ctx, Owner.Creature, 1, Owner.Creature, this, false);
         }
         else if (Forms.IsMortisForm(Owner))
         {
@@ -87,8 +87,8 @@ public class Monologue : MzmCharBaseCard
         {
             await PlayCast();
             var str = DynamicVars["TempStr"].BaseValue;
-            await PowerCmd.Apply<StrengthPower>(Owner.Creature, str, Owner.Creature, this, false);
-            await PowerCmd.Apply<TempStrengthPower>(Owner.Creature, str, Owner.Creature, this, true);
+            await Sts2Compat.PowerApply<StrengthPower>(ctx, Owner.Creature, str, Owner.Creature, this, false);
+            await Sts2Compat.PowerApply<TempStrengthPower>(ctx, Owner.Creature, str, Owner.Creature, this, true);
         }
         if (Forms.IsMortisForm(Owner)) await CombatCounters.BumpMortisCard(ctx, Owner);
         else                            await CombatCounters.BumpMutsumiCard(ctx, Owner);

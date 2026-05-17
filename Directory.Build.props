@@ -19,4 +19,27 @@
     <!-- 默认启用自动部署，可在 local.props 中关掉 -->
     <AutoDeploy Condition="'$(AutoDeploy)' == ''">true</AutoDeploy>
   </PropertyGroup>
+
+  <!--
+    BETA define 自动检测：读 $(GameDir)\release_info.json 的 version 字段，
+      含 "v0.105" / "v0.106" / "v0.107" / "v0.108" / "v0.109" / "v0.11" 之一 → 自动 define BETA
+      （stable v0.103 / v0.104 不命中）
+
+    手动覆盖：dotnet build -c Beta 强制 define BETA（不读 release_info.json）。
+
+    背景：vanilla v0.105+ 的若干 cmd 签名跟 v0.103 不兼容（PowerCmd.Apply 加 ctx 参数、
+    PowerModel.IsInstanced 改名 InstanceType 等）。代码里用 #if BETA / #else 走两套调用，
+    wrapper 集中在 src/Game/Sts2Compat.cs。
+
+    未来 stable 升到 v0.105+ 之后两版 API 自动一致，可以删 #if BETA 走单一路径。
+  -->
+  <PropertyGroup Condition="'$(Configuration)' != 'Beta' And Exists('$(GameDir)\release_info.json')">
+    <_ReleaseInfoText>$([System.IO.File]::ReadAllText('$(GameDir)\release_info.json'))</_ReleaseInfoText>
+    <_IsBetaDll Condition="$(_ReleaseInfoText.Contains('v0.105')) Or $(_ReleaseInfoText.Contains('v0.106')) Or $(_ReleaseInfoText.Contains('v0.107')) Or $(_ReleaseInfoText.Contains('v0.108')) Or $(_ReleaseInfoText.Contains('v0.109')) Or $(_ReleaseInfoText.Contains('v0.11'))">true</_IsBetaDll>
+    <DefineConstants Condition="'$(_IsBetaDll)' == 'true'">$(DefineConstants);BETA</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Beta'">
+    <DefineConstants>$(DefineConstants);BETA</DefineConstants>
+  </PropertyGroup>
 </Project>

@@ -57,7 +57,7 @@ public class Pluck : MzmCharBaseCard
 
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay play)
     {
-        await PowerCmd.Apply<PerformancePassionPower>(Owner.Creature, 1, Owner.Creature, this, false);
+        await Sts2Compat.PowerApply<PerformancePassionPower>(ctx, Owner.Creature, 1, Owner.Creature, this, false);
         if (Forms.IsMortisForm(Owner))
         {
             if (play.Target != null)
@@ -72,10 +72,10 @@ public class Pluck : MzmCharBaseCard
         {
             await PlayCast();
             if (play.Target != null)
-                await PowerCmd.Apply<VulnerablePower>(play.Target, DynamicVars["VulnerablePower"].BaseValue, Owner.Creature, this, false);
+                await Sts2Compat.PowerApply<VulnerablePower>(ctx, play.Target, DynamicVars["VulnerablePower"].BaseValue, Owner.Creature, this, false);
             var str = DynamicVars["MuStr"].BaseValue;
-            await PowerCmd.Apply<StrengthPower>(Owner.Creature, str, Owner.Creature, this, false);
-            await PowerCmd.Apply<TempStrengthPower>(Owner.Creature, str, Owner.Creature, this, true);
+            await Sts2Compat.PowerApply<StrengthPower>(ctx, Owner.Creature, str, Owner.Creature, this, false);
+            await Sts2Compat.PowerApply<TempStrengthPower>(ctx, Owner.Creature, str, Owner.Creature, this, true);
             await CombatCounters.BumpMutsumiCard(ctx, Owner);
         }
     }

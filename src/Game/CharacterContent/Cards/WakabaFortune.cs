@@ -48,7 +48,7 @@ public class WakabaFortune : MzmCharBaseCard
         await PlayCast();
         // 把"本场已切换形态次数"作为初始层数施加（0 也照应用）；之后切换通过 OnPersonaSwitch + 1
         int currentSwitches = CombatCounters.PersonaSwitchesThisCombat[Owner];
-        await PowerCmd.Apply<WakabaFortunePower>(Owner.Creature, currentSwitches, Owner.Creature, this, false);
+        await Sts2Compat.PowerApply<WakabaFortunePower>(ctx, Owner.Creature, currentSwitches, Owner.Creature, this, false);
 
         if (IsUpgraded)
             await CardPileCmd.Draw(ctx, 1, Owner, false);

@@ -35,7 +35,7 @@ public class Mask : MzmCharBaseCard
 
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay play)
     {
-        await PowerCmd.Apply<PerformancePassionPower>(Owner.Creature, 1, Owner.Creature, this, false);
+        await Sts2Compat.PowerApply<PerformancePassionPower>(ctx, Owner.Creature, 1, Owner.Creature, this, false);
         if (Forms.IsMortisForm(Owner))
         {
             await CombatCounters.BumpMortisCard(ctx, Owner);

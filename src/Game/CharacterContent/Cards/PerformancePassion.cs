@@ -37,7 +37,7 @@ public class PerformancePassion : MzmCharBaseCard
     {
         await PlayCast();
         await CardPileCmd.Draw(ctx, DynamicVars.Cards.BaseValue, Owner, false);
-        await PowerCmd.Apply<PerformancePassionPower>(Owner.Creature, 1, Owner.Creature, this, false);
+        await Sts2Compat.PowerApply<PerformancePassionPower>(ctx, Owner.Creature, 1, Owner.Creature, this, false);
         if (Forms.IsMortisForm(Owner)) await CombatCounters.BumpMortisCard(ctx, Owner);
         else                            await CombatCounters.BumpMutsumiCard(ctx, Owner);
     }

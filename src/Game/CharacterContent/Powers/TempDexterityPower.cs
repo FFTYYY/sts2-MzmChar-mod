@@ -35,7 +35,7 @@ public class TempDexterityPower : CustomPowerModel
         if (side != Owner.Side) return;
         int amt = (int)Amount;
         if (amt != 0)
-            await PowerCmd.Apply<DexterityPower>(Owner, -amt, Owner, null, true);
+            await Sts2Compat.PowerApply<DexterityPower>(ctx, Owner, -amt, Owner, null, true);
         await PowerCmd.Remove<TempDexterityPower>(Owner);
     }
 

@@ -64,8 +64,8 @@ public class MuDefend : MzmCharBaseCard
             await CreatureCmd.GainBlock(Owner.Creature,
                 DynamicVars["MoBlock"].BaseValue, ValueProp.Move, play, false);
             var dex = DynamicVars["TempDex"].BaseValue;
-            await PowerCmd.Apply<DexterityPower>(Owner.Creature, dex, Owner.Creature, this, false);
-            await PowerCmd.Apply<TempDexterityPower>(Owner.Creature, dex, Owner.Creature, this, true);
+            await Sts2Compat.PowerApply<DexterityPower>(ctx, Owner.Creature, dex, Owner.Creature, this, false);
+            await Sts2Compat.PowerApply<TempDexterityPower>(ctx, Owner.Creature, dex, Owner.Creature, this, true);
             await CombatCounters.BumpMortisCard(ctx, Owner);
         }
         else

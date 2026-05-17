@@ -30,7 +30,7 @@ public class NobleHousePower : CustomPowerModel
         int vigorGain = passion * (int)Amount;
         if (vigorGain <= 0) return;
         Flash();
-        await PowerCmd.Apply<VigorPower>(Owner, vigorGain, Owner, null, false);
+        await Sts2Compat.PowerApply<VigorPower>(ctx, Owner, vigorGain, Owner, null, false);
     }
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch

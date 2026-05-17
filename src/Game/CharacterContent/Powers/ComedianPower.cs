@@ -22,7 +22,11 @@ public class ComedianPower : CustomPowerModel
 {
     public override PowerType Type => PowerType.Buff;
     public override PowerStackType StackType => PowerStackType.Counter;
+#if BETA
+    public override PowerInstanceType InstanceType => PowerInstanceType.Instanced;
+#else
     public override bool IsInstanced => true;
+#endif
 
     public override string? CustomPackedIconPath => "res://MzmChar/powers/comedian.png";
     public override string? CustomBigIconPath => "res://MzmChar/powers/comedian.png";
@@ -36,13 +40,13 @@ public class ComedianPower : CustomPowerModel
         if (Amount <= 1)
         {
             Flash();
-            await PowerCmd.Apply<EnergyNextTurnPower>(player.Creature, 1, player.Creature, null, false);
+            await Sts2Compat.PowerApply<EnergyNextTurnPower>(ctx, player.Creature, 1, player.Creature, null, false);
             // 当前 Amount==1，重置回 InitialAmount：offset = InitialAmount - 1
-            await PowerCmd.ModifyAmount(this, InitialAmount - Amount, Owner, null, false);
+            await Sts2Compat.PowerModifyAmount(ctx, this, InitialAmount - Amount, Owner!, null, false);
         }
         else
         {
-            await PowerCmd.ModifyAmount(this, -1, Owner, null, false);
+            await Sts2Compat.PowerModifyAmount(ctx, this, -1, Owner!, null, false);
         }
     }
 

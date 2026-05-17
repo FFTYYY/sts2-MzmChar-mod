@@ -70,8 +70,8 @@ public class CryInRain : MzmCharBaseCard
         int strGain = sw * (int)DynamicVars["StrPerSwitch"].BaseValue;
         if (strGain > 0)
         {
-            await PowerCmd.Apply<StrengthPower>(Owner.Creature, strGain, Owner.Creature, this, false);
-            await PowerCmd.Apply<TempStrengthPower>(Owner.Creature, strGain, Owner.Creature, this, true);
+            await Sts2Compat.PowerApply<StrengthPower>(ctx, Owner.Creature, strGain, Owner.Creature, this, false);
+            await Sts2Compat.PowerApply<TempStrengthPower>(ctx, Owner.Creature, strGain, Owner.Creature, this, true);
         }
 
         if (Forms.IsMortisForm(Owner))
@@ -88,7 +88,7 @@ public class CryInRain : MzmCharBaseCard
         {
             await PlayCast();
             if (play.Target != null)
-                await PowerCmd.Apply<WeakPower>(play.Target,
+                await Sts2Compat.PowerApply<WeakPower>(ctx, play.Target,
                     DynamicVars["WeakPower"].BaseValue, Owner.Creature, this, false);
             await CombatCounters.BumpMutsumiCard(ctx, Owner);
         }

@@ -76,11 +76,11 @@ public class MuStrike : MzmCharBaseCard
         else
         {
             await PlayCast();
-            await PowerCmd.Apply<VigorPower>(Owner.Creature,
+            await Sts2Compat.PowerApply<VigorPower>(ctx, Owner.Creature,
                 DynamicVars["VigorPower"].BaseValue, Owner.Creature, this, false);
             var str = DynamicVars["TempStr"].BaseValue;
-            await PowerCmd.Apply<StrengthPower>(Owner.Creature, str, Owner.Creature, this, false);
-            await PowerCmd.Apply<TempStrengthPower>(Owner.Creature, str, Owner.Creature, this, true);
+            await Sts2Compat.PowerApply<StrengthPower>(ctx, Owner.Creature, str, Owner.Creature, this, false);
+            await Sts2Compat.PowerApply<TempStrengthPower>(ctx, Owner.Creature, str, Owner.Creature, this, true);
             await CombatCounters.BumpMutsumiCard(ctx, Owner);
         }
     }

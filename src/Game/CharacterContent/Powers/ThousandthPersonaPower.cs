@@ -28,10 +28,10 @@ public class ThousandthPersonaPower : CustomPowerModel
         if (Owner == null) return;
         Flash();
         int amt = Amount;
-        await PowerCmd.Apply<StrengthPower>(Owner, amt, Owner, source, false);
-        await PowerCmd.Apply<TempStrengthPower>(Owner, amt, Owner, source, true);
-        await PowerCmd.Apply<DexterityPower>(Owner, amt, Owner, source, false);
-        await PowerCmd.Apply<TempDexterityPower>(Owner, amt, Owner, source, true);
+        await Sts2Compat.PowerApply<StrengthPower>(ctx, Owner, amt, Owner, source, false);
+        await Sts2Compat.PowerApply<TempStrengthPower>(ctx, Owner, amt, Owner, source, true);
+        await Sts2Compat.PowerApply<DexterityPower>(ctx, Owner, amt, Owner, source, false);
+        await Sts2Compat.PowerApply<TempDexterityPower>(ctx, Owner, amt, Owner, source, true);
     }
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch

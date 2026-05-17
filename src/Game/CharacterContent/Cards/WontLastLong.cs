@@ -58,18 +58,18 @@ public class WontLastLong : MzmCharBaseCard
     {
         if (Forms.IsMortisForm(Owner))
         {
-            await PowerCmd.Apply<IntangiblePower>(Owner.Creature, 3, Owner.Creature, this, false);
+            await Sts2Compat.PowerApply<IntangiblePower>(ctx, Owner.Creature, 3, Owner.Creature, this, false);
             // WontLastLongMoPower.IsInstanced=true → 每次施加都产生一个独立的 buff 实例（仿 vanilla OrbitPower）
-            await PowerCmd.Apply<WontLastLongMoPower>(Owner.Creature,
+            await Sts2Compat.PowerApply<WontLastLongMoPower>(ctx, Owner.Creature,
                 DynamicVars["MoPer"].BaseValue, Owner.Creature, this, false);
             await CombatCounters.BumpMortisCard(ctx, Owner);
             await Forms.EnterMutsumi(Owner, this, ctx);
         }
         else
         {
-            await PowerCmd.Apply<VigorPower>(Owner.Creature,
+            await Sts2Compat.PowerApply<VigorPower>(ctx, Owner.Creature,
                 DynamicVars["VigorPower"].BaseValue, Owner.Creature, this, false);
-            await PowerCmd.Apply<WontLastLongMuPower>(Owner.Creature,
+            await Sts2Compat.PowerApply<WontLastLongMuPower>(ctx, Owner.Creature,
                 DynamicVars["MuPer"].BaseValue, Owner.Creature, this, false);
             await CombatCounters.BumpMutsumiCard(ctx, Owner);
             await Forms.EnterMortis(Owner, this, ctx);
@@ -79,8 +79,8 @@ public class WontLastLong : MzmCharBaseCard
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new CardLoc("不会长久的",
-            "{MuSec}{MuOpen}小睦{MuClose}：获得{VigorPower}点[gold]活力[/gold]。本场战斗中，每打出{MuPer:diff()}张牌，该回合结束失去1点[gold]力量[/gold]。{MuSecEnd}\n" +
-            "{MoSec}{MoOpen}小墨{MoClose}：获得{IntangiblePower}层[gold]无实体[/gold]。本场战斗中，每打出{MoPer:diff()}张牌，该回合结束失去1点[gold]敏捷[/gold]。{MoSecEnd}\n" +
+            "{MuSec}{MuOpen}小睦{MuClose}：获得{VigorPower}点[gold]活力[/gold]。本场战斗中，每打出{MuPer:diff()}张牌，该回合失去1点[gold]力量[/gold]。{MuSecEnd}\n" +
+            "{MoSec}{MoOpen}小墨{MoClose}：获得{IntangiblePower}层[gold]无实体[/gold]。本场战斗中，每打出{MoPer:diff()}张牌，该回合失去1点[gold]敏捷[/gold]。{MoSecEnd}\n" +
             "{MuSec}{MuOpen}小睦{MuClose}：[gold]进入小墨[/gold]{MuSecEnd}。{MoSec}{MoOpen}小墨{MoClose}：[gold]进入小睦[/gold]{MoSecEnd}。"),
         _ => new CardLoc("Won't Last Long",
             "{MuSec}{MuOpen}Mu{MuClose}: Gain {VigorPower} [gold]Vigor[/gold]. Per {MuPer:diff()} cards played, lose 1 [gold]Strength[/gold] this turn (whole combat). [gold]Enter Mo[/gold].{MuSecEnd}\n" +

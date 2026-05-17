@@ -94,8 +94,8 @@ public class Emptiness : MzmCharBaseCard
         int dex = CurrentDex;
         if (dex > 0)
         {
-            await PowerCmd.Apply<DexterityPower>(Owner.Creature, dex, Owner.Creature, this, false);
-            await PowerCmd.Apply<TempDexterityPower>(Owner.Creature, dex, Owner.Creature, this, true);
+            await Sts2Compat.PowerApply<DexterityPower>(ctx, Owner.Creature, dex, Owner.Creature, this, false);
+            await Sts2Compat.PowerApply<TempDexterityPower>(ctx, Owner.Creature, dex, Owner.Creature, this, true);
         }
         // 永久成长：同时改本场战斗 instance + master deck
         // （this 是本场战斗副本，DeckVersion 是 master；下场战斗复制时会带 IncreasedDex 累计）

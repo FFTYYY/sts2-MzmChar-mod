@@ -62,7 +62,7 @@ public class BackPersona : MzmCharBaseCard
             await CombatCounters.BumpMutsumiCard(ctx, Owner);
 
         await Forms.EnterMortis(Owner, this, ctx);
-        await PowerCmd.Apply<BlockRetainTurnPower>(Owner.Creature, 1, Owner.Creature, this, false);
+        await Sts2Compat.PowerApply<BlockRetainTurnPower>(ctx, Owner.Creature, 1, Owner.Creature, this, false);
 
         var blockAmount = DynamicVars.Block.BaseValue;
         if (blockAmount > 0)

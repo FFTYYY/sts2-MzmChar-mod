@@ -49,7 +49,7 @@ public class TwinForms : MzmCharBaseCard
         await PlayCast();
         // IsInstanced=true → 每次 apply 独立 instance；power.AfterApplied 自己从 cardSource.IsUpgraded
         // 读升级状态，无需 OnPlay 手动 set。
-        await PowerCmd.Apply<TwinFormsPower>(Owner.Creature, 1, Owner.Creature, this, false);
+        await Sts2Compat.PowerApply<TwinFormsPower>(ctx, Owner.Creature, 1, Owner.Creature, this, false);
         if (Forms.IsMortisForm(Owner))
             await CombatCounters.BumpMortisCard(ctx, Owner);
         else

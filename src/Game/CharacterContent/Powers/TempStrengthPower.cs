@@ -35,7 +35,7 @@ public class TempStrengthPower : CustomPowerModel
         if (side != Owner.Side) return;
         int amt = (int)Amount;
         if (amt != 0)
-            await PowerCmd.Apply<StrengthPower>(Owner, -amt, Owner, null, true);
+            await Sts2Compat.PowerApply<StrengthPower>(ctx, Owner, -amt, Owner, null, true);
         await PowerCmd.Remove<TempStrengthPower>(Owner);
     }
 

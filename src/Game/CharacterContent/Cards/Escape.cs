@@ -48,8 +48,8 @@ public class Escape : MzmCharBaseCard
     {
         await PlayCast();
         var dex = DynamicVars["TempDex"].BaseValue;
-        await PowerCmd.Apply<DexterityPower>(Owner.Creature, dex, Owner.Creature, this, false);
-        await PowerCmd.Apply<TempDexterityPower>(Owner.Creature, dex, Owner.Creature, this, true);
+        await Sts2Compat.PowerApply<DexterityPower>(ctx, Owner.Creature, dex, Owner.Creature, this, false);
+        await Sts2Compat.PowerApply<TempDexterityPower>(ctx, Owner.Creature, dex, Owner.Creature, this, true);
 
         // 记 counter 用"打出时"的形态（EnterMutsumi 前），匹配 SelfIsolate / TearMaskGold 习惯
         if (Forms.IsMortisForm(Owner)) await CombatCounters.BumpMortisCard(ctx, Owner);

@@ -72,8 +72,8 @@ public class Reminisce : MzmCharBaseCard
             {
                 foreach (var e in cs.HittableEnemies)
                 {
-                    await PowerCmd.Apply<WeakPower>(e, DynamicVars["WeakPower"].BaseValue, Owner.Creature, this, false);
-                    await PowerCmd.Apply<VulnerablePower>(e, DynamicVars["VulnerablePower"].BaseValue, Owner.Creature, this, false);
+                    await Sts2Compat.PowerApply<WeakPower>(ctx, e, DynamicVars["WeakPower"].BaseValue, Owner.Creature, this, false);
+                    await Sts2Compat.PowerApply<VulnerablePower>(ctx, e, DynamicVars["VulnerablePower"].BaseValue, Owner.Creature, this, false);
                 }
             }
             await CombatCounters.BumpMutsumiCard(ctx, Owner);

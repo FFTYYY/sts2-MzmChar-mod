@@ -86,7 +86,7 @@ public class Crumble : MzmCharBaseCard
         {
             await PlayCast();
             if (play.Target != null)
-                await PowerCmd.Apply<VulnerablePower>(play.Target, DynamicVars["VulnerablePower"].BaseValue, Owner.Creature, this, false);
+                await Sts2Compat.PowerApply<VulnerablePower>(ctx, play.Target, DynamicVars["VulnerablePower"].BaseValue, Owner.Creature, this, false);
             await CombatCounters.BumpMutsumiCard(ctx, Owner);
         }
     }

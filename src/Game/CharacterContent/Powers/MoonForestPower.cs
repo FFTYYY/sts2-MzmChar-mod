@@ -30,8 +30,8 @@ public class MoonForestPower : CustomPowerModel
         int gain = (int)Amount;
         if (gain <= 0) return;
         Flash();
-        await PowerCmd.Apply<DexterityPower>(Owner, gain, Owner, null, false);
-        await PowerCmd.Apply<TempDexterityPower>(Owner, gain, Owner, null, true);
+        await Sts2Compat.PowerApply<DexterityPower>(ctx, Owner, gain, Owner, null, false);
+        await Sts2Compat.PowerApply<TempDexterityPower>(ctx, Owner, gain, Owner, null, true);
     }
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch

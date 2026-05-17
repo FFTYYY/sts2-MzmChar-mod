@@ -46,10 +46,20 @@
     <PackageReference Include="Alchyr.Sts2.BaseLib" Version="[3.1.2,)" PrivateAssets="all" />
   </ItemGroup>
 
-  <!-- 把 MzmChar.json 一起带到输出目录 -->
-  <ItemGroup>
+  <!-- 把 MzmChar.json 一起带到输出目录。
+       Beta build（含 BETA define）用 MzmChar.beta.json（新 schema：dependencies 对象数组 + min_game_version）；
+       否则用 MzmChar.json（老 schema，stable 兼容）。
+       下方 DeployMod 复制时统一重命名成 MzmChar.json。 -->
+  <ItemGroup Condition="!$(DefineConstants.Contains('BETA'))">
     <None Include="..\MzmChar.json" Link="MzmChar.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup Condition="$(DefineConstants.Contains('BETA'))">
+    <None Include="..\MzmChar.beta.json" Link="MzmChar.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>MzmChar.json</TargetPath>
     </None>
   </ItemGroup>
 
@@ -81,11 +91,15 @@
     <ItemGroup>
       <DeployFiles Include="$(OutputPath)$(ModId).dll" />
       <DeployFiles Include="$(OutputPath)$(ModId).pdb" Condition="Exists('$(OutputPath)$(ModId).pdb')" />
-      <DeployFiles Include="..\MzmChar.json" />
       <DeployPck Include="$(PackPckPath)" Condition="Exists('$(PackPckPath)')" />
+      <!-- BETA define 时部署新 schema 的 MzmChar.beta.json，重命名成 MzmChar.json -->
+      <DeployManifestStable Include="..\MzmChar.json" Condition="!$(DefineConstants.Contains('BETA'))" />
+      <DeployManifestBeta Include="..\MzmChar.beta.json" Condition="$(DefineConstants.Contains('BETA'))" />
     </ItemGroup>
     <Copy SourceFiles="@(DeployFiles)" DestinationFolder="$(DeployDir)" SkipUnchangedFiles="true" />
     <Copy SourceFiles="@(DeployPck)" DestinationFolder="$(DeployDir)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(DeployManifestStable)" DestinationFolder="$(DeployDir)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(DeployManifestBeta)" DestinationFiles="$(DeployDir)\MzmChar.json" SkipUnchangedFiles="true" />
     <Message Importance="high" Text="Deployed to $(DeployDir)" />
     <Warning Condition="!Exists('$(PackPckPath)')"
              Text="$(ModId).pck not found at $(PackPckPath). Set MegaDotExe in local.props to enable resource packing." />

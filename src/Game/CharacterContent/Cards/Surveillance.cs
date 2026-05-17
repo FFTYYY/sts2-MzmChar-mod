@@ -70,8 +70,8 @@ public class Surveillance : MzmCharBaseCard
                     .FromCard(this).TargetingRandomOpponents(cs, true).Execute(ctx);
             }
             var dex = DynamicVars["MoDex"].BaseValue;
-            await PowerCmd.Apply<DexterityPower>(Owner.Creature, dex, Owner.Creature, this, false);
-            await PowerCmd.Apply<TempDexterityPower>(Owner.Creature, dex, Owner.Creature, this, true);
+            await Sts2Compat.PowerApply<DexterityPower>(ctx, Owner.Creature, dex, Owner.Creature, this, false);
+            await Sts2Compat.PowerApply<TempDexterityPower>(ctx, Owner.Creature, dex, Owner.Creature, this, true);
             await CombatCounters.BumpMortisCard(ctx, Owner);
             await Forms.EnterMutsumi(Owner, this, ctx);
         }
@@ -79,11 +79,11 @@ public class Surveillance : MzmCharBaseCard
         {
             int blockAmt = Owner.Creature.Block;
             if (blockAmt > 0)
-                await PowerCmd.Apply<VigorPower>(Owner.Creature, blockAmt, Owner.Creature, this, false);
+                await Sts2Compat.PowerApply<VigorPower>(ctx, Owner.Creature, blockAmt, Owner.Creature, this, false);
 
             // 升级后：下回合开始时格挡不消失
             if (IsUpgraded)
-                await PowerCmd.Apply<BlockRetainTurnPower>(Owner.Creature, 1, Owner.Creature, this, false);
+                await Sts2Compat.PowerApply<BlockRetainTurnPower>(ctx, Owner.Creature, 1, Owner.Creature, this, false);
 
             await CombatCounters.BumpMutsumiCard(ctx, Owner);
             await Forms.EnterMortis(Owner, this, ctx);

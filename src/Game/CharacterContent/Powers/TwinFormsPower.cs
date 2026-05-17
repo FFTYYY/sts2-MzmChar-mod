@@ -29,7 +29,11 @@ public class TwinFormsPower : CustomPowerModel
 {
     public override PowerType Type => PowerType.Buff;
     public override PowerStackType StackType => PowerStackType.None;   // IsInstanced + Amount 永远 1 → 不显示层数
+#if BETA
+    public override PowerInstanceType InstanceType => PowerInstanceType.Instanced;
+#else
     public override bool IsInstanced => true;
+#endif
 
     public override string? CustomPackedIconPath => "res://MzmChar/powers/twin_forms.png";
     public override string? CustomBigIconPath    => "res://MzmChar/powers/twin_forms.png";
@@ -69,8 +73,8 @@ public class TwinFormsPower : CustomPowerModel
                 var target = rng != null ? rng.NextItem(cs.HittableEnemies) : cs.HittableEnemies[0];
                 if (target != null)
                 {
-                    await PowerCmd.Apply<WeakPower>(target, debuff, player.Creature, null, false);
-                    await PowerCmd.Apply<VulnerablePower>(target, debuff, player.Creature, null, false);
+                    await Sts2Compat.PowerApply<WeakPower>(ctx, target, debuff, player.Creature, null, false);
+                    await Sts2Compat.PowerApply<VulnerablePower>(ctx, target, debuff, player.Creature, null, false);
                 }
             }
             await Forms.EnterMutsumi(player, null, ctx);

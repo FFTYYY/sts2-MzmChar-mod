@@ -3,5 +3,5 @@
   "MZMCHAR-音频设置.title": "音频设置",
   "MZMCHAR-ENABLE_CUSTOM_BGM.title": "启用自定义战斗 BGM",
   "MZMCHAR-ENABLE_CUSTOM_BGM.hover.title": "启用自定义战斗 BGM",
-  "MZMCHAR-ENABLE_CUSTOM_BGM.hover.desc": "将战斗BGM替换为自定义音乐。墨影幻灵（VANTOM）保留游戏原版专属曲。"
+  "MZMCHAR-ENABLE_CUSTOM_BGM.hover.desc": "将战斗BGM替换为自定义音乐。Boss战除外。"
 }

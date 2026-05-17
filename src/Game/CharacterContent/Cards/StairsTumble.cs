@@ -70,10 +70,10 @@ public class StairsTumble : MzmCharBaseCard
         {
             await PlayCast();
             var str = DynamicVars["MuStr"].BaseValue;
-            await PowerCmd.Apply<StrengthPower>(Owner.Creature, str, Owner.Creature, this, false);
-            await PowerCmd.Apply<TempStrengthPower>(Owner.Creature, str, Owner.Creature, this, true);
+            await Sts2Compat.PowerApply<StrengthPower>(ctx, Owner.Creature, str, Owner.Creature, this, false);
+            await Sts2Compat.PowerApply<TempStrengthPower>(ctx, Owner.Creature, str, Owner.Creature, this, true);
             if (play.Target != null)
-                await PowerCmd.Apply<VulnerablePower>(play.Target,
+                await Sts2Compat.PowerApply<VulnerablePower>(ctx, play.Target,
                     DynamicVars["VulnerablePower"].BaseValue, Owner.Creature, this, false);
             await CombatCounters.BumpMutsumiCard(ctx, Owner);
         }

@@ -8,6 +8,7 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
+using MegaCrit.Sts2.Core.Saves.Runs;
 
 namespace MzmChar.Game;
 
@@ -38,20 +39,35 @@ public class PerformancePassionPower : CustomPowerModel
         get { yield return HoverTipFactory.FromPower<ConcertPower>(); }
     }
 
+    // 解决 ctx 缺失：AfterTakingExtraTurn hook 没有 PlayerChoiceContext（vanilla 设计），
+    // 但 beta 的 PowerCmd.Apply 必填 ctx。改成两阶段：
+    //   1. AfterTakingExtraTurn 只 set flag + reset Amount（防止再次触发 ShouldTakeExtraTurn）
+    //   2. AfterPlayerTurnStartEarly（带 ctx）检测 flag → Apply ConcertPower + 自移除
+    [SavedProperty] public bool PendingConcert { get; set; }
+
     public override bool ShouldTakeExtraTurn(Player player)
     {
         if (Owner?.Player != player) return false;
         return Amount >= Threshold;
     }
 
-    public override async Task AfterTakingExtraTurn(Player player)
+    public override Task AfterTakingExtraTurn(Player player)
+    {
+        if (Owner?.Player != player) return Task.CompletedTask;
+        Flash();
+        PendingConcert = true;
+        SetAmount(0, true);   // 清 0，避免下个 ShouldTakeExtraTurn 检查再触发
+        return Task.CompletedTask;
+    }
+
+    public override async Task AfterPlayerTurnStartEarly(PlayerChoiceContext ctx, Player player)
     {
         if (Owner?.Player != player) return;
-        Flash();
-        // 移除自己，避免下回合 ShouldTakeExtraTurn 再返回 true 形成连环
+        if (!PendingConcert) return;
+        PendingConcert = false;
+        // extra turn 已开始，正是这一帧需要 ConcertPower 生效
+        await Sts2Compat.PowerApply<ConcertPower>(ctx, player.Creature, 1, player.Creature, null, false);
         await PowerCmd.Remove<PerformancePassionPower>(Owner);
-        // 应用「演奏会」状态到这个新开的（额外）回合
-        await PowerCmd.Apply<ConcertPower>(player.Creature, 1, player.Creature, null, false);
     }
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch

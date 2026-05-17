@@ -77,7 +77,7 @@ public static class Forms
         if (p.Creature.HasPower<MortisFormPower>())
             await PowerCmd.Remove<MortisFormPower>(p.Creature);
         if (!p.Creature.HasPower<MutsumiFormPower>())
-            await PowerCmd.Apply<MutsumiFormPower>(p.Creature, 1, p.Creature, source, false);
+            await Sts2Compat.PowerApply<MutsumiFormPower>(ctx, p.Creature, 1, p.Creature, source, false);
 
         if (wasMortisForm)
         {
@@ -99,7 +99,7 @@ public static class Forms
         if (p.Creature.HasPower<MutsumiFormPower>())
             await PowerCmd.Remove<MutsumiFormPower>(p.Creature);
         if (!p.Creature.HasPower<MortisFormPower>())
-            await PowerCmd.Apply<MortisFormPower>(p.Creature, 1, p.Creature, source, false);
+            await Sts2Compat.PowerApply<MortisFormPower>(ctx, p.Creature, 1, p.Creature, source, false);
 
         if (wasMutsumiForm)
         {

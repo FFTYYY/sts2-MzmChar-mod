@@ -53,9 +53,9 @@ public class FallIntoAbyss : MzmCharBaseCard
         await PlayCast();
         await CardPileCmd.Draw(ctx, DynamicVars.Cards.BaseValue, Owner, false);
         await PlayerCmd.GainEnergy(DynamicVars.Energy.IntValue, Owner);
-        await PowerCmd.Apply<VigorPower>(Owner.Creature,
+        await Sts2Compat.PowerApply<VigorPower>(ctx, Owner.Creature,
             DynamicVars["VigorPower"].BaseValue, Owner.Creature, this, false);
-        await PowerCmd.Apply<FallIntoAbyssPower>(Owner.Creature, 1, Owner.Creature, this, false);
+        await Sts2Compat.PowerApply<FallIntoAbyssPower>(ctx, Owner.Creature, 1, Owner.Creature, this, false);
         if (Forms.IsMortisForm(Owner)) await CombatCounters.BumpMortisCard(ctx, Owner);
         else await CombatCounters.BumpMutsumiCard(ctx, Owner);
     }

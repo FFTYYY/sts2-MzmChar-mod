@@ -45,7 +45,7 @@ public class DollHeartPower : CustomPowerModel
             return;
         }
         Flash();
-        await PowerCmd.Apply<StrengthPower>(Owner!, (int)Amount, Owner, null, false);
+        await Sts2Compat.PowerApply<StrengthPower>(ctx, Owner!, (int)Amount, Owner!, null, false);
     }
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
