@@ -1,0 +1,94 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyName>$(ModId)</AssemblyName>
+    <RootNamespace>MzmChar</RootNamespace>
+    <OutputType>Library</OutputType>
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+
+    <!-- 游戏所有 .NET dll（sts2.dll / GodotSharp.dll / 0Harmony.dll / .NET 运行时）
+         实际放在 <GameDir>\data_sts2_windows_x86_64\ 子目录下。 -->
+    <GameLibDir>$(GameDir)\data_sts2_windows_x86_64</GameLibDir>
+  </PropertyGroup>
+
+  <!-- 校验 GameDir 是否配置 -->
+  <Target Name="CheckGameDir" BeforeTargets="BeforeBuild">
+    <Error Condition="'$(GameDir)' == ''"
+           Text="GameDir 未配置。请把 local.props.example 复制为 local.props 并设置 &lt;GameDir&gt;。" />
+    <Error Condition="!Exists('$(GameLibDir)\sts2.dll')"
+           Text="在 $(GameLibDir) 中找不到 sts2.dll。请检查 local.props 中的 GameDir 是否正确（应当是包含 SlayTheSpire2.exe 的目录）。" />
+  </Target>
+
+  <!-- 引用游戏本体 dll；用游戏自带的 0Harmony 而不是从 NuGet 拉独立版本，避免运行时冲突 -->
+  <ItemGroup>
+    <Reference Include="sts2">
+      <HintPath>$(GameLibDir)\sts2.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="GodotSharp">
+      <HintPath>$(GameLibDir)\GodotSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(GameLibDir)\0Harmony.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <!-- BaseLib：社区 mod 框架，提供 CustomCharacterModel / CustomCardModel 等所有基类 + 自动注册。
+       玩家需要在 Slay the Spire 2 mods 目录下安装 BaseLib mod。
+       版本范围 [3.1.2,)：build 时允许 3.1.2 及任何更新版本，但 NuGet 会优先选满足范围的最低版本（3.1.2），
+       避免 build 出依赖 latest 而玩家本机装的是稍旧版本时找不到 assembly 的崩溃 (System.IO.FileNotFoundException)。
+       玩家侧最低版本约束由 MzmChar.json 的 "dependencies" 字段声明。
+       要主动升级到更新版本就显式改成 "[3.1.5,)" 之类。 -->
+  <ItemGroup>
+    <PackageReference Include="Alchyr.Sts2.BaseLib" Version="[3.1.2,)" PrivateAssets="all" />
+  </ItemGroup>
+
+  <!-- 把 MzmChar.json 一起带到输出目录 -->
+  <ItemGroup>
+    <None Include="..\MzmChar.json" Link="MzmChar.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <!-- 用 MegaDot 把 pack/ 下的 Godot 项目（含 .tscn / .png / .tres）导出成 MzmChar.pck。
+       第一次构建会触发完整 import + export，之后增量很快。 -->
+  <PropertyGroup>
+    <PackDir>$(MSBuildProjectDirectory)/../pack</PackDir>
+    <PackPckPath>$(PackDir)/$(ModId).pck</PackPckPath>
+  </PropertyGroup>
+
+  <Target Name="ExportPck" BeforeTargets="DeployMod"
+          Condition="'$(MegaDotExe)' != '' and Exists('$(MegaDotExe)') and Exists('$(PackDir)/project.godot')">
+    <Message Importance="high" Text="MegaDot import + export pack ..." />
+    <!-- import 把新增 / 改过的资源（.png / .tres / .tscn）转成 Godot 内部格式 -->
+    <Exec Command="&quot;$(MegaDotExe)&quot; --headless --path &quot;$(PackDir)&quot; --import"
+          ContinueOnError="false" />
+    <!-- export-pack 用 export_presets.cfg 里的 BasicExport 预设导出 .pck -->
+    <Exec Command="&quot;$(MegaDotExe)&quot; --headless --path &quot;$(PackDir)&quot; --export-pack &quot;BasicExport&quot; &quot;$(PackPckPath)&quot;"
+          ContinueOnError="false" />
+  </Target>
+
+  <!-- 构建后自动部署到游戏 mods/ 目录 -->
+  <Target Name="DeployMod" AfterTargets="Build"
+          Condition="'$(AutoDeploy)' == 'true' and '$(GameDir)' != ''">
+    <PropertyGroup>
+      <DeployDir>$(GameDir)\mods\$(ModId)</DeployDir>
+    </PropertyGroup>
+    <MakeDir Directories="$(DeployDir)" />
+    <ItemGroup>
+      <DeployFiles Include="$(OutputPath)$(ModId).dll" />
+      <DeployFiles Include="$(OutputPath)$(ModId).pdb" Condition="Exists('$(OutputPath)$(ModId).pdb')" />
+      <DeployFiles Include="..\MzmChar.json" />
+      <DeployPck Include="$(PackPckPath)" Condition="Exists('$(PackPckPath)')" />
+    </ItemGroup>
+    <Copy SourceFiles="@(DeployFiles)" DestinationFolder="$(DeployDir)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(DeployPck)" DestinationFolder="$(DeployDir)" SkipUnchangedFiles="true" />
+    <Message Importance="high" Text="Deployed to $(DeployDir)" />
+    <Warning Condition="!Exists('$(PackPckPath)')"
+             Text="$(ModId).pck not found at $(PackPckPath). Set MegaDotExe in local.props to enable resource packing." />
+  </Target>
+
+</Project>

@@ -1,0 +1,56 @@
+[gd_scene format=3 uid="uid://p46bj0hdm06j"]
+
+[ext_resource type="SpriteFrames" uid="uid://bblktu2yns33q" path="res://MzmChar/resources/mu_anime.tres" id="1_11boj"]
+[ext_resource type="SpriteFrames" uid="uid://b4d36f8ysrhlt" path="res://MzmChar/resources/mo_anime.tres" id="2_m84fr"]
+
+[node name="MzmCharVisuals" type="Node2D" unique_id=1775501699]
+
+[node name="_VisualsMu" type="AnimatedSprite2D" parent="." unique_id=1143599260]
+unique_name_in_owner = true
+position = Vector2(36, -142)
+scale = Vector2(0.26, 0.26)
+sprite_frames = ExtResource("1_11boj")
+animation = &"cast"
+autoplay = "idle"
+frame = 47
+frame_progress = 1.0
+
+[node name="PhobiaModeVisuals" type="Node2D" parent="." unique_id=978172511]
+unique_name_in_owner = true
+
+[node name="Bounds" type="Control" parent="." unique_id=1167258580]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 0
+offset_left = -113.0
+offset_top = -308.0
+offset_right = 115.0
+mouse_filter = 2
+
+[node name="IntentPos" type="Marker2D" parent="." unique_id=1823502565]
+position = Vector2(0, -361)
+
+[node name="CenterPos" type="Marker2D" parent="." unique_id=1300745885]
+unique_name_in_owner = true
+position = Vector2(0, -200)
+
+[node name="OrbPos" type="Marker2D" parent="." unique_id=1290834643]
+unique_name_in_owner = true
+position = Vector2(-1, -331)
+
+[node name="TalkPos" type="Marker2D" parent="." unique_id=2035379342]
+unique_name_in_owner = true
+position = Vector2(162, -316)
+
+[node name="HurtSound" type="AudioStreamPlayer" parent="." unique_id=2077853272]
+
+[node name="DieSound" type="AudioStreamPlayer" parent="." unique_id=461696851]
+
+[node name="_VisualsMo" type="AnimatedSprite2D" parent="." unique_id=1823716354]
+position = Vector2(30.692335, -152.73175)
+scale = Vector2(0.24801975, 0.24801971)
+sprite_frames = ExtResource("2_m84fr")
+animation = &"attack"
+autoplay = "idle"
+frame = 13
+frame_progress = 0.92820495

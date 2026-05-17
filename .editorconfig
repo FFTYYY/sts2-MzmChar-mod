@@ -1,0 +1,6 @@
+root = true
+
+[*.cs]
+# 故意所有文件都用扁平命名空间 MzmChar.Game，不跟 CharacterContent/Powers/ 等子目录走
+# IDE0130 默认会提示 "namespace 不匹配文件夹"，关掉
+dotnet_diagnostic.IDE0130.severity = none

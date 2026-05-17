@@ -1,0 +1,6 @@
+[gd_scene format=3]
+
+; 卡牌出手时的拖尾粒子。占位实现：空 Node2D，不显示任何拖尾效果但不会崩。
+; 想加效果就把它换成 GpuParticles2D 或 CpuParticles2D。
+
+[node name="MzmCharCardTrail" type="Node2D"]

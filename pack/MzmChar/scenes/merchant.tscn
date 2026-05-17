@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://dv2xubfm1t71s"]
+
+[ext_resource type="Texture2D" uid="uid://c5rdfdsuea0ka" path="res://MzmChar/characters/merchant.png" id="1_dea3h"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r0yjq"]
+atlas = ExtResource("1_dea3h")
+region = Rect2(0, 0, 503, 941)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_idle"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r0yjq")
+}],
+"loop": true,
+"name": &"idle_loop",
+"speed": 5.0
+}]
+
+[node name="MzmCharMerchant" type="Node2D" unique_id=525754288]
+
+[node name="Visuals" type="AnimatedSprite2D" parent="." unique_id=770250202]
+position = Vector2(12, -184)
+scale = Vector2(0.6089463, 0.60894626)
+sprite_frames = SubResource("SpriteFrames_idle")
+animation = &"idle_loop"
+autoplay = "idle_loop"

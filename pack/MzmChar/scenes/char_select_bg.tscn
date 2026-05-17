@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=3]
+
+; 选角界面背景。全屏 TextureRect 显示 select_bg.png（Mu + Mortis 双形态宣传图）。
+
+[ext_resource type="Texture2D" path="res://MzmChar/characters/select_bg.png" id="1_bg"]
+
+[node name="MzmCharSelectBg" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="Background" type="TextureRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource("1_bg")
+expand_mode = 1
+stretch_mode = 6
+mouse_filter = 2

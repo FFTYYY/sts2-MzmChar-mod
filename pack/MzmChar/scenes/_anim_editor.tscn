@@ -1,0 +1,22 @@
+[gd_scene load_steps=2 format=3]
+
+; 工具 scene —— 仅用于在 Godot 编辑器里编辑 SpriteFrames .tres 资源。
+; 不被任何代码引用，游戏运行时不会加载。命名以 _ 开头表示 internal/tool。
+;
+; 用法：
+;   1. 打开本 scene
+;   2. 选中 Editor 节点 → Inspector → Sprite Frames 字段 → "Load" → 选要编的 .tres
+;      （如 res://MzmChar/resources/mu_anime.tres 或 mo_anime.tres）
+;   3. 底部 SpriteFrames 编辑器 dock 自动出现，编辑动画
+;   4. Ctrl+S 保存（保存的是 .tres 本身，不需要保存这个 scene）
+;
+; 编辑完后切换 .tres 时：
+;   - Inspector → Sprite Frames 字段 → 下拉箭头 → "Clear"
+;   - 然后 "Load" 另一个 .tres
+
+[ext_resource type="SpriteFrames" path="res://MzmChar/resources/mu_anime.tres" id="1_default"]
+
+[node name="AnimEditor" type="Node2D"]
+
+[node name="Editor" type="AnimatedSprite2D" parent="."]
+sprite_frames = ExtResource("1_default")

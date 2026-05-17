@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://dq5p2eqa17g32"]
+
+[ext_resource type="Texture2D" uid="uid://du80e76676pfu" path="res://MzmChar/characters/rest_site.png" id="1_r4ic0"]
+
+[node name="MzmCharRestSite" type="Node2D" unique_id=1210351990]
+scale = Vector2(0.3, 0.3)
+
+[node name="Visuals" type="Sprite2D" parent="." unique_id=53172867]
+position = Vector2(6.666668, -170.00003)
+scale = Vector2(1.424774, 1.424774)
+texture = ExtResource("1_r4ic0")
+
+[node name="ControlRoot" type="Control" parent="." unique_id=1002029105]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="Hitbox" type="Control" parent="ControlRoot" unique_id=1499460737]
+unique_name_in_owner = true
+anchors_preset = 0
+offset_left = -356.66663
+offset_top = -923.3333
+offset_right = 493.3333
+offset_bottom = 583.3333
+
+[node name="ThoughtBubbleRight" type="Control" parent="ControlRoot" unique_id=484959726]
+unique_name_in_owner = true
+anchors_preset = 0
+offset_left = 216.66667
+offset_top = -983.3333
+offset_right = 216.66667
+offset_bottom = -983.3333
+
+[node name="ThoughtBubbleLeft" type="Control" parent="ControlRoot" unique_id=684813083]
+unique_name_in_owner = true
+anchors_preset = 0
+offset_left = -276.66666
+offset_top = -1020.0
+offset_right = -276.66666
+offset_bottom = -1020.0
+localize_numeral_system = false

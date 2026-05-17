@@ -1,0 +1,41 @@
+# 用户本机配置
+local.props
+
+# 构建产物
+bin/
+obj/
+*.user
+*.suo
+.vs/
+
+# Godot
+.godot/
+.import/
+**/*.import
+*.pck
+
+# 发布包
+dist/
+*.zip
+
+# IDE
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/launch.json
+
+# OS
+Thumbs.db
+.DS_Store
+
+# 内部开发用，不进公开仓库
+_scratch/
+notes/
+reports/
+workplace/
+tools/
+.env
+note.dev.md
+.claude
+

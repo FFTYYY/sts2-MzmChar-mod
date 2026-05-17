@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <!-- 所有子项目共用的设置 -->
+
+  <!-- 自动导入 local.props（如果存在） -->
+  <Import Project="$(MSBuildThisFileDirectory)local.props"
+          Condition="Exists('$(MSBuildThisFileDirectory)local.props')" />
+
+  <PropertyGroup>
+    <ModId>MzmChar</ModId>
+    <ModVersion>0.1.0</ModVersion>
+
+    <TargetFramework>net9.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+
+    <!-- 默认启用自动部署，可在 local.props 中关掉 -->
+    <AutoDeploy Condition="'$(AutoDeploy)' == ''">true</AutoDeploy>
+  </PropertyGroup>
+</Project>

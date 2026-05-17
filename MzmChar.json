@@ -1,0 +1,18 @@
+{
+  "id": "MzmChar",
+  "name": "Mutsumi",
+  "author": "巫游",
+  "description": "若叶睦 / Wakaba Mutsumi character mod.",
+  "version": "0.1.0",
+  "tag": "",
+  "detail": "",
+  "remark": "",
+  "download_url": "",
+  "author_url": "",
+  "detail_url": "",
+  "social_url": "",
+  "has_pck": true,
+  "has_dll": true,
+  "dependencies": ["BaseLib"],
+  "affects_gameplay": true
+}

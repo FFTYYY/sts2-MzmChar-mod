@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+    <!-- 测试不需要部署到游戏，关掉父级的 AutoDeploy -->
+    <AutoDeploy>false</AutoDeploy>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="xunit" Version="2.9.*" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.*" />
+    <PackageReference Include="coverlet.collector" Version="6.0.*" />
+  </ItemGroup>
+
+  <!--
+    重构成 BaseLib 之后，所有内容（角色 / 卡 / 遗物）都继承 BaseLib 的 CustomXxxModel，
+    它们的 ctor 在 ModelDb.Init 反射构造时会调 CustomContentDictionary.AddModel ——
+    这是个游戏运行时上下文，离线 instantiate 会炸。
+    所以这里不再 cross-compile src/ 下的内容文件，测试只保留 scaffold 占位。
+    真正的功能测试在游戏里跑。
+  -->
+
+</Project>

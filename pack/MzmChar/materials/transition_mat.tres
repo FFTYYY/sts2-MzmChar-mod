@@ -1,0 +1,14 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3]
+
+; 选角切换转场材质 —— 占位。游戏会去 ResourceLoader.Load 这个文件。
+; 用 Godot 内置 canvas_item 默认 shader 即可，最低限度不让 SelectCharacter 抛异常。
+
+[sub_resource type="Shader" id="placeholder_shader"]
+code = "shader_type canvas_item;
+void fragment() {
+    COLOR = texture(TEXTURE, UV);
+}
+"
+
+[resource]
+shader = SubResource("placeholder_shader")
