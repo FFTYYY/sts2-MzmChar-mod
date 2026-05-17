@@ -1,6 +1,9 @@
 # 若叶睦 / Wakaba Mutsumi — Slay the Spire 2 角色 mod
 
+**简体中文** | [English](README_EN.md)
+
 为 **杀戮尖塔2（Slay the Spire 2）** 开发的自定义角色 mod，加入新角色**若叶睦**。
+
 
 ## 玩家安装
 
