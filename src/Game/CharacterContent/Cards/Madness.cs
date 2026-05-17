@@ -14,7 +14,8 @@ namespace MzmChar.Game;
 
 /// <summary>
 /// 疯癫：2 费蓝色技能。
-///   小睦：额外获得 2 点能量，进入小墨
+///   通用：获得 1 点能量（不升级）
+///   小睦：额外获得 2/3 点能量，进入小墨
 ///   小墨：抽 3/4 张牌，进入小睦
 /// </summary>
 [Pool(typeof(MzmCharCardPool))]
@@ -24,8 +25,9 @@ public class Madness : MzmCharBaseCard
 
     private readonly List<DynamicVar> _vars = new()
     {
-        new CardsVar(3),     // Mo 抽 3/4
-        new EnergyVar(2),    // Mu 获得 2 能量（不升级）
+        new EnergyVar(1),                        // 通用 1 能量（不升级）
+        new DynamicVar("MuExtra", 2m),           // Mu 额外 2/3 能量
+        new CardsVar(3),                         // Mo 抽 3/4
     };
     protected override IEnumerable<DynamicVar> CanonicalVars => _vars;
 
@@ -36,11 +38,15 @@ public class Madness : MzmCharBaseCard
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Cards.UpgradeValueBy(1);   // 3 → 4
+        DynamicVars["MuExtra"].UpgradeValueBy(1);  // Mu 额外 2 → 3
+        DynamicVars.Cards.UpgradeValueBy(1);       // Mo 3 → 4
     }
 
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay play)
     {
+        // 通用：先获得 N 能量
+        await PlayerCmd.GainEnergy(DynamicVars.Energy.IntValue, Owner);
+
         if (Forms.IsMortisForm(Owner))
         {
             await CardPileCmd.Draw(ctx, DynamicVars.Cards.BaseValue, Owner, false);
@@ -49,7 +55,8 @@ public class Madness : MzmCharBaseCard
         }
         else
         {
-            await PlayerCmd.GainEnergy(DynamicVars.Energy.IntValue, Owner);
+            // Mu 额外 2 能量
+            await PlayerCmd.GainEnergy((int)DynamicVars["MuExtra"].BaseValue, Owner);
             await CombatCounters.BumpMutsumiCard(ctx, Owner);
             await Forms.EnterMortis(Owner, this, ctx);
         }
@@ -58,10 +65,12 @@ public class Madness : MzmCharBaseCard
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new CardLoc("疯癫",
-            "{MuSec}{MuOpen}小睦{MuClose}：额外获得{Energy:energyIcons()}。[gold]进入小墨[/gold]。{MuSecEnd}\n" +
+            "获得{Energy:energyIcons()}。\n" +
+            "{MuSec}{MuOpen}小睦{MuClose}：额外获得{MuExtra:diff()}点能量。[gold]进入小墨[/gold]。{MuSecEnd}\n" +
             "{MoSec}{MoOpen}小墨{MoClose}：抽{Cards:diff()}张牌。[gold]进入小睦[/gold]。{MoSecEnd}"),
         _ => new CardLoc("Madness",
-            "{MuSec}{MuOpen}Mu{MuClose}: Gain an additional {Energy:energyIcons()}; [gold]Enter Mo[/gold].{MuSecEnd}\n" +
+            "Gain {Energy:energyIcons()}.\n" +
+            "{MuSec}{MuOpen}Mu{MuClose}: Gain {MuExtra:diff()} additional energy; [gold]Enter Mo[/gold].{MuSecEnd}\n" +
             "{MoSec}{MoOpen}Mo{MoClose}: Draw {Cards:diff()}; [gold]Enter Mu[/gold].{MoSecEnd}"),
     };
 }
