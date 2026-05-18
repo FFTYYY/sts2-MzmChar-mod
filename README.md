@@ -30,80 +30,13 @@
 | **运行时 Patch** | [Lib.Harmony](https://github.com/pardeike/Harmony) |
 | **多语言** | BaseLib 自带 LocString |
 
-## 开发者：从源码构建
+## 从源码构建
 
-### 初始环境配置
+1. 装 [.NET 9 SDK](https://dotnet.microsoft.com/download/dotnet/9.0)、Slay the Spire 2、[BaseLib mod](https://github.com/Alchyr/BaseLib-StS2/releases/latest) 到 `<游戏目录>/mods/BaseLib/`、[MegaDot](https://megadot.megacrit.com/)
+2. 复制 `local.props.example` → `local.props`，填入本机 `GameDir` 和 `MegaDotExe` 路径
+3. `dotnet build` —— 编译会**自动检测你 Steam 装的是 stable 还是 beta 分支**，出对应版本的 dll 并部署到 `<GameDir>/mods/MzmChar/`
 
-1. 安装 [.NET 9 SDK](https://dotnet.microsoft.com/download/dotnet/9.0)
-2. 安装好 Slay the Spire 2（Steam）
-3. 安装 [BaseLib mod](https://github.com/Alchyr/BaseLib-StS2/releases/latest) 到 `<游戏目录>/mods/BaseLib/`
-4. 下载 [MegaDot](https://megadot.megacrit.com/) 解压到任意位置
-5. 将`local.props.example`改名为`local.props`，把里面两条路径改成你本机的：
-   ```xml
-   <GameDir>C:\Program Files (x86)\Steam\steamapps\common\Slay the Spire 2</GameDir>
-   <MegaDotExe>C:\path\to\MegaDot_v4.5.1-stable_mono_win64_console.exe</MegaDotExe>
-   ```
-
-### 构建
-
-```bash
-dotnet build
-```
-
-会自动：编译 `MzmChar.dll` → MegaDot 导出 `MzmChar.pck` → 拷贝到 `<GameDir>/mods/MzmChar/`。
-
-> 改完代码 build 之前要**关掉游戏**，不然 dll 被锁定部署失败。
-
-## 项目结构
-
-```
-StS-MzmChar/
-├── MzmChar.sln                 # IDE 入口
-├── Directory.Build.props       # 公共 MSBuild（自动 import local.props）
-├── local.props.example         # 本机路径模板（复制为 local.props 后改）
-├── MzmChar.json                # mod 元数据
-│
-├── src/                        # C# 代码
-│   ├── MzmChar.csproj
-│   ├── ModEntry.cs             # mod 入口（[ModInitializer]）
-│   ├── Config/                 # mod 设置（BaseLib SimpleModConfig）
-│   └── Game/
-│       ├── MutsumiCharacter.cs # CustomCharacterModel 主类
-│       ├── CustomBgmPatch.cs   # 战斗 BGM 替换 Harmony patch
-│       └── CharacterContent/
-│           ├── Cards/          # 卡牌（每张一个 .cs，继承 MzmCharBaseCard）
-│           ├── Powers/         # 自定义 Power (Buff/Debuff)
-│           ├── Relics/         # 遗物
-│           ├── Forms.cs        # 双形态（小睦/小墨）切换 helper
-│           └── ...
-│
-├── pack/                       # Godot 资源项目（MegaDot 导出为 MzmChar.pck）
-│   ├── project.godot
-│   ├── export_presets.cfg
-│   └── MzmChar/
-│       ├── audio/              # 战斗 BGM mp3
-│       ├── cards/              # 卡牌画
-│       ├── characters/         # 角色立绘 / 选角图 / 头像
-│       ├── powers/             # power 图标
-│       ├── relics/             # 遗物图标
-│       ├── scenes/             # 战斗场景 / 选角背景
-│       └── localization/
-│           ├── zhs/            # 简体中文 loc table
-│           └── eng/            # 英文 loc table
-│
-└── tests/                      # 占位测试框架（真测试只能在游戏内跑）
-```
-
-
-## 添加 / 修改内容
-
-- **加新卡**：在 `src/Game/CharacterContent/Cards/` 新建文件，挂 `[Pool(typeof(MzmCharCardPool))]`，继承 `MzmCharBaseCard`
-- **加新 power**：在 `src/Game/CharacterContent/Powers/` 新建，继承 `CustomPowerModel`
-- **加新遗物**：在 `src/Game/CharacterContent/Relics/` 新建，挂 `[Pool(typeof(MzmCharRelicPool))]`
-- **改 BGM**：直接往 `pack/MzmChar/audio/` 丢 `.mp3` / `.ogg` / `.wav`，下次战斗自动加入随机池
-- **改先古对话**：编辑 `pack/MzmChar/localization/{zhs,eng}/ancients.json`
-
-参考已有的 Card / Power / Relic 实现作为模板。BaseLib 各 `Custom*Model` 抽象基类的 ctor 自动注册到游戏 ModelDb，无需手动调用。
+完整开发文档（项目结构、加新卡 / power / 遗物、stable/beta 双版本机制、发布流程、常见故障排查）见 **[DEVELOPER_GUIDE.md](DEVELOPER_GUIDE.md)**。
 
 ---
 
