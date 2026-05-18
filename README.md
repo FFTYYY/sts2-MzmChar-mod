@@ -9,7 +9,7 @@
 ## 玩家安装
 
 1. 下载本 mod 最新 release zip 并解压
-   - 对于正式版游戏本体，请使用MzmChar.zip；对于beta版游戏本体，请使用MzmChar-beta.zip
+   - 对于正式版游戏本体，请使用 `MzmChar.zip`；对于beta版游戏本体，请使用 `MzmChar-beta.zip`
 2. 将解压得到的文件夹 `MzmChar/` 复制到 `<游戏目录>/mods/` 中
    - 本 mod 依赖 [BaseLib](https://github.com/Alchyr/BaseLib-StS2)。为了方便使用，我们也提供了一个 BaseLib 的安装包 `BaseLib.zip`。如果你之前没有安装过 BaseLib，请一并安装之。
 3. 启动游戏（第一次启动可能会闪退，再次启动就好），确保右下角提示「模组已加载」。
