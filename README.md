@@ -20,25 +20,9 @@
 - 推荐和[杀戮尖塔2 Mod 管理器](https://github.com/liwenhao0427/StS2ModManager)一起使用，可以方便地切换 mod 以及选择是否以无 mod 模式启动游戏。
 - 游戏目录可以在 steam 中选择「浏览本地文件」查看。对于windows用户，游戏目录默认在 `C:\Program Files (x86)\Steam\steamapps\common\Slay the Spire 2\`。
 
-## 技术栈 / 依赖
-
-| 项 | 版本 / 来源 |
-|---|---|
-| **语言 / 运行时** | C# / .NET 9 SDK |
-| **游戏引擎** | Godot 4.5.1（[MegaDot](https://megadot.megacrit.com/) 工具链导出 `.pck`）|
-| **Mod 框架** | [Alchyr/BaseLib-StS2](https://github.com/Alchyr/BaseLib-StS2) v3.1.x |
-| **运行时 Patch** | [Lib.Harmony](https://github.com/pardeike/Harmony) |
-| **多语言** | BaseLib 自带 LocString |
-
-## 从源码构建
-
-1. 装 [.NET 9 SDK](https://dotnet.microsoft.com/download/dotnet/9.0)、Slay the Spire 2、[BaseLib mod](https://github.com/Alchyr/BaseLib-StS2/releases/latest) 到 `<游戏目录>/mods/BaseLib/`、[MegaDot](https://megadot.megacrit.com/)
-2. 复制 `local.props.example` → `local.props`，填入本机 `GameDir` 和 `MegaDotExe` 路径
-3. `dotnet build` —— 编译会**自动检测你 Steam 装的是 stable 还是 beta 分支**，出对应版本的 dll 并部署到 `<GameDir>/mods/MzmChar/`
+## 开发者指南
 
 完整开发文档（项目结构、加新卡 / power / 遗物、stable/beta 双版本机制、发布流程、常见故障排查）见 **[DEVELOPER_GUIDE.md](DEVELOPER_GUIDE.md)**。
-
----
 
 ## License
 

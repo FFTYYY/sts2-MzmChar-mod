@@ -11,7 +11,7 @@ obj/
 # Godot
 .godot/
 .import/
-**/*.import
+# **/*.import
 *.pck
 
 # 发布包
