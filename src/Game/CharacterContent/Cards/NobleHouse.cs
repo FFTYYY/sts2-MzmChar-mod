@@ -7,17 +7,28 @@ using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization;
+using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.ValueProps;
 
 namespace MzmChar.Game;
 
 /// <summary>
-/// 名门：1 费蓝色能力。回合开始时获得 (演艺热情 × 层数) 点活力。升级：固有。
+/// 名门：1 费蓝色能力。回合开始时，每有 1 层演艺热情，获得 3/5 点格挡。升级：固有 + 数值 3→5。
+/// 多张本卡可叠加：power Amount 累加（3+3=6 / 3+5=8 / 5+5=10 per passion）。
 /// </summary>
 [Pool(typeof(MzmCharCardPool))]
 public class NobleHouse : MzmCharBaseCard
 {
     public override string PortraitPath => "res://MzmChar/cards/noble_house.png";
+
+    // 用 plain DynamicVar 不是 BlockVar —— 能力卡数值固定字面值，不应吃敏捷加成
+    // （BlockVar 会让 :diff() PreviewValue 跑 Hook.ModifyBlock 叠 dex/frail 等 modifier）
+    private readonly List<DynamicVar> _vars = new()
+    {
+        new DynamicVar("Block", 3m),    // 3 → 5 升级，纯字面值
+    };
+    protected override IEnumerable<DynamicVar> CanonicalVars => _vars;
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips
     {
@@ -30,12 +41,16 @@ public class NobleHouse : MzmCharBaseCard
 
     public NobleHouse() : base(1, CardType.Power, CardRarity.Uncommon, TargetType.Self) { }
 
-    protected override void OnUpgrade() { AddKeyword(CardKeyword.Innate); }
+    protected override void OnUpgrade()
+    {
+        AddKeyword(CardKeyword.Innate);
+        DynamicVars["Block"].UpgradeValueBy(2);   // 3 → 5
+    }
 
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay play)
     {
         await PlayCast();
-        await Sts2Compat.PowerApply<NobleHousePower>(ctx, Owner.Creature, 1, Owner.Creature, this, false);
+        await Sts2Compat.PowerApply<NobleHousePower>(ctx, Owner.Creature, DynamicVars["Block"].BaseValue, Owner.Creature, this, false);
         if (Forms.IsMortisForm(Owner)) await CombatCounters.BumpMortisCard(ctx, Owner);
         else await CombatCounters.BumpMutsumiCard(ctx, Owner);
     }
@@ -43,8 +58,8 @@ public class NobleHouse : MzmCharBaseCard
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new CardLoc("名门",
-            "回合开始时，你每有1层[gold]演艺热情[/gold]，就获得1点[gold]活力[/gold]。"),
+            "回合开始时，你每有1层[gold]演艺热情[/gold]，就获得{Block:diff()}点[gold]格挡[/gold]。"),
         _ => new CardLoc("Noble House",
-            "At turn start, gain 1 [gold]Vigor[/gold] for each stack of [gold]Performance Passion[/gold]."),
+            "At turn start, gain {Block:diff()} [gold]Block[/gold] for each stack of [gold]Performance Passion[/gold]."),
     };
 }

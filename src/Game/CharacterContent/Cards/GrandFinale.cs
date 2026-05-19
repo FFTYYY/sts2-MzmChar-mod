@@ -44,7 +44,7 @@ public class GrandFinale : MzmCharBaseCard
         }
     }
 
-    public GrandFinale() : base(1, CardType.Skill, CardRarity.Rare, TargetType.Self) { }
+    public GrandFinale() : base(1, CardType.Attack, CardRarity.Rare, TargetType.Self) { }
 
     protected override void OnUpgrade() { DynamicVars.Damage.UpgradeValueBy(3); /* 5→8 */ }
 

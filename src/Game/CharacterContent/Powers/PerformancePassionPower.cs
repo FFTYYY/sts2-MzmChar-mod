@@ -2,13 +2,13 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using BaseLib.Abstracts;
 using MegaCrit.Sts2.Core.Commands;
+using MegaCrit.Sts2.Core.Entities.Multiplayer;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Saves.Runs;
 
 namespace MzmChar.Game;
 
@@ -16,13 +16,13 @@ namespace MzmChar.Game;
 /// 「演艺热情」buff：Amount 达到 5 时，当前回合结束后立刻开启额外回合。
 ///
 /// 实现参考 vanilla `PaelsEye` relic（IL-verified）：
-///   1. override `ShouldTakeExtraTurn(player)` 返回 `player == Owner.Player && Amount &gt;= 5`
-///      —— `Hook.ShouldTakeExtraTurn` 遍历所有 hook listener，任一返回 true 即触发
-///   2. override `AfterTakingExtraTurn(player)` 做清理：
-///      - 移除自己（避免下回合再触发，构成无限回合）
-///      - 给玩家应用 ConcertPower（标记额外回合处于"演奏会"状态）
+///   1. override `ShouldTakeExtraTurn(player)` 返回 `Amount &gt;= 5`
+///   2. override `AfterTakingExtraTurn(player)` 在新回合开始前 apply ConcertPower + 自移除
 ///
-/// 阈值固定为 5。如果应用超过 5（如两张回忆中的乐队 = 10 passion），同样触发一次（不是两次）。
+/// beta 兼容：AfterTakingExtraTurn 不带 ctx，但 beta 的 PowerCmd.Apply 必须有 ctx。
+/// 我们自己构造一个 HookPlayerChoiceContext（vanilla 的 Hook.* 内部也是这么造的）。
+/// 必须在 AfterTakingExtraTurn 里 apply（不是 AfterPlayerTurnStartEarly），
+/// 否则错过本回合的 ModifyHandDraw / AfterPlayerTurnStartEarly 这两个 hook iteration。
 /// </summary>
 public class PerformancePassionPower : CustomPowerModel
 {
@@ -39,33 +39,21 @@ public class PerformancePassionPower : CustomPowerModel
         get { yield return HoverTipFactory.FromPower<ConcertPower>(); }
     }
 
-    // 解决 ctx 缺失：AfterTakingExtraTurn hook 没有 PlayerChoiceContext（vanilla 设计），
-    // 但 beta 的 PowerCmd.Apply 必填 ctx。改成两阶段：
-    //   1. AfterTakingExtraTurn 只 set flag + reset Amount（防止再次触发 ShouldTakeExtraTurn）
-    //   2. AfterPlayerTurnStartEarly（带 ctx）检测 flag → Apply ConcertPower + 自移除
-    [SavedProperty] public bool PendingConcert { get; set; }
-
     public override bool ShouldTakeExtraTurn(Player player)
     {
         if (Owner?.Player != player) return false;
         return Amount >= Threshold;
     }
 
-    public override Task AfterTakingExtraTurn(Player player)
-    {
-        if (Owner?.Player != player) return Task.CompletedTask;
-        Flash();
-        PendingConcert = true;
-        SetAmount(0, true);   // 清 0，避免下个 ShouldTakeExtraTurn 检查再触发
-        return Task.CompletedTask;
-    }
-
-    public override async Task AfterPlayerTurnStartEarly(PlayerChoiceContext ctx, Player player)
+    public override async Task AfterTakingExtraTurn(Player player)
     {
         if (Owner?.Player != player) return;
-        if (!PendingConcert) return;
-        PendingConcert = false;
-        // extra turn 已开始，正是这一帧需要 ConcertPower 生效
+        Flash();
+
+        PlayerChoiceContext? ctx = null;
+#if BETA
+        ctx = new HookPlayerChoiceContext(this, player.NetId, CombatState, GameActionType.Combat);
+#endif
         await Sts2Compat.PowerApply<ConcertPower>(ctx, player.Creature, 1, player.Creature, null, false);
         await PowerCmd.Remove<PerformancePassionPower>(Owner);
     }

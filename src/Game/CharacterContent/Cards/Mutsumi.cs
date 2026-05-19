@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using BaseLib.Abstracts;
 using BaseLib.Utils;
@@ -59,7 +60,8 @@ public class Mutsumi : MzmCharBaseCard
             var cs = Owner.Creature.CombatState;
             if (cs != null)
             {
-                foreach (var e in cs.HittableEnemies)
+                // ToList 防御：PowerApply 触发的 hook chain 可能改变 HittableEnemies（罕见但有 risk）
+                foreach (var e in cs.HittableEnemies.ToList())
                     await Sts2Compat.PowerApply<WeakPower>(ctx, e, DynamicVars["MoWeak"].BaseValue, Owner.Creature, this, false);
             }
             var dex = DynamicVars["MoDex"].BaseValue;

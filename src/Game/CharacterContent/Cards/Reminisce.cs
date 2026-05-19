@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using BaseLib.Abstracts;
 using BaseLib.Utils;
@@ -70,7 +71,8 @@ public class Reminisce : MzmCharBaseCard
         {
             if (cs != null)
             {
-                foreach (var e in cs.HittableEnemies)
+                // ToList 防御：PowerApply 触发的 hook chain 可能改变 HittableEnemies
+                foreach (var e in cs.HittableEnemies.ToList())
                 {
                     await Sts2Compat.PowerApply<WeakPower>(ctx, e, DynamicVars["WeakPower"].BaseValue, Owner.Creature, this, false);
                     await Sts2Compat.PowerApply<VulnerablePower>(ctx, e, DynamicVars["VulnerablePower"].BaseValue, Owner.Creature, this, false);

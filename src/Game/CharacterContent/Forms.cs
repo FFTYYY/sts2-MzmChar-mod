@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading.Tasks;
 using Godot;
 using MegaCrit.Sts2.Core.Commands;
@@ -117,7 +118,10 @@ public static class Forms
     private static async Task OnPersonaSwitched(Player p, CardModel? source, PlayerChoiceContext ctx)
     {
         // ComedianPower 是 IsInstanced — 每个实例独立倒计时，要派发到所有 instances
-        foreach (var pw in p.Creature.GetPowerInstances<ComedianPower>())
+        // .ToList() 必需：OnPersonaSwitch 内部 Apply<EnergyNextTurnPower> / ModifyAmount(this) 都会
+        // 修改 creature.powers 集合；底层 IEnumerable 是 lazy + check version → 集合修改后下一次
+        // MoveNext 抛 InvalidOperationException "Collection was modified"。
+        foreach (var pw in p.Creature.GetPowerInstances<ComedianPower>().ToList())
             await pw.OnPersonaSwitch(ctx, source);
         if (p.Creature.HasPower<DisintegrationPower>())
         {

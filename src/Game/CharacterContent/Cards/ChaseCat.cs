@@ -33,7 +33,7 @@ public class ChaseCat : MzmCharBaseCard
 
     // TargetType.RandomEnemy = 4（IL-verified）：无需手动选目标（与"随机伤害"语义一致），
     // 同时框架仍传 target 给 UpdateCardPreview 让 vuln/weak modifier 能算进 display。
-    public ChaseCat() : base(1, CardType.Skill, CardRarity.Common, TargetType.RandomEnemy) { }
+    public ChaseCat() : base(1, CardType.Attack, CardRarity.Common, TargetType.RandomEnemy) { }
 
     // Mu 只抽牌 → 不需要任何瞄准箭头；Mo 是随机多次 → RandomEnemy
     public override TargetType TargetType =>

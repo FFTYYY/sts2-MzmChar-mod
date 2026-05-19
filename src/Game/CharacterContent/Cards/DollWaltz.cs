@@ -42,7 +42,7 @@ public class DollWaltz : MzmCharBaseCard
         description.Add("XBlock", (decimal)x);
     }
 
-    public DollWaltz() : base(0, CardType.Skill, CardRarity.Rare, TargetType.AllEnemies) { }
+    public DollWaltz() : base(0, CardType.Attack, CardRarity.Rare, TargetType.AllEnemies) { }
 
     protected override void OnUpgrade() { /* IsUpgraded 控制攻击次数倍率 */ }
 

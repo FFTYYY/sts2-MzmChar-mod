@@ -31,8 +31,8 @@ public class MutsumiCharge : MzmCharBaseCard
     };
     protected override IEnumerable<DynamicVar> CanonicalVars => _vars;
 
-    private readonly HashSet<CardTag> _tags = new() { CardTag.Strike };
-    protected override HashSet<CardTag> CanonicalTags => _tags;
+    // 注意：故意不挂 CardTag.Strike —— 它是"睦头人出击！"不是"打击"。
+    // 挂上会被「叛逆」(Rebellion) 这类筛 CardTag.Strike 的卡误命中。
 
     // 初始牌：禁止被「发现」类抽到（与 MuStrike/MuDefend 同款理由）
     public override bool CanBeGeneratedInCombat => false;

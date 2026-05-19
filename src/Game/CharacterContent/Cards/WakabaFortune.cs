@@ -32,13 +32,15 @@ public class WakabaFortune : MzmCharBaseCard
 
     protected override void OnUpgrade() { /* IsUpgraded → 抽 1 张 */ }
 
-    // 注入 {Gold} = 当前已切换形态次数（即"如果现在打出，可获得的金币数"）
+    private const int GoldPerSwitch = 4;
+
+    // 注入 {Gold} = 当前已切换形态次数 × 4（即"如果现在打出，可获得的金币数"）
     // canonical hover 时 Owner=null → 0；战斗中实时反映累计值
     protected override void AddExtraArgsToDescription(MegaCrit.Sts2.Core.Localization.LocString description)
     {
         base.AddExtraArgsToDescription(description);
         int gold = !IsCanonical && Owner != null
-            ? CombatCounters.PersonaSwitchesThisCombat[Owner]
+            ? CombatCounters.PersonaSwitchesThisCombat[Owner] * GoldPerSwitch
             : 0;
         description.Add("Gold", (decimal)gold);
     }
@@ -46,9 +48,9 @@ public class WakabaFortune : MzmCharBaseCard
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay play)
     {
         await PlayCast();
-        // 把"本场已切换形态次数"作为初始层数施加（0 也照应用）；之后切换通过 OnPersonaSwitch + 1
+        // 把"本场已切换形态次数 × 4"作为 power Amount（== 战斗结束时给的金币数）
         int currentSwitches = CombatCounters.PersonaSwitchesThisCombat[Owner];
-        await Sts2Compat.PowerApply<WakabaFortunePower>(ctx, Owner.Creature, currentSwitches, Owner.Creature, this, false);
+        await Sts2Compat.PowerApply<WakabaFortunePower>(ctx, Owner.Creature, currentSwitches * GoldPerSwitch, Owner.Creature, this, false);
 
         if (IsUpgraded)
             await CardPileCmd.Draw(ctx, 1, Owner, false);
@@ -60,8 +62,8 @@ public class WakabaFortune : MzmCharBaseCard
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new CardLoc("若叶家产",
-            "到现在为止，本场战斗中你每切换过一次人格，战斗结束后获得1点金币（获得{Gold}点金币）。{IfUpgraded:show:抽1张牌。|}"),
+            "到现在为止，本场战斗中你每切换过一次人格，战斗结束后获得4点金币（获得{Gold}点金币）。{IfUpgraded:show:抽1张牌。|}"),
         _ => new CardLoc("Wakaba Fortune",
-            "After combat, gain 1 gold per persona switch this combat (gain {Gold} gold).{IfUpgraded:show: Draw 1.|}"),
+            "After combat, gain 4 gold per persona switch this combat (gain {Gold} gold).{IfUpgraded:show: Draw 1.|}"),
     };
 }

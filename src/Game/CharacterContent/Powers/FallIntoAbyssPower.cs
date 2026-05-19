@@ -6,8 +6,8 @@ using MegaCrit.Sts2.Core.Localization;
 namespace MzmChar.Game;
 
 /// <summary>
-/// 「坠入深渊」buff：本场战斗中你无法再进入小墨形态。
-/// 检查在 Forms.EnterMortis 头部 —— 有这个 buff 直接 return。
+/// 「坠入深渊」buff：本场战斗中你无法再进入小睦形态。
+/// 检查在 Forms.EnterMutsumi 头部 —— 有这个 buff 直接 return。
 /// 「重生」(Reborn) 卡可以移除此 buff。
 /// </summary>
 public class FallIntoAbyssPower : CustomPowerModel

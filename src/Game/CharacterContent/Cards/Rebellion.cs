@@ -54,10 +54,14 @@ public class Rebellion : MzmCharBaseCard
         // (internal 不可见，inline 同样逻辑)：
         //   单机 (Players.Count <= 1) → 排除 MultiplayerOnly
         //   联机 (>1)                → 排除 SingleplayerOnly
+        // 同时排除 CanBeGeneratedInCombat=false 的卡（如其他 mod 的测试卡 / 初始卡 / 先古卡）。
+        // 这跟 InnerNoise / NeverHappyInBand 同款 filter。
         bool isMultiplayer = Owner.RunState != null && Owner.RunState.Players.Count > 1;
-        var allowed = allColorless?.Where(c => isMultiplayer
-            ? c.MultiplayerConstraint != CardMultiplayerConstraint.SingleplayerOnly
-            : c.MultiplayerConstraint != CardMultiplayerConstraint.MultiplayerOnly).ToList();
+        var allowed = allColorless?.Where(c =>
+            c.CanBeGeneratedInCombat
+            && (isMultiplayer
+                ? c.MultiplayerConstraint != CardMultiplayerConstraint.SingleplayerOnly
+                : c.MultiplayerConstraint != CardMultiplayerConstraint.MultiplayerOnly)).ToList();
 
         if (rng != null && allowed != null && allowed.Count > 0)
         {

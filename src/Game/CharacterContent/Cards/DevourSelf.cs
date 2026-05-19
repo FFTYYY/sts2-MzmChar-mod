@@ -37,12 +37,12 @@ public class DevourSelf : MzmCharBaseCard
             ? TargetType.Self
             : TargetType.AnyEnemy;
 
-    public DevourSelf() : base(1, CardType.Skill, CardRarity.Rare, TargetType.AnyEnemy)
+    public DevourSelf() : base(1, CardType.Attack, CardRarity.Rare, TargetType.AnyEnemy)
     {
         _vars = new List<DynamicVar>
         {
-            new DynamicVar("MuMult", 1.5m),   // 升级 +0.5 → 2
-            new DynamicVar("MoMult", 2m),     // 升级 +1 → 3
+            new DynamicVar("MuMult", 2m),     // 升级 +1 → 3
+            new DynamicVar("MoMult", 3m),     // 升级 +1 → 4
             // Mu 实算：vigor = floor(dex * mult)
             new LambdaVar("MuVigor", card =>
             {
@@ -81,8 +81,8 @@ public class DevourSelf : MzmCharBaseCard
 
     protected override void OnUpgrade()
     {
-        DynamicVars["MuMult"].UpgradeValueBy(0.5m);   // 1.5 → 2
-        DynamicVars["MoMult"].UpgradeValueBy(1m);     // 2 → 3
+        DynamicVars["MuMult"].UpgradeValueBy(1m);     // 2 → 3
+        DynamicVars["MoMult"].UpgradeValueBy(1m);     // 3 → 4
     }
 
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay play)
