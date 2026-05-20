@@ -14,9 +14,13 @@ namespace MzmChar.Game;
 /// （ConditionalWeakTable 包装）直接 attach 到 Player / Creature 上，UI 完全看不见。
 ///
 /// 重置规则：
-///   - per-turn 计数器（Mu/Mo cards、ExtraDraws、StruckByMortis）由 SecondPersonaRelic.AfterTurnEnd 清零
+///   - per-turn 计数器（Mu/Mo cards、StruckByMortis）由 SecondPersonaRelic.AfterTurnEnd 清零
 ///   - PersonaSwitchesThisCombat 由 SecondPersonaRelic.AfterPlayerTurnStart 在战斗第一回合清零
 ///   - 战斗结束后所有 Player/Creature 引用还在（ConditionalWeakTable），但下一场战斗开始时同样会被清零
+///
+/// 注：「本回合额外抽过 N 张牌」类查询请用 vanilla `CombatManager.Instance.History.Entries
+/// .OfType&lt;CardDrawnEntry&gt;().Count(e =&gt; e.HappenedThisTurn(state) &amp;&amp; e.Actor == owner.Creature &amp;&amp; !e.FromHandDraw)`，
+/// 不要新建 SpireField counter（vanilla DeathMarch 模式，联机自动同步）。详见 FightForBody.cs。
 ///
 /// 用法：
 ///   CombatCounters.MutsumiCardsThisTurn[player]++;          // 写
@@ -30,15 +34,13 @@ public static class CombatCounters
     public static readonly SpireField<Player, int>   MutsumiCardsThisCombat    = new(() => 0);
     public static readonly SpireField<Player, int>   MortisCardsThisCombat     = new(() => 0);
     public static readonly SpireField<Player, int>   PersonaSwitchesThisCombat = new(() => 0);
-    public static readonly SpireField<Player, int>   ExtraDrawsThisTurn        = new(() => 0);
     public static readonly SpireField<Creature, int> StruckByMortisThisTurn    = new(() => 0);
 
-    /// <summary>每回合结束清的：Mu/Mo 出牌数、额外抽牌数、敌人被小墨打次数。</summary>
+    /// <summary>每回合结束清的：Mu/Mo 出牌数、敌人被小墨打次数。</summary>
     public static void ResetThisTurn(Player p)
     {
         MutsumiCardsThisTurn[p] = 0;
         MortisCardsThisTurn[p]  = 0;
-        ExtraDrawsThisTurn[p]   = 0;
 
         var cs = p.Creature.CombatState;
         if (cs == null) return;

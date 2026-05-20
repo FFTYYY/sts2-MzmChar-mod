@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c27qh6wq03on"
-path="res://.godot/imported/courage.png-b266344739def354ecd93667a65ea180.ctex"
+uid="uid://dj5lf665boswb"
+path="res://.godot/imported/mzmchar_monologue.png-bbdb2f628f859c3c19e71b335b06136d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://MzmChar/cards/courage.png"
-dest_files=["res://.godot/imported/courage.png-b266344739def354ecd93667a65ea180.ctex"]
+source_file="res://MzmChar/cards/mzmchar_monologue.png"
+dest_files=["res://.godot/imported/mzmchar_monologue.png-bbdb2f628f859c3c19e71b335b06136d.ctex"]
 
 [params]
 

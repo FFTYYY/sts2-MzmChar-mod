@@ -39,7 +39,7 @@ public class DeathLake : MzmCharBaseCard
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new CardLoc("死亡之湖",
-            "以[gold]小墨[/gold]人格开始回合时，本回合获得3点[gold]力量[/gold]。"),
+            "以[gold]小墨[/gold]开始回合时，本回合获得3点[gold]力量[/gold]。"),
         _ => new CardLoc("Lake of Death",
             "If you start your turn as [gold]Mo[/gold], gain 3 [gold]Strength[/gold] this turn."),
     };

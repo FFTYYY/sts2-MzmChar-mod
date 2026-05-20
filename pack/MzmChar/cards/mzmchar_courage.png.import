@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dj5lf665boswb"
-path="res://.godot/imported/monologue.png-753dc2e53e95fde759e5e81bfaf81191.ctex"
+uid="uid://c27qh6wq03on"
+path="res://.godot/imported/mzmchar_courage.png-925bd1e99f1da2fef9166d19a245a0e5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://MzmChar/cards/monologue.png"
-dest_files=["res://.godot/imported/monologue.png-753dc2e53e95fde759e5e81bfaf81191.ctex"]
+source_file="res://MzmChar/cards/mzmchar_courage.png"
+dest_files=["res://.godot/imported/mzmchar_courage.png-925bd1e99f1da2fef9166d19a245a0e5.ctex"]
 
 [params]
 

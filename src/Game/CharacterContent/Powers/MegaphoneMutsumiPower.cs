@@ -10,7 +10,7 @@ using MegaCrit.Sts2.Core.Localization;
 namespace MzmChar.Game;
 
 /// <summary>
-/// 「传话筒」小睦版 buff：回合开始时额外抽1张牌（计入 ExtraDrawsThisTurnPower）。
+/// 「传话筒」小睦版 buff：回合开始时额外抽1张牌。
 /// 应用时根据当时形态决定是 Mu/Mo 版本（看 Megaphone 卡的 OnPlay）。
 /// </summary>
 public class MegaphoneMutsumiPower : CustomPowerModel
@@ -32,12 +32,13 @@ public class MegaphoneMutsumiPower : CustomPowerModel
         return count + Amount;
     }
 
-    // AfterPlayerTurnStart 只负责更新我们自己的计数器（FightForBody / 争夺身体 用）+ Flash
+    // AfterPlayerTurnStart 只负责 Flash 视觉反馈；抽牌走 ModifyHandDraw（上面）。
+    // 注：vanilla 设计中 hand-draw pipeline 内的抽牌不算 FightForBody 的 "extra draw"
+    // （CardDrawnEntry.FromHandDraw=true），跟 vanilla MachineLearning 待遇一致。
     public override async Task AfterPlayerTurnStart(PlayerChoiceContext ctx, Player player)
     {
         if (player.Creature != Owner) return;
         Flash();
-        CombatCounters.ExtraDrawsThisTurn[player] += Amount;
         await Task.CompletedTask;
     }
 

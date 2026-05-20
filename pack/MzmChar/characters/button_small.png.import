@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c1pml3fr1cm3u"
-path="res://.godot/imported/grand_finale.png-94ff3dd4b21802abc6017d25b98031ba.ctex"
+uid="uid://cceyffet0tvgb"
+path="res://.godot/imported/button_small.png-63dd400170666dbd049574e344cd55af.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://MzmChar/cards/grand_finale.png"
-dest_files=["res://.godot/imported/grand_finale.png-94ff3dd4b21802abc6017d25b98031ba.ctex"]
+source_file="res://MzmChar/characters/button_small.png"
+dest_files=["res://.godot/imported/button_small.png-63dd400170666dbd049574e344cd55af.ctex"]
 
 [params]
 

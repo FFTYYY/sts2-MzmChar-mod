@@ -28,7 +28,9 @@ public class AddictionPower : CustomPowerModel
     {
         if (Owner == null) return;
         Flash();
-        await CreatureCmd.GainBlock(Owner, (int)Amount, ValueProp.Move, null);
+        // 加 ValueProp.Unpowered：power 触发的格挡是固定字面值，不应吃敏捷/Frail 等 modifier
+        // （跟 NobleHousePower / MortisCardPower / TwinFormsPower 同 pattern）
+        await CreatureCmd.GainBlock(Owner, (int)Amount, ValueProp.Move | ValueProp.Unpowered, null);
     }
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch

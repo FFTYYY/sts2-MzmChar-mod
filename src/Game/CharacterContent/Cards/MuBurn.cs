@@ -17,9 +17,9 @@ namespace MzmChar.Game;
 /// 燃烧：1 费蓝色能力。+2/+3 力量（直接，不产生独立 power）。
 /// </summary>
 [Pool(typeof(MzmCharCardPool))]
-public class Burn : MzmCharBaseCard
+public class MuBurn : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/burn.png";
+    public override string PortraitPath => "res://MzmChar/cards/mzmchar_burn.png";
 
     private readonly List<DynamicVar> _vars = new()
     {
@@ -32,7 +32,7 @@ public class Burn : MzmCharBaseCard
         get { yield return HoverTipFactory.FromPower<StrengthPower>(); }
     }
 
-    public Burn() : base(1, CardType.Power, CardRarity.Uncommon, TargetType.Self) { }
+    public MuBurn() : base(1, CardType.Power, CardRarity.Uncommon, TargetType.Self) { }
 
     protected override void OnUpgrade() { DynamicVars["StrengthPower"].UpgradeValueBy(1); /* 2→3 */ }
 

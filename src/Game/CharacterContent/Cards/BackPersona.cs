@@ -17,14 +17,14 @@ namespace MzmChar.Game;
 
 /// <summary>
 /// 里人格：0 费技能。Retain。
-/// 进入小墨 + 应用「本回合结束时格挡不消失」。升级后额外获得 5 格挡。
+/// 进入小墨 + 应用「本回合结束时格挡不消失」。升级后额外获得 7 格挡。
 /// </summary>
 [Pool(typeof(MzmCharCardPool))]
 public class BackPersona : MzmCharBaseCard
 {
     public override string PortraitPath => "res://MzmChar/cards/back_persona.png";
 
-    // 升级时给 5 格挡（Mu 形态语义不在意，纯粹是上升级后的加成）
+    // 升级时给 7 格挡（Mu 形态语义不在意，纯粹是上升级后的加成）
     private readonly List<DynamicVar> _vars = new()
     {
         new BlockVar(0, ValueProp.Move),
@@ -51,7 +51,7 @@ public class BackPersona : MzmCharBaseCard
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Block.UpgradeValueBy(5);               // 0 → 5 格挡
+        DynamicVars.Block.UpgradeValueBy(7);               // 0 → 7 格挡
     }
 
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay play)

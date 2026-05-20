@@ -1,7 +1,11 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using BaseLib.Abstracts;
 using BaseLib.Utils;
+using MegaCrit.Sts2.Core.Combat;
+using MegaCrit.Sts2.Core.Combat.History;
+using MegaCrit.Sts2.Core.Combat.History.Entries;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -40,17 +44,11 @@ public class FightForBody : MzmCharBaseCard
             new DynamicVar("MoDmgPerDraw", 5m),
             // 实时算 —— 两个 LambdaVar 都不门控当前形态，两边各自显示
             new LambdaVar("MuActual", card =>
-            {
-                if (card.Owner == null) return 0;
-                int n = CombatCounters.ExtraDrawsThisTurn[card.Owner];
-                return n * (int)card.DynamicVars["MuBlockPerDraw"].BaseValue;
-            }, LambdaVar.ModifierKind.Block),
+                CountExtraDrawsThisTurn(card) * (int)card.DynamicVars["MuBlockPerDraw"].BaseValue,
+                LambdaVar.ModifierKind.Block),
             new LambdaVar("MoActual", card =>
-            {
-                if (card.Owner == null) return 0;
-                int n = CombatCounters.ExtraDrawsThisTurn[card.Owner];
-                return n * (int)card.DynamicVars["MoDmgPerDraw"].BaseValue;
-            }, LambdaVar.ModifierKind.Damage),
+                CountExtraDrawsThisTurn(card) * (int)card.DynamicVars["MoDmgPerDraw"].BaseValue,
+                LambdaVar.ModifierKind.Damage),
         };
     }
 
@@ -69,9 +67,28 @@ public class FightForBody : MzmCharBaseCard
         EnergyCost.UpgradeBy(-1);   // 2 → 1 费
     }
 
+    // 查询 vanilla CombatHistory 算"本回合非 hand-draw pipeline 抽过的牌数"。
+    // 跟 vanilla DeathMarch 模式一致 (IL probed): CombatManager.Instance.History.Entries
+    //   .OfType<CardDrawnEntry>()
+    //   .Count(e => e.HappenedThisTurn(state) && e.Actor == ownerCreature && !e.FromHandDraw);
+    // 替代了原来自维护的 CombatCounters.ExtraDrawsThisTurn SpireField (per-client，联机不同步)。
+    private static int CountExtraDrawsThisTurn(CardModel card)
+    {
+        var owner = card.Owner;
+        if (owner == null) return 0;
+        var state = owner.Creature?.CombatState;
+        if (state == null || !CombatManager.Instance.IsInProgress) return 0;
+        var ownerCreature = owner.Creature;
+        return CombatManager.Instance.History.Entries
+            .OfType<CardDrawnEntry>()
+            .Count(e => e.HappenedThisTurn(state)
+                     && e.Actor == ownerCreature
+                     && !e.FromHandDraw);
+    }
+
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay play)
     {
-        int extraDraws = CombatCounters.ExtraDrawsThisTurn[Owner];
+        int extraDraws = CountExtraDrawsThisTurn(this);
 
         if (Forms.IsMortisForm(Owner))
         {
@@ -98,10 +115,10 @@ public class FightForBody : MzmCharBaseCard
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new CardLoc("争夺身体",
-            "本回合每额外抽过一张牌，{MuSec}{MuOpen}小睦{MuClose}获得{MuBlockPerDraw}点[gold]格挡[/gold]（{MuActual:diff()}格挡）{MuSecEnd}；{MoSec}{MoOpen}小墨{MoClose}造成{MoDmgPerDraw}点伤害（{MoActual:diff()}伤害）{MoSecEnd}。\n" +
-            "{MuSec}{MuOpen}小睦{MuClose}：[gold]进入小墨[/gold]{MuSecEnd}；{MoSec}{MoOpen}小墨{MoClose}：[gold]进入小睦[/gold]{MoSecEnd}。"),
+            "{MuSec}{MuOpen}小睦{MuClose}：获得{MuActual:diff()}点[gold]格挡[/gold]，[gold]进入小墨[/gold]。{MuSecEnd}{MoSec}{MoOpen}小墨{MoClose}：造成{MoActual:diff()}点伤害，[gold]进入小睦[/gold]。{MoSecEnd}\n" +
+            "你在回合进行中每抽到1张牌，{MuSec}{MuOpen}小睦{MuClose}额外获得{MuBlockPerDraw}点[gold]格挡[/gold]；{MuSecEnd}{MoSec}{MoOpen}小墨{MoClose}额外造成{MoDmgPerDraw}点伤害{MoSecEnd}。"),
         _ => new CardLoc("Fight for Body",
-            "Per extra draw this turn, {MuSec}{MuOpen}Mu{MuClose} gains {MuBlockPerDraw} [gold]Block[/gold] (total {MuActual:diff()} Block){MuSecEnd}; {MoSec}{MoOpen}Mo{MoClose} deals {MoDmgPerDraw} damage (total {MoActual:diff()} damage){MoSecEnd}.\n" +
-            "{MuSec}{MuOpen}Mu{MuClose}: [gold]Enter Mo[/gold]{MuSecEnd}; {MoSec}{MoOpen}Mo{MoClose}: [gold]Enter Mu[/gold]{MoSecEnd}."),
+            "{MuSec}{MuOpen}Mu{MuClose}: Gain {MuActual:diff()} [gold]Block[/gold]. [gold]Enter Mo[/gold].{MuSecEnd}{MoSec}{MoOpen}Mo{MoClose}: Deal {MoActual:diff()} damage. [gold]Enter Mu[/gold].{MoSecEnd}\n" +
+            "For each card drawn this turn, {MuSec}{MuOpen}Mu{MuClose} gains {MuBlockPerDraw} extra [gold]Block[/gold]{MuSecEnd}{MoSec}{MoOpen}Mo{MoClose} deals {MoDmgPerDraw} extra damage{MoSecEnd}."),
     };
 }

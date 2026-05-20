@@ -27,7 +27,7 @@ public class WontLastLong : MzmCharBaseCard
 
     private readonly List<DynamicVar> _vars = new()
     {
-        new PowerVar<VigorPower>(40),
+        new PowerVar<VigorPower>(35),
         new PowerVar<IntangiblePower>(3),
         new DynamicVar("MuPer", 1m),
         new DynamicVar("MoPer", 1m),

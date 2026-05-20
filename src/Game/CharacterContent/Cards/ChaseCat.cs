@@ -14,9 +14,9 @@ using MegaCrit.Sts2.Core.ValueProps;
 namespace MzmChar.Game;
 
 /// <summary>
-/// 猫猫：1 费白色技能。
+/// 猫猫：1 费白色攻击。
 ///   小睦：抽 2/3 张牌。
-///   小墨：对随机敌人造成 3 点伤害 3 次（每次单独选随机敌人）。
+///   小墨：对随机敌人造成 3/4 点伤害 3 次（每次单独选随机敌人）。
 /// </summary>
 [Pool(typeof(MzmCharCardPool))]
 public class ChaseCat : MzmCharBaseCard
@@ -43,8 +43,8 @@ public class ChaseCat : MzmCharBaseCard
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Cards.UpgradeValueBy(1);   // 2 → 3
-        // Mo 数值不升级（base 已是 3 dmg × 3 hits）
+        DynamicVars.Cards.UpgradeValueBy(1);   // Mu 抽牌：2 → 3
+        DynamicVars.Damage.UpgradeValueBy(1);  // Mo 伤害：3 → 4（hits 仍 3）
     }
 
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay play)

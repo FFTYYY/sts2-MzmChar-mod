@@ -14,7 +14,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 namespace MzmChar.Game;
 
 /// <summary>
-/// 候场：1 费白色技能。获得 10/15 格挡。演奏 / 虚无 / 消耗。
+/// 候场：0 费白色技能。获得 10/15 格挡。演奏 / 虚无 / 消耗。
 /// </summary>
 [Pool(typeof(MzmCharCardPool))]
 public class Backstage : MzmCharBaseCard
@@ -42,7 +42,7 @@ public class Backstage : MzmCharBaseCard
         }
     }
 
-    public Backstage() : base(1, CardType.Skill, CardRarity.Common, TargetType.Self) { }
+    public Backstage() : base(0, CardType.Skill, CardRarity.Common, TargetType.Self) { }
 
     protected override void OnUpgrade()
     {

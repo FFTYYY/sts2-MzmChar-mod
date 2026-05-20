@@ -13,15 +13,15 @@ using MegaCrit.Sts2.Core.ValueProps;
 namespace MzmChar.Game;
 
 /// <summary>
-/// 勇气：1 费蓝色技能。
-///   小墨：获得 7 格挡
+/// 勇气：1 费蓝色攻击。
+///   小墨：获得 7 格挡（卡型仍 Attack，不真打伤害）
 ///   小睦：造成 4 点伤害 2 次
 /// 升级：添加[gold]保留[/gold]。
 /// </summary>
 [Pool(typeof(MzmCharCardPool))]
-public class Courage : MzmCharBaseCard
+public class MuCourage : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/courage.png";
+    public override string PortraitPath => "res://MzmChar/cards/mzmchar_courage.png";
 
     private readonly List<DynamicVar> _vars = new()
     {
@@ -31,7 +31,7 @@ public class Courage : MzmCharBaseCard
     };
     protected override IEnumerable<DynamicVar> CanonicalVars => _vars;
 
-    public Courage() : base(1, CardType.Skill, CardRarity.Uncommon, TargetType.AnyEnemy) { }
+    public MuCourage() : base(1, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy) { }
 
     public override TargetType TargetType =>
         !IsCanonical && Owner != null && Forms.IsMortisForm(Owner)

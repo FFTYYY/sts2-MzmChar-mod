@@ -12,12 +12,15 @@ using MegaCrit.Sts2.Core.Models.Powers;
 namespace MzmChar.Game;
 
 /// <summary>
-/// 移开视线：1 费白色技能。移除自身的「易伤」、「虚弱」、「脆弱」。升级：获得「保留」。
+/// 移开视线：1 费白色技能。消耗。移除自身的「易伤」、「虚弱」、「脆弱」。升级：获得「保留」。
 /// </summary>
 [Pool(typeof(MzmCharCardPool))]
 public class LookAway : MzmCharBaseCard
 {
     public override string PortraitPath => "res://MzmChar/cards/look_away.png";
+
+    private readonly HashSet<CardKeyword> _keywords = new() { CardKeyword.Exhaust };
+    public override IEnumerable<CardKeyword> CanonicalKeywords => _keywords;
 
     public LookAway() : base(1, CardType.Skill, CardRarity.Uncommon, TargetType.Self) { }
 

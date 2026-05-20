@@ -21,9 +21,9 @@ namespace MzmChar.Game;
 /// 演奏 / 虚无 / 消耗。
 /// </summary>
 [Pool(typeof(MzmCharCardPool))]
-public class Monologue : MzmCharBaseCard
+public class MuMonologue : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/monologue.png";
+    public override string PortraitPath => "res://MzmChar/cards/mzmchar_monologue.png";
 
     private readonly List<DynamicVar> _vars = new()
     {
@@ -48,7 +48,7 @@ public class Monologue : MzmCharBaseCard
         }
     }
 
-    public Monologue() : base(1, CardType.Attack, CardRarity.Uncommon, TargetType.AllEnemies) { }
+    public MuMonologue() : base(1, CardType.Attack, CardRarity.Uncommon, TargetType.AllEnemies) { }
 
     // 4 状态：
     //   非演奏会 → 演艺热情 (Self)

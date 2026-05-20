@@ -54,7 +54,7 @@ public class PlayDoubleMoon : MzmCharBaseCard
         {
             await Sts2Compat.PowerApply<PerformancePassionPower>(ctx, Owner.Creature, 1, Owner.Creature, this, false);
             if (Forms.IsMortisForm(Owner)) await CombatCounters.BumpMortisCard(ctx, Owner);
-            else                            await CombatCounters.BumpMutsumiCard(ctx, Owner);
+            else await CombatCounters.BumpMutsumiCard(ctx, Owner);
             return;
         }
         await CardPileCmd.Draw(ctx, DynamicVars.Cards.BaseValue, Owner, false);
@@ -73,8 +73,8 @@ public class PlayDoubleMoon : MzmCharBaseCard
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new CardLoc("演奏《双月》",
-            "{ShowRealEffect:show:抽{Cards:diff()}张牌。[gold]切换人格[/gold]。|非演奏会回合，获得1点[gold]演艺热情[/gold]。}"),
+            "{ShowRealEffect:show:抽{Cards:diff()}张牌。\n{MuSec}{MuOpen}小睦{MuClose}：[gold]进入小墨[/gold]。{MuSecEnd}\n{MoSec}{MoOpen}小墨{MoClose}：[gold]进入小睦[/gold]。{MoSecEnd}|非演奏会回合，获得1点[gold]演艺热情[/gold]。}"),
         _ => new CardLoc("Play Double Moon",
-            "{ShowRealEffect:show:Draw {Cards:diff()}. [gold]Switch persona[/gold].|Outside concert, gain 1 [gold]Performance Passion[/gold].}"),
+            "{ShowRealEffect:show:Draw {Cards:diff()}.\n{MuSec}{MuOpen}Mu{MuClose}: [gold]Enter Mo[/gold].{MuSecEnd}\n{MoSec}{MoOpen}Mo{MoClose}: [gold]Enter Mu[/gold].{MoSecEnd}|Outside concert, gain 1 [gold]Performance Passion[/gold].}"),
     };
 }

@@ -14,8 +14,8 @@ using MegaCrit.Sts2.Core.ValueProps;
 namespace MzmChar.Game;
 
 /// <summary>
-/// 名门：1 费蓝色能力。回合开始时，每有 1 层演艺热情，获得 3/5 点格挡。升级：固有 + 数值 3→5。
-/// 多张本卡可叠加：power Amount 累加（3+3=6 / 3+5=8 / 5+5=10 per passion）。
+/// 名门：1 费蓝色能力。回合开始时，每有 1 层演艺热情，获得 3 点格挡。升级：加 Innate（数值/费用不变）。
+/// 多张本卡可叠加：power Amount 累加（3+3=6 per passion）。
 /// </summary>
 [Pool(typeof(MzmCharCardPool))]
 public class NobleHouse : MzmCharBaseCard
@@ -26,7 +26,7 @@ public class NobleHouse : MzmCharBaseCard
     // （BlockVar 会让 :diff() PreviewValue 跑 Hook.ModifyBlock 叠 dex/frail 等 modifier）
     private readonly List<DynamicVar> _vars = new()
     {
-        new DynamicVar("Block", 3m),    // 3 → 5 升级，纯字面值
+        new DynamicVar("Block", 3m),    // 固定 3，升级只降费，不变数值
     };
     protected override IEnumerable<DynamicVar> CanonicalVars => _vars;
 
@@ -43,8 +43,7 @@ public class NobleHouse : MzmCharBaseCard
 
     protected override void OnUpgrade()
     {
-        AddKeyword(CardKeyword.Innate);
-        DynamicVars["Block"].UpgradeValueBy(2);   // 3 → 5
+        AddKeyword(CardKeyword.Innate);   // 升级加固有；费用 / 数值不变
     }
 
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay play)

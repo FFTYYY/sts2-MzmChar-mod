@@ -44,11 +44,11 @@ public class MutsumiCharacter : CustomCharacterModel
     public override RelicPoolModel RelicPool => ModelDb.RelicPool<MzmCharRelicPool>();
     public override PotionPoolModel PotionPool => ModelDb.PotionPool<MzmCharPotionPool>();
 
-    // 起始牌组：5×打击 + 5×防御 + 1×人格切换 + 1×睦头人出击！ = 12 张
+    // 起始牌组：4×打击 + 4×防御 + 1×人格切换 + 1×睦头人出击！ = 10 张
     // (额外的「表人格」「里人格」由初始遗物「第二人格」在战斗开始时加进手牌)
     public override IEnumerable<CardModel> StartingDeck =>
-        Enumerable.Repeat<CardModel>(ModelDb.Card<MuStrike>(), 5)
-            .Concat(Enumerable.Repeat<CardModel>(ModelDb.Card<MuDefend>(), 5))
+        Enumerable.Repeat<CardModel>(ModelDb.Card<MuStrike>(), 4)
+            .Concat(Enumerable.Repeat<CardModel>(ModelDb.Card<MuDefend>(), 4))
             .Append<CardModel>(ModelDb.Card<SwitchPersona>())
             .Append<CardModel>(ModelDb.Card<MutsumiCharge>());
 
@@ -61,7 +61,11 @@ public class MutsumiCharacter : CustomCharacterModel
     public override string? CustomCharacterSelectLockedIconPath => "res://MzmChar/characters/select.png";
     public override string? CustomCharacterSelectBg => "res://MzmChar/scenes/char_select_bg.tscn";
     // 顶部信息栏头像
-    public override string? CustomIconTexturePath => "res://MzmChar/characters/button.png";
+    // CustomIconTexturePath 被 vanilla 多处直接塞进 TextureRect.Texture（history page / continue
+    // run info / 多人 lobby / 对话框 speaker 等 7 处），节点 stretch_mode 由 vanilla 各 .tscn 决定。
+    // beta v0.105 改了 NRunHistoryPlayerIcon._icon 的 stretch 配置 → 大图（256×256）爆开。
+    // 走 vanilla 同尺寸范围（≤128）的 button_small.png；顶部 HUD 仍用 character_icon.tscn 引高清 button.png。
+    public override string? CustomIconTexturePath => "res://MzmChar/characters/button_small.png";
     public override string? CustomIconOutlineTexturePath => "res://MzmChar/characters/button.png";
 
     // ===== 战斗中角色视觉 —— 用我们的 visuals.tscn (含 BaseLib 要求的 7 个子节点) =====

@@ -58,7 +58,9 @@ public class PlantCucumberPower : CustomPowerModel
         }
         else
         {
-            await CreatureCmd.GainBlock(player.Creature, MuBlockPerStack * Amount, ValueProp.Move, null);
+            // 加 ValueProp.Unpowered：power 触发的格挡是固定字面值，不应吃敏捷/Frail 等 modifier
+            // （跟 NobleHousePower / AddictionPower 同 pattern）
+            await CreatureCmd.GainBlock(player.Creature, MuBlockPerStack * Amount, ValueProp.Move | ValueProp.Unpowered, null);
         }
     }
 

@@ -18,9 +18,9 @@ namespace MzmChar.Game;
 /// 华丽谢幕：1 费金色技能。如果这是最后一张手牌，对随机敌人造成 5/8 点伤害 4 次。演奏 / 虚无 / 消耗。
 /// </summary>
 [Pool(typeof(MzmCharCardPool))]
-public class GrandFinale : MzmCharBaseCard
+public class MuGrandFinale : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/grand_finale.png";
+    public override string PortraitPath => "res://MzmChar/cards/mzmchar_grand_finale.png";
 
     private readonly List<DynamicVar> _vars = new()
     {
@@ -44,7 +44,7 @@ public class GrandFinale : MzmCharBaseCard
         }
     }
 
-    public GrandFinale() : base(1, CardType.Attack, CardRarity.Rare, TargetType.Self) { }
+    public MuGrandFinale() : base(1, CardType.Attack, CardRarity.Rare, TargetType.Self) { }
 
     protected override void OnUpgrade() { DynamicVars.Damage.UpgradeValueBy(3); /* 5→8 */ }
 

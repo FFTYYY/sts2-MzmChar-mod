@@ -71,20 +71,6 @@ public class SecondPersonaRelic : CustomRelicModel
         return Task.CompletedTask;
     }
 
-    /// <summary>
-    /// 卡牌触发的抽牌（非回合开始 hand-draw pipeline）→ 计入 ExtraDrawsThisTurn。
-    /// 用于「争夺身体」（FightForBody）等"本回合每额外抽一张牌"的卡。
-    /// `fromHandDraw=true` 的是回合开始/Megaphone 的统一抽牌流程，不算 extra。
-    /// </summary>
-    public override Task AfterCardDrawn(PlayerChoiceContext choiceContext, CardModel card, bool fromHandDraw)
-    {
-        if (Owner == null) return Task.CompletedTask;
-        if (card.Owner != Owner) return Task.CompletedTask;  // 多人：只算自己抽的
-        if (!fromHandDraw)
-            CombatCounters.ExtraDrawsThisTurn[Owner]++;
-        return Task.CompletedTask;
-    }
-
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new RelicLoc(

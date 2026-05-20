@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d1jlsetb7ih37"
-path="res://.godot/imported/ChatGPT Image 2026年5月10日 22_10_29.png-7e990b2319b3d9c912614ea1e891a3d5.ctex"
+uid="uid://c1pml3fr1cm3u"
+path="res://.godot/imported/mzmchar_grand_finale.png-e3dddf94f29f4b79b28240263dadf261.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://MyChar/characters/ChatGPT Image 2026年5月10日 22_10_29.png"
-dest_files=["res://.godot/imported/ChatGPT Image 2026年5月10日 22_10_29.png-7e990b2319b3d9c912614ea1e891a3d5.ctex"]
+source_file="res://MzmChar/cards/mzmchar_grand_finale.png"
+dest_files=["res://.godot/imported/mzmchar_grand_finale.png-e3dddf94f29f4b79b28240263dadf261.ctex"]
 
 [params]
 
