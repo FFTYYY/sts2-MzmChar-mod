@@ -15,7 +15,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 namespace MzmChar.Game;
 
 /// <summary>
-/// 华丽谢幕：1 费金色技能。如果这是最后一张手牌，对随机敌人造成 5/8 点伤害 4 次。演奏 / 虚无 / 消耗。
+/// 华丽谢幕：1 费金色技能。如果这是最后一张手牌，对全体敌人造成 5/8 点伤害 4 次。演奏 / 虚无 / 消耗。
 /// </summary>
 [Pool(typeof(MzmCharCardPool))]
 public class MuGrandFinale : MzmCharBaseCard
@@ -66,7 +66,7 @@ public class MuGrandFinale : MzmCharBaseCard
                 {
                     int hits = (int)DynamicVars["Hits"].BaseValue;
                     await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-                        .FromCard(this).TargetingRandomOpponents(cs, allowDuplicates: true)
+                        .FromCard(this).TargetingAllOpponents(cs)
                         .WithHitCount(hits).Execute(ctx);
                 }
             }
@@ -78,8 +78,8 @@ public class MuGrandFinale : MzmCharBaseCard
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new CardLoc("华丽谢幕",
-            "{ShowRealEffect:show:如果这是你最后一张手牌，对随机敌人造成{Damage:diff()}点伤害{Hits}次。|非演奏会回合，获得1点[gold]演艺热情[/gold]。}"),
+            "{ShowRealEffect:show:如果这是你最后一张手牌，对全体敌人造成{Damage:diff()}点伤害{Hits}次。|非演奏会回合，获得1点[gold]演艺热情[/gold]。}"),
         _ => new CardLoc("Grand Finale",
-            "{ShowRealEffect:show:If this is your last card in hand, deal {Damage:diff()} damage to a random enemy {Hits} times.|Outside concert, gain 1 [gold]Performance Passion[/gold].}"),
+            "{ShowRealEffect:show:If this is your last card in hand, deal {Damage:diff()} damage to ALL enemies {Hits} times.|Outside concert, gain 1 [gold]Performance Passion[/gold].}"),
     };
 }

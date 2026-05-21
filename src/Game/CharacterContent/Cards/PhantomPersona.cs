@@ -13,7 +13,7 @@ using MegaCrit.Sts2.Core.Models.Powers;
 namespace MzmChar.Game;
 
 /// <summary>
-/// 幻想人格：2 费蓝色技能。消耗（无虚无）。升级：去掉消耗 + 改为 1 费。
+/// 幻想人格：1 费蓝色技能。消耗（无虚无）。升级：去掉消耗（费用不变）。
 /// 移除所有「回合结束失去敏捷」debuff。
 /// </summary>
 [Pool(typeof(MzmCharCardPool))]
@@ -33,12 +33,11 @@ public class PhantomPersona : MzmCharBaseCard
     private readonly HashSet<CardKeyword> _keywords = new() { CardKeyword.Exhaust };
     public override IEnumerable<CardKeyword> CanonicalKeywords => _keywords;
 
-    public PhantomPersona() : base(2, CardType.Skill, CardRarity.Uncommon, TargetType.Self) { }
+    public PhantomPersona() : base(1, CardType.Skill, CardRarity.Uncommon, TargetType.Self) { }
 
     protected override void OnUpgrade()
     {
-        RemoveKeyword(CardKeyword.Exhaust);    // 升级去消耗
-        EnergyCost.UpgradeBy(-1);              // 升级减 1 费 → 1 费
+        RemoveKeyword(CardKeyword.Exhaust);    // 升级去消耗（费用不变）
     }
 
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay play)

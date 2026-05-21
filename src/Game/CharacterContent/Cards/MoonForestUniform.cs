@@ -13,7 +13,7 @@ using MegaCrit.Sts2.Core.Models;
 namespace MzmChar.Game;
 
 /// <summary>
-/// 月之森制服：1 费蓝色能力。如果你以小睦开始回合，获得 3/5 点临时敏捷。
+/// 月之森制服：1 费蓝色能力。如果你以小睦开始回合，获得 2/4 点临时敏捷。
 /// </summary>
 [Pool(typeof(MzmCharCardPool))]
 public class MoonForestUniform : MzmCharBaseCard
@@ -22,7 +22,7 @@ public class MoonForestUniform : MzmCharBaseCard
 
     private readonly List<DynamicVar> _vars = new()
     {
-        new PowerVar<MoonForestPower>(3),    // 3 → 5 升级
+        new PowerVar<MoonForestPower>(2),    // 2 → 4 升级
     };
     protected override IEnumerable<DynamicVar> CanonicalVars => _vars;
 
@@ -33,7 +33,7 @@ public class MoonForestUniform : MzmCharBaseCard
 
     public MoonForestUniform() : base(1, CardType.Power, CardRarity.Uncommon, TargetType.Self) { }
 
-    protected override void OnUpgrade() { DynamicVars["MoonForestPower"].UpgradeValueBy(2); /* 3 → 5 */ }
+    protected override void OnUpgrade() { DynamicVars["MoonForestPower"].UpgradeValueBy(2); /* 2 → 4 */ }
 
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay play)
     {

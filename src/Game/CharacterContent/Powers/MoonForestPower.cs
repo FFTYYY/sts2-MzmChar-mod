@@ -13,7 +13,7 @@ namespace MzmChar.Game;
 
 /// <summary>
 /// 月之森制服：如果你以小睦人格开始回合，则获得 Amount 点临时敏捷。
-/// （Amount 由施加时传入：基础卡=1，升级卡=2，多次施加可叠加）
+/// （Amount 由施加时传入：基础卡=2，升级卡=4，多次施加可叠加）
 /// </summary>
 public class MoonForestPower : CustomPowerModel
 {

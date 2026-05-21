@@ -15,9 +15,9 @@ using MegaCrit.Sts2.Core.ValueProps;
 namespace MzmChar.Game;
 
 /// <summary>
-/// 演奏《春日影》：1 费蓝色攻击。（原 Yearning「盼望」，user 让改回 "演奏《春日影》"）
-///   小墨：对全体敌人造成 5/7 点伤害 3 次
-///   小睦：获得 1 层「无实体」
+/// 演奏《春日影》：1 费蓝色攻击。
+///   小墨：对全体敌人造成 8/12 点伤害 2 次
+///   小睦：获得 1 层「无实体」；升级后额外获得 10 点格挡
 /// 演奏 / 虚无 / 消耗。
 /// </summary>
 [Pool(typeof(MzmCharCardPool))]
@@ -27,9 +27,10 @@ public class PlayHaruhikage : MzmCharBaseCard
 
     private readonly List<DynamicVar> _vars = new()
     {
-        new DamageVar(5, ValueProp.Move),
-        new DynamicVar("Hits", 3m),
+        new DamageVar(8, ValueProp.Move),
+        new DynamicVar("Hits", 2m),
         new PowerVar<IntangiblePower>(1),
+        new BlockVar(0, ValueProp.Move),         // 0 → 10 升级（仅升级版小睦获得 10 格挡）
     };
     protected override IEnumerable<DynamicVar> CanonicalVars => _vars;
 
@@ -62,7 +63,8 @@ public class PlayHaruhikage : MzmCharBaseCard
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(2);   // 5 → 7
+        DynamicVars.Damage.UpgradeValueBy(4);   // 8 → 12
+        DynamicVars.Block.UpgradeValueBy(10);   // 0 → 10（仅升级版小睦获得）
     }
 
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay play)
@@ -89,16 +91,19 @@ public class PlayHaruhikage : MzmCharBaseCard
         {
             await PlayCast();
             await Sts2Compat.PowerApply<IntangiblePower>(ctx, Owner.Creature, DynamicVars["IntangiblePower"].BaseValue, Owner.Creature, this, false);
+            // 升级版小睦 额外 10 格挡（用 IsUpgraded gate，不能用 BaseValue > 0：base=0 时仍会吃 Dex 加成给意外格挡）
+            if (IsUpgraded)
+                await CreatureCmd.GainBlock(Owner.Creature, DynamicVars.Block.BaseValue, ValueProp.Move, play, false);
         }
         if (Forms.IsMortisForm(Owner)) await CombatCounters.BumpMortisCard(ctx, Owner);
-        else                            await CombatCounters.BumpMutsumiCard(ctx, Owner);
+        else await CombatCounters.BumpMutsumiCard(ctx, Owner);
     }
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new CardLoc("演奏《春日影》",
-            "{ShowRealEffect:show:{MuSec}{MuOpen}小睦{MuClose}：获得{IntangiblePower}层[gold]无实体[/gold]。{MuSecEnd}\n{MoSec}{MoOpen}小墨{MoClose}：对全体敌人造成{Damage:diff()}点伤害{Hits}次。{MoSecEnd}|非演奏会回合，获得1点[gold]演艺热情[/gold]。}"),
+            "{ShowRealEffect:show:{MuSec}{MuOpen}小睦{MuClose}：获得{IntangiblePower}层[gold]无实体[/gold]。{IfUpgraded:show:获得{Block:diff()}点[gold]格挡[/gold]。|}{MuSecEnd}\n{MoSec}{MoOpen}小墨{MoClose}：对全体敌人造成{Damage:diff()}点伤害{Hits}次。{MoSecEnd}|非演奏会回合，获得1点[gold]演艺热情[/gold]。}"),
         _ => new CardLoc("Play Haruhikage",
-            "{ShowRealEffect:show:{MuSec}{MuOpen}Mu{MuClose}: Gain {IntangiblePower} [gold]Intangible[/gold].{MuSecEnd}\n{MoSec}{MoOpen}Mo{MoClose}: Deal {Damage:diff()} damage to ALL enemies {Hits} times.{MoSecEnd}|Outside concert, gain 1 [gold]Performance Passion[/gold].}"),
+            "{ShowRealEffect:show:{MuSec}{MuOpen}Mu{MuClose}: Gain {IntangiblePower} [gold]Intangible[/gold].{IfUpgraded:show: Gain {Block:diff()} [gold]Block[/gold].|}{MuSecEnd}\n{MoSec}{MoOpen}Mo{MoClose}: Deal {Damage:diff()} damage to ALL enemies {Hits} times.{MoSecEnd}|Outside concert, gain 1 [gold]Performance Passion[/gold].}"),
     };
 }

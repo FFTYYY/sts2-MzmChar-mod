@@ -13,7 +13,7 @@ using MegaCrit.Sts2.Core.Models;
 namespace MzmChar.Game;
 
 /// <summary>
-/// Mortis：2/1 费蓝色能力。每切换一次人格，对全体敌人造成 6/10 伤害。
+/// Mortis：2/1 费蓝色能力。每切换一次人格，对全体敌人造成 8 伤害（升级仅 -1 费，伤害不变）。
 /// </summary>
 [Pool(typeof(MzmCharCardPool))]
 public class MortisCard : MzmCharBaseCard
@@ -22,7 +22,7 @@ public class MortisCard : MzmCharBaseCard
 
     private readonly List<DynamicVar> _vars = new()
     {
-        new DynamicVar("Dmg", 6m),
+        new DynamicVar("Dmg", 8m),
     };
     protected override IEnumerable<DynamicVar> CanonicalVars => _vars;
 
@@ -35,8 +35,7 @@ public class MortisCard : MzmCharBaseCard
 
     protected override void OnUpgrade()
     {
-        EnergyCost.UpgradeBy(-1);              // 2 → 1
-        DynamicVars["Dmg"].UpgradeValueBy(4);  // 6 → 10
+        EnergyCost.UpgradeBy(-1);              // 2 → 1（伤害不变，仍 8）
     }
 
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay play)

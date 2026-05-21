@@ -66,11 +66,11 @@ public class Madness : MzmCharBaseCard
     {
         "zhs" => new CardLoc("疯癫",
             "获得{Energy:energyIcons()}。\n" +
-            "{MuSec}{MuOpen}小睦{MuClose}：额外获得{MuExtra:diff()}点能量。[gold]进入小墨[/gold]。{MuSecEnd}\n" +
+            "{MuSec}{MuOpen}小睦{MuClose}：额外获得{IfUpgraded:show:{energyPrefix:energyIcons(3)}|{energyPrefix:energyIcons(2)}}。[gold]进入小墨[/gold]。{MuSecEnd}\n" +
             "{MoSec}{MoOpen}小墨{MoClose}：抽{Cards:diff()}张牌。[gold]进入小睦[/gold]。{MoSecEnd}"),
         _ => new CardLoc("Madness",
             "Gain {Energy:energyIcons()}.\n" +
-            "{MuSec}{MuOpen}Mu{MuClose}: Gain {MuExtra:diff()} additional energy; [gold]Enter Mo[/gold].{MuSecEnd}\n" +
+            "{MuSec}{MuOpen}Mu{MuClose}: Gain {IfUpgraded:show:{energyPrefix:energyIcons(3)}|{energyPrefix:energyIcons(2)}} more; [gold]Enter Mo[/gold].{MuSecEnd}\n" +
             "{MoSec}{MoOpen}Mo{MoClose}: Draw {Cards:diff()}; [gold]Enter Mu[/gold].{MoSecEnd}"),
     };
 }

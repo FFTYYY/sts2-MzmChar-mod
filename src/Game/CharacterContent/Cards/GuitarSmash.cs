@@ -35,6 +35,11 @@ public class GuitarSmash : MzmCharBaseCard
     };
     protected override IEnumerable<DynamicVar> CanonicalVars => _vars;
 
+    // 名字含「打击」/ "Strike" → 必须挂 CardTag.Strike，否则 vanilla Hellraiser / 我们 Rebellion
+    // 等"对打击牌生效"的卡都识别不到。机制层完全靠这个 tag，跟 loc 翻译无关。
+    private readonly HashSet<CardTag> _tags = new() { CardTag.Strike };
+    protected override HashSet<CardTag> CanonicalTags => _tags;
+
     protected override IEnumerable<IHoverTip> ExtraHoverTips
     {
         get
