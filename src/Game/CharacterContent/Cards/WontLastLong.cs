@@ -62,7 +62,6 @@ public class WontLastLong : MzmCharBaseCard
             // WontLastLongMoPower.IsInstanced=true → 每次施加都产生一个独立的 buff 实例（仿 vanilla OrbitPower）
             await Sts2Compat.PowerApply<WontLastLongMoPower>(ctx, Owner.Creature,
                 DynamicVars["MoPer"].BaseValue, Owner.Creature, this, false);
-            await CombatCounters.BumpMortisCard(ctx, Owner);
             await Forms.EnterMutsumi(Owner, this, ctx);
         }
         else
@@ -71,7 +70,6 @@ public class WontLastLong : MzmCharBaseCard
                 DynamicVars["VigorPower"].BaseValue, Owner.Creature, this, false);
             await Sts2Compat.PowerApply<WontLastLongMuPower>(ctx, Owner.Creature,
                 DynamicVars["MuPer"].BaseValue, Owner.Creature, this, false);
-            await CombatCounters.BumpMutsumiCard(ctx, Owner);
             await Forms.EnterMortis(Owner, this, ctx);
         }
     }

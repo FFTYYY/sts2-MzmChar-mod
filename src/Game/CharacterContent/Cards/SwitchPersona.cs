@@ -52,12 +52,10 @@ public class SwitchPersona : MzmCharBaseCard
 
         if (Forms.IsMortisForm(Owner))
         {
-            await CombatCounters.BumpMortisCard(ctx, Owner);
             await Forms.EnterMutsumi(Owner, this, ctx);
         }
         else
         {
-            await CombatCounters.BumpMutsumiCard(ctx, Owner);
             await Forms.EnterMortis(Owner, this, ctx);
         }
     }

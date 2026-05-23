@@ -47,10 +47,6 @@ public class FrontPersona : MzmCharBaseCard
 
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay play)
     {
-        if (Forms.IsMortisForm(Owner))
-            await CombatCounters.BumpMortisCard(ctx, Owner);
-        else
-            await CombatCounters.BumpMutsumiCard(ctx, Owner);
 
         await Forms.EnterMutsumi(Owner, this, ctx);
         await PlayerCmd.GainEnergy(DynamicVars.Energy.IntValue, Owner);

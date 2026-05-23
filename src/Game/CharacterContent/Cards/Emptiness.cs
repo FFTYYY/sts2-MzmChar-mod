@@ -103,8 +103,6 @@ public class Emptiness : MzmCharBaseCard
         if (DeckVersion is Emptiness deckCopy)
             deckCopy.BuffFromPlay(1);
 
-        if (Forms.IsMortisForm(Owner)) await CombatCounters.BumpMortisCard(ctx, Owner);
-        else                            await CombatCounters.BumpMutsumiCard(ctx, Owner);
     }
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch

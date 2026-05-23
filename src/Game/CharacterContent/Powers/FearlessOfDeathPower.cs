@@ -33,7 +33,11 @@ public class FearlessOfDeathPower : CustomPowerModel
     public override bool ShouldDie(Creature creature)
     {
         if (creature != Owner) return true;       // 不是我们的 owner，让它正常死
-        if (HasTriggered) return true;            // 已触发过，正常死
+        if (HasTriggered) {
+            Diag.Trace($"FearlessOfDeathPower[owner={Owner?.Player?.NetId}].ShouldDie: HasTriggered → allow die");
+            return true;
+        }
+        Diag.Trace($"FearlessOfDeathPower[owner={Owner?.Player?.NetId}].ShouldDie: BLOCK die (Amount={Amount})");
         return false;
     }
 
@@ -42,10 +46,12 @@ public class FearlessOfDeathPower : CustomPowerModel
     {
         if (creature != Owner) return;
         if (HasTriggered) return;
+        Diag.Trace($"FearlessOfDeathPower[owner={Owner?.Player?.NetId}].AfterPreventingDeath: revive to HP={Amount} starting");
         HasTriggered = true;
         Flash();
         await CreatureCmd.SetCurrentHp(Owner!, Amount);
         await PowerCmd.Remove<FearlessOfDeathPower>(Owner!);
+        Diag.Trace($"FearlessOfDeathPower[owner={Owner?.Player?.NetId}].AfterPreventingDeath: done");
     }
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch

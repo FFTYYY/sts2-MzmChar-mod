@@ -62,17 +62,15 @@ public static class Forms
     /// <summary>切换到小睦：先移除小墨 buff（如有），再加小睦 buff（如无）。算一次切换。</summary>
     public static async Task EnterMutsumi(Player p, CardModel? source, PlayerChoiceContext? ctx = null)
     {
+        Diag.Trace($"Forms.EnterMutsumi[player={p.NetId}]: start hp={p.Creature.CurrentHp} src={source?.GetType().Name}");
         // 「坠入深渊」buff：阻止真正切到小睦（其他效果照常进行，但形态不切）
         if (p.Creature.HasPower<FallIntoAbyssPower>())
-            return;
+            { Diag.Trace($"Forms.EnterMutsumi[player={p.NetId}]: skip (FallIntoAbyssPower)"); return; }
         // 「本回合不可切换」buff
         if (p.Creature.HasPower<NoSwitchThisTurnPower>())
-            return;
+            { Diag.Trace($"Forms.EnterMutsumi[player={p.NetId}]: skip (NoSwitchThisTurnPower)"); return; }
 
         // 是否"真的"在小墨形态 —— 用 IsMortisForm XOR 检查而非 HasPower 裸检查。
-        // bug fix：罕见情况下两个 buff 同时存在（旧 save / 异常 code path），裸 HasMortis 会误判
-        // "在小墨"导致 EnterMutsumi 错误触发 MortisCard 等 per-switch 效果。XOR 检查保证只在
-        // 真正"从小墨切到小睦"时才触发
         bool wasMortisForm = IsMortisForm(p);
 
         if (p.Creature.HasPower<MortisFormPower>())
@@ -80,21 +78,25 @@ public static class Forms
         if (!p.Creature.HasPower<MutsumiFormPower>())
             await Sts2Compat.PowerApply<MutsumiFormPower>(ctx, p.Creature, 1, p.Creature, source, false);
 
-        if (wasMortisForm)
+        if (wasMortisForm && ctx != null)
         {
-            CombatCounters.PersonaSwitchesThisCombat[p]++;
-            if (ctx != null) await OnPersonaSwitched(p, source, ctx);
+            Diag.Trace($"Forms.EnterMutsumi[player={p.NetId}]: BumpPersonaSwitch start");
+            await CombatCounters.BumpPersonaSwitch(ctx, p);
+            Diag.Trace($"Forms.EnterMutsumi[player={p.NetId}]: OnPersonaSwitched start");
+            await OnPersonaSwitched(p, source, ctx);
+            Diag.Trace($"Forms.EnterMutsumi[player={p.NetId}]: per-switch done");
         }
 
         SwapVisualsToCurrentForm(p);
+        Diag.Trace($"Forms.EnterMutsumi[player={p.NetId}]: end");
     }
 
     public static async Task EnterMortis(Player p, CardModel? source, PlayerChoiceContext? ctx = null)
     {
+        Diag.Trace($"Forms.EnterMortis[player={p.NetId}]: start hp={p.Creature.CurrentHp} src={source?.GetType().Name}");
         if (p.Creature.HasPower<NoSwitchThisTurnPower>())
-            return;
+            { Diag.Trace($"Forms.EnterMortis[player={p.NetId}]: skip (NoSwitchThisTurnPower)"); return; }
 
-        // 同上：用 IsMutsumiForm XOR 检查（IsMortisForm 的反面），防 both-buffs 边角情况
         bool wasMutsumiForm = IsMutsumiForm(p);
 
         if (p.Creature.HasPower<MutsumiFormPower>())
@@ -102,13 +104,17 @@ public static class Forms
         if (!p.Creature.HasPower<MortisFormPower>())
             await Sts2Compat.PowerApply<MortisFormPower>(ctx, p.Creature, 1, p.Creature, source, false);
 
-        if (wasMutsumiForm)
+        if (wasMutsumiForm && ctx != null)
         {
-            CombatCounters.PersonaSwitchesThisCombat[p]++;
-            if (ctx != null) await OnPersonaSwitched(p, source, ctx);
+            Diag.Trace($"Forms.EnterMortis[player={p.NetId}]: BumpPersonaSwitch start");
+            await CombatCounters.BumpPersonaSwitch(ctx, p);
+            Diag.Trace($"Forms.EnterMortis[player={p.NetId}]: OnPersonaSwitched start");
+            await OnPersonaSwitched(p, source, ctx);
+            Diag.Trace($"Forms.EnterMortis[player={p.NetId}]: per-switch done");
         }
 
         SwapVisualsToCurrentForm(p);
+        Diag.Trace($"Forms.EnterMortis[player={p.NetId}]: end");
     }
 
     /// <summary>
@@ -154,29 +160,37 @@ public static class Forms
     /// </summary>
     private static void SwapVisualsToCurrentForm(Player p)
     {
-        var room = NCombatRoom.Instance;
-        if (room == null) return;
-        var nc = room.GetCreatureNode(p.Creature);
-        if (nc == null || nc.Visuals == null) return;
+        try
+        {
+            var room = NCombatRoom.Instance;
+            if (room == null) { Diag.Trace($"Forms.SwapVisuals[player={p.NetId}]: skip (NCombatRoom.Instance null)"); return; }
+            var nc = room.GetCreatureNode(p.Creature);
+            if (nc == null || nc.Visuals == null) { Diag.Trace($"Forms.SwapVisuals[player={p.NetId}]: skip (creature node/visuals null)"); return; }
+            if (!GodotObject.IsInstanceValid(nc)) { Diag.Trace($"Forms.SwapVisuals[player={p.NetId}]: skip (creature node freed)"); return; }
 
-        var body = nc.Visuals.GetCurrentBody();
-        if (body is not AnimatedSprite2D anim) return;
+            var body = nc.Visuals.GetCurrentBody();
+            if (body is not AnimatedSprite2D anim) { Diag.Trace($"Forms.SwapVisuals[player={p.NetId}]: skip (body not AnimatedSprite2D)"); return; }
+            if (!GodotObject.IsInstanceValid(anim)) { Diag.Trace($"Forms.SwapVisuals[player={p.NetId}]: skip (anim freed)"); return; }
 
-        var frames = IsMortisForm(p)
-            ? LoadFrames(MortisFramesPath, ref _mortisFrames)
-            : LoadFrames(MutsumiFramesPath, ref _mutsumiFrames);
-        if (frames == null) return;
+            var frames = IsMortisForm(p)
+                ? LoadFrames(MortisFramesPath, ref _mortisFrames)
+                : LoadFrames(MutsumiFramesPath, ref _mutsumiFrames);
+            if (frames == null) { Diag.Trace($"Forms.SwapVisuals[player={p.NetId}]: skip (frames null)"); return; }
 
-        anim.SpriteFrames = frames;
+            anim.SpriteFrames = frames;
 
-        // 保留当前 X 符号——某些 boss（如帝王蟹）会通过设置负 Scale.X 让玩家立绘面朝左，
-        // 切形态时如果直接覆盖成正值会破坏翻转。X 符号保留 + Y 用各形态对应正值。
-        float xSign = anim.Scale.X >= 0 ? 1f : -1f;
-        var target = IsMortisForm(p) ? MortisScale : MutsumiScale;
-        anim.Position = IsMortisForm(p) ? MortisPosition : MutsumiPosition;
-        anim.Scale = new Godot.Vector2(xSign * System.Math.Abs(target.X), target.Y);
+            // 保留当前 X 符号——某些 boss（如帝王蟹）会通过设置负 Scale.X 让玩家立绘面朝左
+            float xSign = anim.Scale.X >= 0 ? 1f : -1f;
+            var target = IsMortisForm(p) ? MortisScale : MutsumiScale;
+            anim.Position = IsMortisForm(p) ? MortisPosition : MutsumiPosition;
+            anim.Scale = new Godot.Vector2(xSign * System.Math.Abs(target.X), target.Y);
 
-        if (frames.HasAnimation("idle"))
-            anim.Play("idle");
+            if (frames.HasAnimation("idle"))
+                anim.Play("idle");
+        }
+        catch (System.Exception ex)
+        {
+            Diag.Exception($"Forms.SwapVisuals[player={p.NetId}]", ex);
+        }
     }
 }

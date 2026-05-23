@@ -60,11 +60,9 @@ public class BrainBully : MzmCharBaseCard
             {
                 await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
                     .FromCard(this).Targeting(play.Target).Execute(ctx);
-                CombatCounters.StruckByMortisThisTurn[play.Target]++;
                 await Sts2Compat.PowerApply<WeakDoublePower>(ctx, play.Target,
                     DynamicVars["WeakDoublePower"].BaseValue, Owner.Creature, this, false);
             }
-            await CombatCounters.BumpMortisCard(ctx, Owner);
         }
         else
         {
@@ -72,7 +70,6 @@ public class BrainBully : MzmCharBaseCard
             if (play.Target != null)
                 await Sts2Compat.PowerApply<VulnerableDoublePower>(ctx, play.Target,
                     DynamicVars["VulnerableDoublePower"].BaseValue, Owner.Creature, this, false);
-            await CombatCounters.BumpMutsumiCard(ctx, Owner);
         }
     }
 

@@ -50,7 +50,6 @@ public class SelfIsolate : MzmCharBaseCard
     {
         if (Forms.IsMortisForm(Owner))
         {
-            await CombatCounters.BumpMortisCard(ctx, Owner);
             await PlayerCmd.GainEnergy(DynamicVars.Energy.IntValue, Owner);
             await Forms.EnterMutsumi(Owner, this, ctx);
         }
@@ -58,7 +57,6 @@ public class SelfIsolate : MzmCharBaseCard
         {
             await CreatureCmd.GainBlock(Owner.Creature,
                 DynamicVars.Block.BaseValue, ValueProp.Move, play, false);
-            await CombatCounters.BumpMutsumiCard(ctx, Owner);
         }
     }
 

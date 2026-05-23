@@ -59,15 +59,12 @@ public class Harmony : MzmCharBaseCard
             {
                 await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
                     .FromCard(this).Targeting(play.Target).Execute(ctx);
-                CombatCounters.StruckByMortisThisTurn[play.Target]++;
             }
-            await CombatCounters.BumpMortisCard(ctx, Owner);
         }
         else
         {
             await CreatureCmd.GainBlock(Owner.Creature,
                 DynamicVars.Block.BaseValue, ValueProp.Move, play, false);
-            await CombatCounters.BumpMutsumiCard(ctx, Owner);
         }
     }
 

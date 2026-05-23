@@ -62,10 +62,8 @@ public class BeatMirror : MzmCharBaseCard
             {
                 await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
                     .FromCard(this).Targeting(play.Target).Execute(ctx);
-                CombatCounters.StruckByMortisThisTurn[play.Target]++;
                 await Sts2Compat.PowerApply<WeakPower>(ctx, play.Target, DynamicVars["WeakPower"].BaseValue, Owner.Creature, this, false);
             }
-            await CombatCounters.BumpMortisCard(ctx, Owner);
         }
         else
         {
@@ -75,7 +73,6 @@ public class BeatMirror : MzmCharBaseCard
                     DynamicVars["VulnerablePower"].BaseValue, Owner.Creature, this, false);
             await Sts2Compat.PowerApply<VigorPower>(ctx, Owner.Creature,
                 DynamicVars["VigorPower"].BaseValue, Owner.Creature, this, false);
-            await CombatCounters.BumpMutsumiCard(ctx, Owner);
         }
     }
 

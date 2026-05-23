@@ -68,18 +68,15 @@ public class BecomeMain : MzmCharBaseCard
                 {
                     await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
                         .FromCard(this).Targeting(target).Execute(ctx);
-                    CombatCounters.StruckByMortisThisTurn[target]++;
                 }
             }
             await CreatureCmd.GainBlock(Owner.Creature,
                 DynamicVars["MoBlock"].BaseValue, ValueProp.Move, play, false);
-            await CombatCounters.BumpMortisCard(ctx, Owner);
         }
         else
         {
             await PlayCast();
             await PlayerCmd.GainEnergy(DynamicVars.Energy.IntValue, Owner);
-            await CombatCounters.BumpMutsumiCard(ctx, Owner);
         }
     }
 

@@ -52,8 +52,6 @@ public class MutsumiCharge : MzmCharBaseCard
         {
             await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
                 .FromCard(this).Targeting(play.Target).WithHitCount(hits).Execute(ctx);
-            if (Forms.IsMortisForm(Owner))
-                CombatCounters.StruckByMortisThisTurn[play.Target] += hits;
         }
 
         if (IsUpgraded)
@@ -66,8 +64,6 @@ public class MutsumiCharge : MzmCharBaseCard
             }
         }
 
-        if (Forms.IsMortisForm(Owner)) await CombatCounters.BumpMortisCard(ctx, Owner);
-        else                            await CombatCounters.BumpMutsumiCard(ctx, Owner);
     }
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch

@@ -64,10 +64,8 @@ public class GuitarSmash : MzmCharBaseCard
             {
                 await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
                     .FromCard(this).Targeting(play.Target).Execute(ctx);
-                CombatCounters.StruckByMortisThisTurn[play.Target]++;
             }
             await CardPileCmd.Draw(ctx, DynamicVars.Cards.BaseValue, Owner, false);
-            await CombatCounters.BumpMortisCard(ctx, Owner);
         }
         else
         {
@@ -78,7 +76,6 @@ public class GuitarSmash : MzmCharBaseCard
             var str = DynamicVars["MuStr"].BaseValue;
             await Sts2Compat.PowerApply<StrengthPower>(ctx, Owner.Creature, str, Owner.Creature, this, false);
             await Sts2Compat.PowerApply<TempStrengthPower>(ctx, Owner.Creature, str, Owner.Creature, this, true);
-            await CombatCounters.BumpMutsumiCard(ctx, Owner);
         }
     }
 

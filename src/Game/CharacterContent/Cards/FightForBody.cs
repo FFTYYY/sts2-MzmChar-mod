@@ -97,9 +97,7 @@ public class FightForBody : MzmCharBaseCard
             if (play.Target != null)
             {
                 await DamageCmd.Attack(dmg).FromCard(this).Targeting(play.Target).Execute(ctx);
-                CombatCounters.StruckByMortisThisTurn[play.Target]++;
             }
-            await CombatCounters.BumpMortisCard(ctx, Owner);
             await Forms.EnterMutsumi(Owner, this, ctx);
         }
         else
@@ -107,7 +105,6 @@ public class FightForBody : MzmCharBaseCard
             int block = extraDraws * (int)DynamicVars["MuBlockPerDraw"].BaseValue;
             // 不 guard block > 0 —— framework 对 ValueProp.Move 自动加 Dex
             await CreatureCmd.GainBlock(Owner.Creature, block, ValueProp.Move, play);
-            await CombatCounters.BumpMutsumiCard(ctx, Owner);
             await Forms.EnterMortis(Owner, this, ctx);
         }
     }

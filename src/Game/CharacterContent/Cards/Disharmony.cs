@@ -62,11 +62,6 @@ public class Disharmony : MzmCharBaseCard
         {
             await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
                 .FromCard(this).TargetingAllOpponents(cs).WithHitCount(dmgHits).Execute(ctx);
-            if (Forms.IsMortisForm(Owner))
-            {
-                foreach (var e in cs.HittableEnemies)
-                    CombatCounters.StruckByMortisThisTurn[e] += dmgHits;
-            }
         }
 
         for (int i = 0; i < blockHits; i++)
@@ -75,8 +70,6 @@ public class Disharmony : MzmCharBaseCard
                 DynamicVars.Block.BaseValue, ValueProp.Move, play, false);
         }
 
-        if (Forms.IsMortisForm(Owner)) await CombatCounters.BumpMortisCard(ctx, Owner);
-        else                            await CombatCounters.BumpMutsumiCard(ctx, Owner);
     }
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch

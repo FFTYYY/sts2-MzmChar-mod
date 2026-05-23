@@ -62,12 +62,10 @@ public class Tune : MzmCharBaseCard
         {
             if (play.Target != null)
                 await Sts2Compat.PowerApply<WeakPower>(ctx, play.Target, DynamicVars["WeakPower"].BaseValue, Owner.Creature, this, false);
-            await CombatCounters.BumpMortisCard(ctx, Owner);
         }
         else
         {
             await CreatureCmd.GainBlock(Owner.Creature, DynamicVars.Block.BaseValue, ValueProp.Move, play, false);
-            await CombatCounters.BumpMutsumiCard(ctx, Owner);
         }
     }
 

@@ -82,13 +82,11 @@ public class Alone : MzmCharBaseCard
             {
                 await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
                     .FromCard(this).Targeting(play.Target).Execute(ctx);
-                CombatCounters.StruckByMortisThisTurn[play.Target]++;
             }
             var sp = Owner.Creature.GetPower<StrengthPower>();
             int bonus = sp != null ? (int)sp.Amount / 3 : 0;
             if (bonus > 0)
                 await Sts2Compat.PowerApply<DexterityPower>(ctx, Owner.Creature, bonus, Owner.Creature, this, false);
-            await CombatCounters.BumpMortisCard(ctx, Owner);
         }
         else
         {
@@ -99,7 +97,6 @@ public class Alone : MzmCharBaseCard
             int bonus = dp != null ? (int)dp.Amount / 3 : 0;
             if (bonus > 0)
                 await Sts2Compat.PowerApply<StrengthPower>(ctx, Owner.Creature, bonus, Owner.Creature, this, false);
-            await CombatCounters.BumpMutsumiCard(ctx, Owner);
         }
     }
 

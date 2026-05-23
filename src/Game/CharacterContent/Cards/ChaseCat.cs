@@ -61,15 +61,12 @@ public class ChaseCat : MzmCharBaseCard
                 await DamageCmd.Attack(dmg).FromCard(this)
                     .TargetingRandomOpponents(cs, allowDuplicates: true)
                     .WithHitCount(hits).Execute(ctx);
-                // 击中的敌人是动态的，不更新 StruckByMortisThisTurn（多目标 random hit 无法精确记录）
             }
-            await CombatCounters.BumpMortisCard(ctx, Owner);
         }
         else
         {
             await PlayCast();
             await CardPileCmd.Draw(ctx, DynamicVars.Cards.BaseValue, Owner, false);
-            await CombatCounters.BumpMutsumiCard(ctx, Owner);
         }
     }
 

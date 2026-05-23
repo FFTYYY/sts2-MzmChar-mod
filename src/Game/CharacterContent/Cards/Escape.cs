@@ -52,8 +52,6 @@ public class Escape : MzmCharBaseCard
         await Sts2Compat.PowerApply<TempDexterityPower>(ctx, Owner.Creature, dex, Owner.Creature, this, true);
 
         // 记 counter 用"打出时"的形态（EnterMutsumi 前），匹配 SelfIsolate / TearMaskGold 习惯
-        if (Forms.IsMortisForm(Owner)) await CombatCounters.BumpMortisCard(ctx, Owner);
-        else await CombatCounters.BumpMutsumiCard(ctx, Owner);
 
         // EnterMutsumi 内部自带 "already Mu → no-op" 守卫（Forms.cs 的 wasMortisForm 判断），
         // 所以从 Mu 形态打也安全：dex 拿到，不触发多余的人格切换计数。

@@ -79,8 +79,6 @@ public class Opening : MzmCharBaseCard
             {
                 await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
                     .FromCard(this).TargetingAllOpponents(cs).Execute(ctx);
-                foreach (var e in cs.HittableEnemies)
-                    CombatCounters.StruckByMortisThisTurn[e]++;
             }
         }
         else
@@ -90,8 +88,6 @@ public class Opening : MzmCharBaseCard
             await Sts2Compat.PowerApply<StrengthPower>(ctx, Owner.Creature, str, Owner.Creature, this, false);
             await Sts2Compat.PowerApply<TempStrengthPower>(ctx, Owner.Creature, str, Owner.Creature, this, true);
         }
-        if (Forms.IsMortisForm(Owner)) await CombatCounters.BumpMortisCard(ctx, Owner);
-        else await CombatCounters.BumpMutsumiCard(ctx, Owner);
     }
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch

@@ -40,7 +40,7 @@ public class CryInRain : MzmCharBaseCard
             new LambdaVar("StrTotal", card =>
             {
                 if (card.Owner == null) return 0;
-                int sw = CombatCounters.PersonaSwitchesThisCombat[card.Owner];
+                int sw = CombatCounters.GetPersonaSwitchesThisCombat(card.Owner);
                 return sw * (int)card.DynamicVars["StrPerSwitch"].BaseValue;
             }),
         };
@@ -66,7 +66,7 @@ public class CryInRain : MzmCharBaseCard
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay play)
     {
         // 共同效果：本回合 +N 力量（N = switches × StrPerSwitch）
-        int sw = CombatCounters.PersonaSwitchesThisCombat[Owner];
+        int sw = CombatCounters.GetPersonaSwitchesThisCombat(Owner);
         int strGain = sw * (int)DynamicVars["StrPerSwitch"].BaseValue;
         if (strGain > 0)
         {
@@ -80,9 +80,7 @@ public class CryInRain : MzmCharBaseCard
             {
                 await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
                     .FromCard(this).Targeting(play.Target).Execute(ctx);
-                CombatCounters.StruckByMortisThisTurn[play.Target]++;
             }
-            await CombatCounters.BumpMortisCard(ctx, Owner);
         }
         else
         {
@@ -90,7 +88,6 @@ public class CryInRain : MzmCharBaseCard
             if (play.Target != null)
                 await Sts2Compat.PowerApply<WeakPower>(ctx, play.Target,
                     DynamicVars["WeakPower"].BaseValue, Owner.Creature, this, false);
-            await CombatCounters.BumpMutsumiCard(ctx, Owner);
         }
     }
 

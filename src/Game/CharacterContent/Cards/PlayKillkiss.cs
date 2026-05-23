@@ -78,7 +78,6 @@ public class PlayKillkiss : MzmCharBaseCard
             {
                 await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
                     .FromCard(this).Targeting(play.Target).Execute(ctx);
-                CombatCounters.StruckByMortisThisTurn[play.Target]++;
             }
         }
         else
@@ -86,8 +85,6 @@ public class PlayKillkiss : MzmCharBaseCard
             await PlayCast();
             await Sts2Compat.PowerApply<PlatingPower>(ctx, Owner.Creature, DynamicVars["PlatingValue"].BaseValue, Owner.Creature, this, false);
         }
-        if (Forms.IsMortisForm(Owner)) await CombatCounters.BumpMortisCard(ctx, Owner);
-        else                            await CombatCounters.BumpMutsumiCard(ctx, Owner);
     }
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch

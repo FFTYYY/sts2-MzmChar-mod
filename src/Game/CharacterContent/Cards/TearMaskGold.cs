@@ -51,7 +51,6 @@ public class TearMaskGold : MzmCharBaseCard
         {
             // Mo: 获得能量 + 进入小睦
             await PlayerCmd.GainEnergy(DynamicVars.Energy.IntValue, Owner);
-            await CombatCounters.BumpMortisCard(ctx, Owner);
             await Forms.EnterMutsumi(Owner, this, ctx);
         }
         else
@@ -63,7 +62,6 @@ public class TearMaskGold : MzmCharBaseCard
                 await CreatureCmd.GainBlock(Owner.Creature,
                     DynamicVars.Block.BaseValue, ValueProp.Move, play, false);
             }
-            await CombatCounters.BumpMutsumiCard(ctx, Owner);
         }
     }
 

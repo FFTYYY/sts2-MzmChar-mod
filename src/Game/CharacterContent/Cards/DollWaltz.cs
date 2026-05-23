@@ -49,10 +49,7 @@ public class DollWaltz : MzmCharBaseCard
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay play)
     {
         int x = ResolveEnergyXValue();
-        if (x <= 0)
-        {
-            await Bump(ctx); return;
-        }
+        if (x <= 0) return;
         int attackHits = IsUpgraded ? (2 * x) : (int)(1.5m * x);
         int blockHits = x;
 
@@ -64,22 +61,12 @@ public class DollWaltz : MzmCharBaseCard
             await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
                 .FromCard(this).TargetingAllOpponents(cs)
                 .WithHitCount(attackHits).Execute(ctx);
-            if (Forms.IsMortisForm(Owner))
-                foreach (var e in cs.HittableEnemies)
-                    CombatCounters.StruckByMortisThisTurn[e] += attackHits;
         }
         for (int i = 0; i < blockHits; i++)
         {
             // GainBlock 不像 attack 那样有多次累计 modifier 的概念——敏捷加成每次都重新计算
             await CreatureCmd.GainBlock(Owner.Creature, DynamicVars.Block.BaseValue, ValueProp.Move, play, false);
         }
-        await Bump(ctx);
-    }
-
-    private async Task Bump(PlayerChoiceContext ctx)
-    {
-        if (Forms.IsMortisForm(Owner)) await CombatCounters.BumpMortisCard(ctx, Owner);
-        else await CombatCounters.BumpMutsumiCard(ctx, Owner);
     }
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch

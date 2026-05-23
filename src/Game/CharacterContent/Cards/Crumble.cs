@@ -78,16 +78,13 @@ public class Crumble : MzmCharBaseCard
                 int bonus = vuln != null ? (int)vuln.Amount * per : 0;
                 await DamageCmd.Attack(baseDmg + bonus)
                     .FromCard(this).Targeting(play.Target).WithHitCount(hits).Execute(ctx);
-                CombatCounters.StruckByMortisThisTurn[play.Target] += hits;
             }
-            await CombatCounters.BumpMortisCard(ctx, Owner);
         }
         else
         {
             await PlayCast();
             if (play.Target != null)
                 await Sts2Compat.PowerApply<VulnerablePower>(ctx, play.Target, DynamicVars["VulnerablePower"].BaseValue, Owner.Creature, this, false);
-            await CombatCounters.BumpMutsumiCard(ctx, Owner);
         }
     }
 

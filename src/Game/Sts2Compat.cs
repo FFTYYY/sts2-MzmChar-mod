@@ -66,7 +66,9 @@ public static class Sts2Compat
     // ── CardPileCmd.AddGeneratedCardToCombat (single) ────────────────────────
     // stable: AddGeneratedCardToCombat(card, pile, addedByPlayer, position)
     // beta:   AddGeneratedCardToCombat(card, pile, Player creator, position = Bottom)
-    public static Task AddGeneratedCardToCombat(
+    // 返回 CardPileAddResult —— 想配合 CardCmd.PreviewCardPileAdd 显示
+    // 「卡牌飞向 pile」的动画时需要这个 result（参考 vanilla Undeath）。
+    public static Task<CardPileAddResult> AddGeneratedCardToCombat(
         CardModel card,
         PileType newPileType,
         Player creator,

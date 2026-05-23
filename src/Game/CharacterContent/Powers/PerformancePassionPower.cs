@@ -23,6 +23,12 @@ namespace MzmChar.Game;
 /// 我们自己构造一个 HookPlayerChoiceContext（vanilla 的 Hook.* 内部也是这么造的）。
 /// 必须在 AfterTakingExtraTurn 里 apply（不是 AfterPlayerTurnStartEarly），
 /// 否则错过本回合的 ModifyHandDraw / AfterPlayerTurnStartEarly 这两个 hook iteration。
+///
+/// ⚠️ AfterTakingExtraTurn 必须 guard `Amount >= Threshold`：vanilla
+/// `Hook.AfterTakingExtraTurn` 对**所有** listeners 广播，不只触发源那个。
+/// 如果玩家同时有 PaelsEye（PaelsEye 在玩家放置回合触发 extra turn），我们这个 hook
+/// 会被错误调用——若不 guard 就会在 PP 未到 5 时也 apply ConcertPower + 清零 PP。
+/// 见 report_44。
 /// </summary>
 public class PerformancePassionPower : CustomPowerModel
 {
@@ -48,6 +54,9 @@ public class PerformancePassionPower : CustomPowerModel
     public override async Task AfterTakingExtraTurn(Player player)
     {
         if (Owner?.Player != player) return;
+        // 必须跟 ShouldTakeExtraTurn 的条件一致 —— 否则其它 listener（如 PaelsEye）触发 extra turn
+        // 时我们也会被广播调到，错误 apply ConcertPower + 清零 PP。见 report_44。
+        if (Amount < Threshold) return;
         Flash();
 
         PlayerChoiceContext? ctx = null;

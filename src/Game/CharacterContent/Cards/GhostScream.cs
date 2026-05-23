@@ -71,10 +71,8 @@ public class GhostScream : MzmCharBaseCard
             {
                 await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
                     .FromCard(this).Targeting(play.Target).Execute(ctx);
-                CombatCounters.StruckByMortisThisTurn[play.Target]++;
                 await Sts2Compat.PowerApply<WeakPower>(ctx, play.Target, DynamicVars["WeakPower"].BaseValue, Owner.Creature, this, false);
             }
-            await CombatCounters.BumpMortisCard(ctx, Owner);
         }
         else
         {
@@ -87,7 +85,6 @@ public class GhostScream : MzmCharBaseCard
             if (play.Target != null)
                 await Sts2Compat.PowerApply<VulnerablePower>(ctx, play.Target,
                     DynamicVars["MuVulnerable"].BaseValue, Owner.Creature, this, false);
-            await CombatCounters.BumpMutsumiCard(ctx, Owner);
         }
     }
 

@@ -53,12 +53,10 @@ public class GreenhouseGirl : MzmCharBaseCard
                 var selected = await CardSelectCmd.FromSimpleGrid(ctx, candidates, Owner, prefs);
                 foreach (var c in selected) await CardCmd.Exhaust(ctx, c, false, false);
             }
-            await CombatCounters.BumpMortisCard(ctx, Owner);
         }
         else
         {
             await CreatureCmd.GainBlock(Owner.Creature, DynamicVars.Block.BaseValue, ValueProp.Move, play, false);
-            await CombatCounters.BumpMutsumiCard(ctx, Owner);
         }
     }
 

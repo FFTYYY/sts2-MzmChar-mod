@@ -53,19 +53,15 @@ public class PlayDoubleMoon : MzmCharBaseCard
         if (!IsInConcert())
         {
             await Sts2Compat.PowerApply<PerformancePassionPower>(ctx, Owner.Creature, 1, Owner.Creature, this, false);
-            if (Forms.IsMortisForm(Owner)) await CombatCounters.BumpMortisCard(ctx, Owner);
-            else await CombatCounters.BumpMutsumiCard(ctx, Owner);
             return;
         }
         await CardPileCmd.Draw(ctx, DynamicVars.Cards.BaseValue, Owner, false);
         if (Forms.IsMortisForm(Owner))
         {
-            await CombatCounters.BumpMortisCard(ctx, Owner);
             await Forms.EnterMutsumi(Owner, this, ctx);
         }
         else
         {
-            await CombatCounters.BumpMutsumiCard(ctx, Owner);
             await Forms.EnterMortis(Owner, this, ctx);
         }
     }

@@ -59,9 +59,7 @@ public class Performance : MzmCharBaseCard
             {
                 await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
                     .FromCard(this).Targeting(play.Target).Execute(ctx);
-                CombatCounters.StruckByMortisThisTurn[play.Target]++;
             }
-            await CombatCounters.BumpMortisCard(ctx, Owner);
         }
         else
         {
@@ -72,7 +70,6 @@ public class Performance : MzmCharBaseCard
                 await Sts2Compat.PowerApply<VulnerablePower>(ctx, play.Target,
                     DynamicVars["VulnerablePower"].BaseValue, Owner.Creature, this, false);
             }
-            await CombatCounters.BumpMutsumiCard(ctx, Owner);
             await Forms.EnterMortis(Owner, this, ctx);
         }
     }

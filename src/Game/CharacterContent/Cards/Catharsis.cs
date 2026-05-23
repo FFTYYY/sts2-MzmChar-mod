@@ -61,9 +61,7 @@ public class Catharsis : MzmCharBaseCard
             {
                 await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
                     .FromCard(this).Targeting(play.Target).WithHitCount(hits).Execute(ctx);
-                CombatCounters.StruckByMortisThisTurn[play.Target] += hits;
             }
-            await CombatCounters.BumpMortisCard(ctx, Owner);
         }
         else
         {
@@ -71,7 +69,6 @@ public class Catharsis : MzmCharBaseCard
             var str = DynamicVars["TempStr"].BaseValue;
             await Sts2Compat.PowerApply<StrengthPower>(ctx, Owner.Creature, str, Owner.Creature, this, false);
             await Sts2Compat.PowerApply<TempStrengthPower>(ctx, Owner.Creature, str, Owner.Creature, this, true);
-            await CombatCounters.BumpMutsumiCard(ctx, Owner);
         }
     }
 

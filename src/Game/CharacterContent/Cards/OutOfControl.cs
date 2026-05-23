@@ -63,14 +63,11 @@ public class OutOfControl : MzmCharBaseCard
             {
                 await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
                     .FromCard(this).Targeting(play.Target).Execute(ctx);
-                CombatCounters.StruckByMortisThisTurn[play.Target]++;
             }
-            await CombatCounters.BumpMortisCard(ctx, Owner);
         }
         else
         {
             await Sts2Compat.PowerApply<VigorPower>(ctx, Owner.Creature, DynamicVars["VigorPower"].BaseValue, Owner.Creature, this, false);
-            await CombatCounters.BumpMutsumiCard(ctx, Owner);
         }
 
         // 2. 主效果之后随机进入小睦或小墨

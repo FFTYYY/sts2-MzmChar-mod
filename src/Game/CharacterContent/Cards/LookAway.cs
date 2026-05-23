@@ -35,8 +35,6 @@ public class LookAway : MzmCharBaseCard
             await PowerCmd.Remove<WeakPower>(Owner.Creature);
         if (Owner.Creature.HasPower<FrailPower>())
             await PowerCmd.Remove<FrailPower>(Owner.Creature);
-        if (Forms.IsMortisForm(Owner)) await CombatCounters.BumpMortisCard(ctx, Owner);
-        else await CombatCounters.BumpMutsumiCard(ctx, Owner);
     }
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch

@@ -50,8 +50,6 @@ public class CutLine : MzmCharBaseCard
     {
         await PlayCast();
         await Sts2Compat.PowerApply<CutLinePower>(ctx, Owner.Creature, DynamicVars["VigorPower"].BaseValue, Owner.Creature, this, false);
-        if (Forms.IsMortisForm(Owner)) await CombatCounters.BumpMortisCard(ctx, Owner);
-        else await CombatCounters.BumpMutsumiCard(ctx, Owner);
     }
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch

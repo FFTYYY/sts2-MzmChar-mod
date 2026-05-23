@@ -28,10 +28,13 @@ public class WakabaFortunePower : CustomPowerModel
     public override async Task AfterCombatEnd(CombatRoom room)
     {
         var player = Owner?.Player;
+        Diag.Trace($"WakabaFortunePower[owner={player?.NetId}].AfterCombatEnd: amount={Amount}, playerNull={player == null}");
         if (player == null) return;
         int gold = (int)Amount;
-        if (gold <= 0) return;
+        if (gold <= 0) { Diag.Trace($"WakabaFortunePower[owner={player.NetId}].AfterCombatEnd: skip (gold={gold})"); return; }
+        Diag.Trace($"WakabaFortunePower[owner={player.NetId}].AfterCombatEnd: GainGold({gold}) starting");
         await PlayerCmd.GainGold(gold, player, false);
+        Diag.Trace($"WakabaFortunePower[owner={player.NetId}].AfterCombatEnd: GainGold({gold}) done");
     }
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch

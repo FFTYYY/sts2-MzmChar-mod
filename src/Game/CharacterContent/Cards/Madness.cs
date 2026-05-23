@@ -50,14 +50,12 @@ public class Madness : MzmCharBaseCard
         if (Forms.IsMortisForm(Owner))
         {
             await CardPileCmd.Draw(ctx, DynamicVars.Cards.BaseValue, Owner, false);
-            await CombatCounters.BumpMortisCard(ctx, Owner);
             await Forms.EnterMutsumi(Owner, this, ctx);
         }
         else
         {
             // Mu 额外 2 能量
             await PlayerCmd.GainEnergy((int)DynamicVars["MuExtra"].BaseValue, Owner);
-            await CombatCounters.BumpMutsumiCard(ctx, Owner);
             await Forms.EnterMortis(Owner, this, ctx);
         }
     }

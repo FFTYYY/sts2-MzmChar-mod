@@ -36,7 +36,7 @@ public class Silence : MzmCharBaseCard
             new LambdaVar("ActualDraws", card =>
             {
                 if (card.Owner == null) return 0;
-                return CombatCounters.MortisCardsThisTurn[card.Owner] * 2;
+                return CombatCounters.GetMortisCardsThisTurn(card.Owner) * 2;
             }),
         };
     }
@@ -61,17 +61,15 @@ public class Silence : MzmCharBaseCard
         {
             await CreatureCmd.GainBlock(Owner.Creature,
                 DynamicVars.Block.BaseValue, ValueProp.Move, play, false);
-            await CombatCounters.BumpMortisCard(ctx, Owner);
             await Forms.EnterMutsumi(Owner, this, ctx);
         }
         else
         {
-            int n = CombatCounters.MortisCardsThisTurn[Owner] * 2;
+            int n = CombatCounters.GetMortisCardsThisTurn(Owner) * 2;
             if (n > 0)
                 await CardPileCmd.Draw(ctx, n, Owner, false);
             if (IsUpgraded)
                 await PlayerCmd.GainEnergy(DynamicVars.Energy.IntValue, Owner);
-            await CombatCounters.BumpMutsumiCard(ctx, Owner);
         }
     }
 

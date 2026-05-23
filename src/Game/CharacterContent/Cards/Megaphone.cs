@@ -42,12 +42,10 @@ public class Megaphone : MzmCharBaseCard
         if (Forms.IsMortisForm(Owner))
         {
             await Sts2Compat.PowerApply<MegaphoneMortisPower>(ctx, Owner.Creature, 1, Owner.Creature, this, false);
-            await CombatCounters.BumpMortisCard(ctx, Owner);
         }
         else
         {
             await Sts2Compat.PowerApply<MegaphoneMutsumiPower>(ctx, Owner.Creature, 1, Owner.Creature, this, false);
-            await CombatCounters.BumpMutsumiCard(ctx, Owner);
         }
     }
 
@@ -55,9 +53,9 @@ public class Megaphone : MzmCharBaseCard
     {
         "zhs" => new CardLoc("传话筒",
             "{MuSec}{MuOpen}小睦{MuClose}：回合开始时，额外抽1张牌。{MuSecEnd}\n" +
-            "{MoSec}{MoOpen}小墨{MoClose}：回合开始时，手牌中随机一张牌本回合变0费。{MoSecEnd}"),
+            "{MoSec}{MoOpen}小墨{MoClose}：回合开始时，手牌中随机一张牌本回合耗能变为0。{MoSecEnd}"),
         _ => new CardLoc("Megaphone",
             "{MuSec}{MuOpen}Mu{MuClose}: Start of turn, draw 1 extra.{MuSecEnd}\n" +
-            "{MoSec}{MoOpen}Mo{MoClose}: Start of turn, a random hand card costs 0 this turn.{MoSecEnd}"),
+            "{MoSec}{MoOpen}Mo{MoClose}: Start of turn, a random hand card costs 0 energy this turn.{MoSecEnd}"),
     };
 }

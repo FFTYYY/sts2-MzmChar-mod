@@ -58,7 +58,6 @@ public class MoveCard : MzmCharBaseCard
         if (Forms.IsMortisForm(Owner))
         {
             await CardPileCmd.Draw(ctx, DynamicVars.Cards.BaseValue, Owner, false);
-            await CombatCounters.BumpMortisCard(ctx, Owner);
             return;
         }
 
@@ -77,7 +76,6 @@ public class MoveCard : MzmCharBaseCard
         if (picked != null)
             await CardPileCmd.Add(picked, PileType.Hand, CardPilePosition.Bottom, null, false);
 
-        await CombatCounters.BumpMutsumiCard(ctx, Owner);
     }
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch

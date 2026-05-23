@@ -47,8 +47,6 @@ public class HollowActor : MzmCharBaseCard
         int amount = IsUpgraded ? (x + 1) : x;
         if (amount > 0)
             await Sts2Compat.PowerApply<TransformPersonaPower>(ctx, Owner.Creature, amount, Owner.Creature, this, false);
-        if (Forms.IsMortisForm(Owner)) await CombatCounters.BumpMortisCard(ctx, Owner);
-        else await CombatCounters.BumpMutsumiCard(ctx, Owner);
     }
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch

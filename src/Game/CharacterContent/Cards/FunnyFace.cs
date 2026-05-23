@@ -46,16 +46,12 @@ public class FunnyFace : MzmCharBaseCard
         {
             await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
                 .FromCard(this).Targeting(play.Target).Execute(ctx);
-            if (Forms.IsMortisForm(Owner))
-                CombatCounters.StruckByMortisThisTurn[play.Target]++;
         }
         if (Forms.IsMortisForm(Owner))
         {
-            await CombatCounters.BumpMortisCard(ctx, Owner);
         }
         else
         {
-            await CombatCounters.BumpMutsumiCard(ctx, Owner);
             await Forms.EnterMortis(Owner, this, ctx);
         }
     }

@@ -8,32 +8,14 @@ using MegaCrit.Sts2.Core.Models.Events;
 
 namespace MzmChar.Game;
 
-/// <summary>
-/// 修 vanilla `AncientDialogueSet.PopulateLocKeys` 给每条 line 强制 set `NextButtonText` 到
-/// `{key}.next` 而**不检查 key 是否存在**的 bug。我们 mod 没写 `.next` keys，对话按钮显示
-/// 成原 key 字符串。Postfix 扫所有 line，`.next` key 不存在就把 NextButtonText 设回 null，
-/// 让 vanilla `CreateOptionForCurrentLine` fallback 到默认的 `_continueLocString` /
-/// `_respondLocString`（"继续" / "回答"）。
-/// </summary>
-[HarmonyPatch(typeof(AncientDialogueSet), nameof(AncientDialogueSet.PopulateLocKeys))]
-internal static class AncientDialogueNextButtonGuardPatch
-{
-    [HarmonyPostfix]
-    private static void Postfix(AncientDialogueSet __instance)
-    {
-        foreach (var dlg in __instance.GetAllDialogues())
-        {
-            if (dlg?.Lines == null) continue;
-            foreach (var line in dlg.Lines)
-            {
-                var nbt = line?.NextButtonText;
-                if (nbt == null) continue;
-                if (!LocString.Exists(nbt.LocTable, nbt.LocEntryKey))
-                    line!.NextButtonText = null;
-            }
-        }
-    }
-}
+// 移除了旧 `AncientDialogueNextButtonGuardPatch`（全局 postfix 把不存在的 NextButtonText 设 null）：
+// 那是治标不治本——按钮显示 raw key 的根本原因是我们没按 vanilla 设计在 ancients.json 里
+// 给 ARCHITECT 对话每行配套写 `.next` loc key（vanilla `PopulateLocKeys` 会自动构造
+// `<line_key>.next` 这个 LocString 作为按钮文字 LocString）。
+// 正确修法：直接在 pack/MzmChar/localization/{zhs,eng}/ancients.json 给 THE_ARCHITECT 所有
+// 对话行配套写 `.next` keys（ancient → "继续/Continue"，char → "回答/Respond"）。
+// 其他先古（rest site）不走 NAncientEventLayout / TheArchitect.CreateOptionForCurrentLine 渲染路径，
+// 所以不读 NextButtonText，不写 `.next` 也不出 raw key。参考 YuWan ancients.json。
 
 /// <summary>
 /// 修 vanilla TheArchitect.WinRun() 在没有有效对话时抛 NRE 的 bug。

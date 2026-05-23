@@ -5,6 +5,7 @@ using BaseLib.Utils;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
+using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -34,10 +35,25 @@ public class AncientSecondPersonaRelic : CustomRelicModel
     protected override string BigIconPath           => "res://MzmChar/relics/soul_twin.png";
     protected override string PackedIconOutlinePath => "res://MzmChar/relics/soul_twin.png";
 
-    public override Task AfterCombatVictory(MegaCrit.Sts2.Core.Rooms.CombatRoom room)
+    public override async Task AfterCombatVictory(MegaCrit.Sts2.Core.Rooms.CombatRoom room)
     {
+        Diag.Trace($"AncientSecondPersonaRelic[owner={Owner?.NetId}].AfterCombatVictory: start");
         DidCombatStart = false;
-        if (Owner != null) CombatCounters.ResetThisCombat(Owner);
+        if (Owner != null) await CombatCounters.ResetThisCombat(null, Owner);
+        Diag.Trace($"AncientSecondPersonaRelic[owner={Owner?.NetId}].AfterCombatVictory: done");
+    }
+
+    public override Task AfterCombatEnd(MegaCrit.Sts2.Core.Rooms.CombatRoom room)
+    {
+        Diag.Trace($"AncientSecondPersonaRelic[owner={Owner?.NetId}].AfterCombatEnd: fired (alive={Owner?.Creature?.IsAlive})");
+        return Task.CompletedTask;
+    }
+
+    public override Task BeforeDeath(Creature creature)
+    {
+        var ownerId = Owner?.NetId.ToString() ?? "?";
+        var deadId = creature.Player?.NetId.ToString() ?? (creature.IsMonster ? "monster" : "?");
+        Diag.Trace($"AncientSecondPersonaRelic[owner={ownerId}].BeforeDeath: dying={deadId} hp={creature.CurrentHp}");
         return Task.CompletedTask;
     }
 
@@ -50,7 +66,7 @@ public class AncientSecondPersonaRelic : CustomRelicModel
         DidCombatStart = true;
         Flash();
 
-        CombatCounters.ResetThisCombat(player);
+        await CombatCounters.ResetThisCombat(choiceContext, player);
         await Forms.EnterMutsumi(player, null, choiceContext);
 
         var combatState = player.Creature.CombatState;
@@ -67,12 +83,38 @@ public class AncientSecondPersonaRelic : CustomRelicModel
             new List<CardModel> { front, back }, PileType.Hand, player, addedByPlayer: true);
     }
 
+    // 0.106: AfterTurnEnd(ctx, side) → AfterSideTurnEnd(ctx, side, participants)
+#if BETA
+    public override Task AfterSideTurnEnd(PlayerChoiceContext choiceContext, CombatSide side, IEnumerable<Creature> participants)
+#else
     public override Task AfterTurnEnd(PlayerChoiceContext choiceContext, CombatSide side)
+#endif
     {
         var p = Owner;
         if (p != null && side == p.Creature.Side)
             CombatCounters.ResetThisTurn(p);
         return Task.CompletedTask;
+    }
+
+    // 诊断日志：见 SecondPersonaRelic.AfterDeath 注释。两版 relic 都挂同一个日志，覆盖 ancient 玩家
+    public override Task AfterDeath(PlayerChoiceContext ctx, Creature creature, bool wasRemovalPrevented, float deathAnimLength)
+    {
+        var ownerId = Owner?.NetId.ToString() ?? "?";
+        var deadId = creature.Player?.NetId.ToString() ?? (creature.IsMonster ? "monster" : "?");
+        Diag.Trace($"AncientSecondPersonaRelic[owner={ownerId}].AfterDeath: observed dead={deadId} prevented={wasRemovalPrevented} animLen={deathAnimLength}");
+        return Task.CompletedTask;
+    }
+
+    // 全局卡牌打出 hook —— 见 SecondPersonaRelic 同名 override 注释
+    public override Task BeforeCardPlayed(CardPlay cardPlay)
+    {
+        if (Owner != null) CombatCounters.OnBeforeCardPlayed(Owner, cardPlay);
+        return Task.CompletedTask;
+    }
+
+    public override async Task AfterCardPlayed(PlayerChoiceContext ctx, CardPlay cardPlay)
+    {
+        if (Owner != null) await CombatCounters.OnAfterCardPlayed(ctx, Owner, cardPlay);
     }
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch

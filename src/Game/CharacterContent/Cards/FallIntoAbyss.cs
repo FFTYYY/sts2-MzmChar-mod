@@ -56,8 +56,6 @@ public class FallIntoAbyss : MzmCharBaseCard
         await Sts2Compat.PowerApply<VigorPower>(ctx, Owner.Creature,
             DynamicVars["VigorPower"].BaseValue, Owner.Creature, this, false);
         await Sts2Compat.PowerApply<FallIntoAbyssPower>(ctx, Owner.Creature, 1, Owner.Creature, this, false);
-        if (Forms.IsMortisForm(Owner)) await CombatCounters.BumpMortisCard(ctx, Owner);
-        else await CombatCounters.BumpMutsumiCard(ctx, Owner);
     }
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch

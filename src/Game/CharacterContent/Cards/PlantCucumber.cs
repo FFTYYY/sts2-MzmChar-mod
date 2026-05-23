@@ -50,10 +50,6 @@ public class PlantCucumber : MzmCharBaseCard
         // IsInstanced=true → 每次 apply 独立 instance；power.AfterApplied 自己从 cardSource.IsUpgraded
         // 读升级状态，无需 OnPlay 手动 set。
         await Sts2Compat.PowerApply<PlantCucumberPower>(ctx, Owner.Creature, 1, Owner.Creature, this, false);
-        if (Forms.IsMortisForm(Owner))
-            await CombatCounters.BumpMortisCard(ctx, Owner);
-        else
-            await CombatCounters.BumpMutsumiCard(ctx, Owner);
     }
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch

@@ -45,7 +45,6 @@ public class MuCourage : MzmCharBaseCard
         if (Forms.IsMortisForm(Owner))
         {
             await CreatureCmd.GainBlock(Owner.Creature, DynamicVars.Block.BaseValue, ValueProp.Move, play, false);
-            await CombatCounters.BumpMortisCard(ctx, Owner);
         }
         else
         {
@@ -56,7 +55,6 @@ public class MuCourage : MzmCharBaseCard
                 await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
                     .FromCard(this).Targeting(play.Target).WithHitCount(hits).Execute(ctx);
             }
-            await CombatCounters.BumpMutsumiCard(ctx, Owner);
         }
     }
 

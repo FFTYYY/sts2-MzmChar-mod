@@ -97,9 +97,7 @@ public class DevourSelf : MzmCharBaseCard
             if (play.Target != null)
             {
                 await DamageCmd.Attack(dmg).FromCard(this).Targeting(play.Target).Execute(ctx);
-                CombatCounters.StruckByMortisThisTurn[play.Target]++;
             }
-            await CombatCounters.BumpMortisCard(ctx, Owner);
             await Forms.EnterMutsumi(Owner, this, ctx);
         }
         else
@@ -108,7 +106,6 @@ public class DevourSelf : MzmCharBaseCard
             int vigor = (int)Math.Floor(dex * mult);
             if (vigor > 0)
                 await Sts2Compat.PowerApply<VigorPower>(ctx, Owner.Creature, vigor, Owner.Creature, this, false);
-            await CombatCounters.BumpMutsumiCard(ctx, Owner);
             await Forms.EnterMortis(Owner, this, ctx);
         }
     }

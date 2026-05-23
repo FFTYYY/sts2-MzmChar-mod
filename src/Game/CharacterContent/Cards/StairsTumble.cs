@@ -62,9 +62,7 @@ public class StairsTumble : MzmCharBaseCard
                 // 单 AttackCommand + WithHitCount → vigor / strength 等 modifier 算一次但应用于每次 hit；
                 // VigorPower.AfterAttack 也只 fire 一次（消耗一次活力）
                 await DamageCmd.Attack(dmg).FromCard(this).Targeting(play.Target).WithHitCount(hits).Execute(ctx);
-                CombatCounters.StruckByMortisThisTurn[play.Target] += hits;
             }
-            await CombatCounters.BumpMortisCard(ctx, Owner);
         }
         else
         {
@@ -75,7 +73,6 @@ public class StairsTumble : MzmCharBaseCard
             if (play.Target != null)
                 await Sts2Compat.PowerApply<VulnerablePower>(ctx, play.Target,
                     DynamicVars["VulnerablePower"].BaseValue, Owner.Creature, this, false);
-            await CombatCounters.BumpMutsumiCard(ctx, Owner);
         }
     }
 

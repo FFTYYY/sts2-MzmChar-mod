@@ -80,9 +80,7 @@ public class Imitate : MzmCharBaseCard
             if (play.Target != null)
             {
                 await DamageCmd.Attack(dmg).FromCard(this).Targeting(play.Target).Execute(ctx);
-                CombatCounters.StruckByMortisThisTurn[play.Target]++;
             }
-            await CombatCounters.BumpMortisCard(ctx, Owner);
         }
         else
         {
@@ -92,7 +90,6 @@ public class Imitate : MzmCharBaseCard
             if (play.Target != null)
                 await Sts2Compat.PowerApply<WeakPower>(ctx, play.Target,
                     DynamicVars["WeakPower"].BaseValue, Owner.Creature, this, false);
-            await CombatCounters.BumpMutsumiCard(ctx, Owner);
         }
     }
 

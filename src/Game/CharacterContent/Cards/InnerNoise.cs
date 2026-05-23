@@ -51,8 +51,6 @@ public class InnerNoise : MzmCharBaseCard
                 await Sts2Compat.AddGeneratedCardToCombat(card, PileType.Hand, Owner, CardPilePosition.Top, addedByPlayer: false);
             }
         }
-        if (Forms.IsMortisForm(Owner)) await CombatCounters.BumpMortisCard(ctx, Owner);
-        else                            await CombatCounters.BumpMutsumiCard(ctx, Owner);
     }
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch

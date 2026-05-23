@@ -40,7 +40,7 @@ public class WakabaFortune : MzmCharBaseCard
     {
         base.AddExtraArgsToDescription(description);
         int gold = !IsCanonical && Owner != null
-            ? CombatCounters.PersonaSwitchesThisCombat[Owner] * GoldPerSwitch
+            ? CombatCounters.GetPersonaSwitchesThisCombat(Owner) * GoldPerSwitch
             : 0;
         description.Add("Gold", (decimal)gold);
     }
@@ -49,14 +49,12 @@ public class WakabaFortune : MzmCharBaseCard
     {
         await PlayCast();
         // 把"本场已切换形态次数 × 4"作为 power Amount（== 战斗结束时给的金币数）
-        int currentSwitches = CombatCounters.PersonaSwitchesThisCombat[Owner];
+        int currentSwitches = CombatCounters.GetPersonaSwitchesThisCombat(Owner);
         await Sts2Compat.PowerApply<WakabaFortunePower>(ctx, Owner.Creature, currentSwitches * GoldPerSwitch, Owner.Creature, this, false);
 
         if (IsUpgraded)
             await CardPileCmd.Draw(ctx, 1, Owner, false);
 
-        if (Forms.IsMortisForm(Owner)) await CombatCounters.BumpMortisCard(ctx, Owner);
-        else await CombatCounters.BumpMutsumiCard(ctx, Owner);
     }
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch

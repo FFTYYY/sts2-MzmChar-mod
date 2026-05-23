@@ -52,9 +52,7 @@ public class Sidekick : MzmCharBaseCard
             {
                 await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
                     .FromCard(this).Targeting(play.Target).Execute(ctx);
-                CombatCounters.StruckByMortisThisTurn[play.Target]++;
             }
-            await CombatCounters.BumpMortisCard(ctx, Owner);
         }
         else
         {
@@ -68,7 +66,6 @@ public class Sidekick : MzmCharBaseCard
                 this);
             foreach (var c in selected)
                 CardCmd.ApplyKeyword(c, new[] { CardKeyword.Ethereal });
-            await CombatCounters.BumpMutsumiCard(ctx, Owner);
         }
     }
 

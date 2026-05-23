@@ -2,20 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cakggg3xfq0gq"
-path="res://.godot/imported/mo_attack_anim.png-6778e70019ff0b77890e24907ffbca61.ctex"
+uid="uid://cxklu5lmf0kxy"
+path="res://.godot/imported/mo_die_anim_r1c1.png-a074758aab116deb219c55132cfd47c5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://MzmChar/characters/mo_attack_anim.png"
-dest_files=["res://.godot/imported/mo_attack_anim.png-6778e70019ff0b77890e24907ffbca61.ctex"]
+source_file="res://MzmChar/characters/mo_die_anim_r1c1.png"
+dest_files=["res://.godot/imported/mo_die_anim_r1c1.png-a074758aab116deb219c55132cfd47c5.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

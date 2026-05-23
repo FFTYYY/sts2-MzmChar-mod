@@ -5,6 +5,7 @@ using BaseLib.Abstracts;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
+using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -66,7 +67,12 @@ public class ConcertPower : CustomPowerModel
         }
     }
 
+    // 0.106: AfterTurnEnd(ctx, side) → AfterSideTurnEnd(ctx, side, participants)
+#if BETA
+    public override async Task AfterSideTurnEnd(PlayerChoiceContext ctx, CombatSide side, IEnumerable<Creature> participants)
+#else
     public override async Task AfterTurnEnd(PlayerChoiceContext ctx, CombatSide side)
+#endif
     {
         if (side != Owner.Side) return;
         await PowerCmd.Remove<ConcertPower>(Owner);

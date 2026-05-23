@@ -61,10 +61,7 @@ public class Reminisce : MzmCharBaseCard
             {
                 await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
                     .FromCard(this).TargetingAllOpponents(cs).Execute(ctx);
-                foreach (var e in cs.HittableEnemies)
-                    CombatCounters.StruckByMortisThisTurn[e]++;
             }
-            await CombatCounters.BumpMortisCard(ctx, Owner);
             await Forms.EnterMutsumi(Owner, this, ctx);
         }
         else
@@ -78,7 +75,6 @@ public class Reminisce : MzmCharBaseCard
                     await Sts2Compat.PowerApply<VulnerablePower>(ctx, e, DynamicVars["VulnerablePower"].BaseValue, Owner.Creature, this, false);
                 }
             }
-            await CombatCounters.BumpMutsumiCard(ctx, Owner);
             await Forms.EnterMortis(Owner, this, ctx);
         }
     }

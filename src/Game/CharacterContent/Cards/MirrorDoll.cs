@@ -48,7 +48,7 @@ public class MirrorDoll : MzmCharBaseCard
             int baseHits = (int)card.DynamicVars["BaseHits"].BaseValue;
             int total = baseHits;
             if (card.Owner != null)
-                total = baseHits + CombatCounters.MutsumiCardsThisTurn[card.Owner];
+                total = baseHits + CombatCounters.GetMutsumiCardsThisTurn(card.Owner);
             BaseValue = total;            // 让 {ActualHits}（不带 :diff()）也显示当前值
             EnchantedValue = baseHits;    // diff 基线：原始攻击次数
             PreviewValue = total;         // 实际次数，比基线大→绿色
@@ -78,22 +78,19 @@ public class MirrorDoll : MzmCharBaseCard
         if (Forms.IsMortisForm(Owner))
         {
             int baseHits = (int)DynamicVars["BaseHits"].BaseValue;
-            int extra = CombatCounters.MutsumiCardsThisTurn[Owner];
+            int extra = CombatCounters.GetMutsumiCardsThisTurn(Owner);
             int hits = baseHits + extra;
             // WithHitCount —— 力量/活力 modifier 应用每次 hit
             if (play.Target != null && hits > 0)
             {
                 await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
                     .FromCard(this).Targeting(play.Target).WithHitCount(hits).Execute(ctx);
-                CombatCounters.StruckByMortisThisTurn[play.Target] += hits;
             }
-            await CombatCounters.BumpMortisCard(ctx, Owner);
             await Forms.EnterMutsumi(Owner, this, ctx);
         }
         else
         {
             await PlayerCmd.GainEnergy(DynamicVars.Energy.IntValue, Owner);
-            await CombatCounters.BumpMutsumiCard(ctx, Owner);
             await Forms.EnterMortis(Owner, this, ctx);
         }
     }

@@ -14,9 +14,14 @@ namespace MzmChar.Game;
 /// <summary>
 /// 面具：1 费白色技能。获得 1 演艺热情。双形态切换。
 /// （原拟名"撕下的面具"，与金卡"撕下面具"重复，重命名为「面具」）
+///
+/// 类名 `MuMask`（不是 `Mask`）—— vanilla `ModelIdSerializationCache.Init` sorter
+/// 在 Mask 时 warn "Two AbstractModels MzmChar.Game.Mask share an ID"，根因未追到，
+/// 加 Mu 前缀作 workaround（同 MuStrike / MuDefend / MuMonologue / MuBurn 等命名习惯）。
+/// loc 名「面具」/「Mask」不变。
 /// </summary>
 [Pool(typeof(MzmCharCardPool))]
-public class Mask : MzmCharBaseCard
+public class MuMask : MzmCharBaseCard
 {
     public override string PortraitPath => "res://MzmChar/cards/mask.png";
 
@@ -29,7 +34,7 @@ public class Mask : MzmCharBaseCard
         }
     }
 
-    public Mask() : base(1, CardType.Skill, CardRarity.Common, TargetType.Self) { }
+    public MuMask() : base(1, CardType.Skill, CardRarity.Common, TargetType.Self) { }
 
     protected override void OnUpgrade() { EnergyCost.UpgradeBy(-1); /* 1 → 0 费 */ }
 
@@ -38,12 +43,10 @@ public class Mask : MzmCharBaseCard
         await Sts2Compat.PowerApply<PerformancePassionPower>(ctx, Owner.Creature, 1, Owner.Creature, this, false);
         if (Forms.IsMortisForm(Owner))
         {
-            await CombatCounters.BumpMortisCard(ctx, Owner);
             await Forms.EnterMutsumi(Owner, this, ctx);
         }
         else
         {
-            await CombatCounters.BumpMutsumiCard(ctx, Owner);
             await Forms.EnterMortis(Owner, this, ctx);
         }
     }

@@ -54,12 +54,10 @@ public class Contemplate : MzmCharBaseCard
                     await CardPileCmd.Add(picked, PileType.Hand, CardPilePosition.Top, null);
                 }
             }
-            await CombatCounters.BumpMortisCard(ctx, Owner);
         }
         else
         {
             await CreatureCmd.GainBlock(Owner.Creature, DynamicVars.Block.BaseValue, ValueProp.Move, play, false);
-            await CombatCounters.BumpMutsumiCard(ctx, Owner);
         }
     }
 

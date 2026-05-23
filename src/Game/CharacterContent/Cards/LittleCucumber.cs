@@ -63,14 +63,12 @@ public class LittleCucumber : MzmCharBaseCard
             await Sts2Compat.PowerApply<StrengthPower>(ctx, Owner.Creature,
                 DynamicVars["MoStrGain"].BaseValue, Owner.Creature, this, false);
             await PlayerCmd.GainEnergy(DynamicVars.Energy.IntValue, Owner);
-            await CombatCounters.BumpMortisCard(ctx, Owner);
         }
         else
         {
             await CreatureCmd.Heal(Owner.Creature, DynamicVars["MuHeal"].BaseValue, false);
             await Sts2Compat.PowerApply<StrengthPower>(ctx, Owner.Creature,
                 -DynamicVars["MuStrLoss"].BaseValue, Owner.Creature, this, false);
-            await CombatCounters.BumpMutsumiCard(ctx, Owner);
         }
     }
 

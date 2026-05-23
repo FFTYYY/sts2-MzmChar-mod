@@ -32,8 +32,6 @@ public class Disintegration : MzmCharBaseCard
     {
         await PlayCast();
         await Sts2Compat.PowerApply<DisintegrationPower>(ctx, Owner.Creature, 1, Owner.Creature, this, false);
-        if (Forms.IsMortisForm(Owner)) await CombatCounters.BumpMortisCard(ctx, Owner);
-        else                            await CombatCounters.BumpMutsumiCard(ctx, Owner);
     }
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch

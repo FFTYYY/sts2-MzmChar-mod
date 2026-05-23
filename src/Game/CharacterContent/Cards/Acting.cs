@@ -72,12 +72,10 @@ public class Acting : MzmCharBaseCard
 
         if (Forms.IsMutsumiForm(Owner))
         {
-            await CombatCounters.BumpMutsumiCard(ctx, Owner);
             await Forms.EnterMortis(Owner, this, ctx);
         }
         else
         {
-            await CombatCounters.BumpMortisCard(ctx, Owner);
             await Forms.EnterMutsumi(Owner, this, ctx);
         }
     }

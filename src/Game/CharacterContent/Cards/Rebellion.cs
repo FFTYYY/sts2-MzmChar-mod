@@ -76,8 +76,6 @@ public class Rebellion : MzmCharBaseCard
             }
         }
 
-        if (Forms.IsMortisForm(Owner)) await CombatCounters.BumpMortisCard(ctx, Owner);
-        else await CombatCounters.BumpMutsumiCard(ctx, Owner);
     }
 
     // 注：

@@ -50,10 +50,10 @@ public class MegaphoneMortisPower : CustomPowerModel
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new PowerLoc("传话筒（墨）",
-            "回合开始时，手牌中随机的非0费的牌本回合变0费。",
-            "回合开始时，手牌中随机{Amount}张非0费的牌本回合变0费。"),
+            "回合开始时，手牌中随机牌本回合耗能变为0。",
+            "回合开始时，手牌中随机{Amount}张牌本回合耗能变为0。"),
         _ => new PowerLoc("Megaphone (Mo)",
-            "At the start of your turn, random non-zero-cost cards in your hand cost 0 this turn.",
-            "At the start of your turn, {Amount} random non-zero-cost cards in your hand cost 0 this turn."),
+            "At the start of your turn, random cards in your hand cost 0 energy this turn.",
+            "At the start of your turn, {Amount} random cards in your hand cost 0 energy this turn."),
     };
 }

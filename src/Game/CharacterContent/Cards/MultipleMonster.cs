@@ -36,7 +36,7 @@ public class MultipleMonster : MzmCharBaseCard
     {
         base.AddExtraArgsToDescription(description);
         int switches = !IsCanonical && Owner != null
-            ? CombatCounters.PersonaSwitchesThisCombat[Owner]
+            ? CombatCounters.GetPersonaSwitchesThisCombat(Owner)
             : 0;
         description.Add("Switches", (decimal)switches);
     }
@@ -46,11 +46,9 @@ public class MultipleMonster : MzmCharBaseCard
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay play)
     {
         await PlayCast();
-        int switches = CombatCounters.PersonaSwitchesThisCombat[Owner];
+        int switches = CombatCounters.GetPersonaSwitchesThisCombat(Owner);
         if (switches > 0)
             await Sts2Compat.PowerApply<TransformPersonaPower>(ctx, Owner.Creature, switches, Owner.Creature, this, false);
-        if (Forms.IsMortisForm(Owner)) await CombatCounters.BumpMortisCard(ctx, Owner);
-        else await CombatCounters.BumpMutsumiCard(ctx, Owner);
     }
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch

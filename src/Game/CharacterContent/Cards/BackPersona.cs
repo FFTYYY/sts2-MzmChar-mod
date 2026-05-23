@@ -56,10 +56,6 @@ public class BackPersona : MzmCharBaseCard
 
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay play)
     {
-        if (Forms.IsMortisForm(Owner))
-            await CombatCounters.BumpMortisCard(ctx, Owner);
-        else
-            await CombatCounters.BumpMutsumiCard(ctx, Owner);
 
         await Forms.EnterMortis(Owner, this, ctx);
         await Sts2Compat.PowerApply<BlockRetainTurnPower>(ctx, Owner.Creature, 1, Owner.Creature, this, false);

@@ -39,6 +39,14 @@ public class MutsumiCharacter : CustomCharacterModel
     public override CharacterGender Gender => CharacterGender.Neutral;
     public override int StartingHp => 75;
 
+    // 默认 1.5s，但多个 MzmChar 同时死时 N 个并发 Cmd.Wait 进各自 player queue → combat-end
+    // 取消窗口里 sync 对不上 → 卡死（report_46 + 后续多人测试反复观察到）。
+    // 0 = 完全跳过 BaseLib CustomAnimationPatch.WaitCustomAnim 里的 Cmd.Wait → 不进 player queue
+    // → 彻底消除并发 wait 窗口。
+    // 代价：die anim 几乎瞬间被打断，但 AnimatedSprite2D 会停在播放到那一帧，AutoReturnToIdlePatch
+    // 看到 current=="die" 不切回 idle → 视觉上仍能看到一个死亡 pose 帧（不是完整动画）。
+    public override float DeathAnimTime => 0f;
+
     // 池子用我们自己的（角色身份核心，不能借）
     public override CardPoolModel CardPool => ModelDb.CardPool<MzmCharCardPool>();
     public override RelicPoolModel RelicPool => ModelDb.RelicPool<MzmCharRelicPool>();

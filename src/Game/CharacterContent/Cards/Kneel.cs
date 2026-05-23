@@ -54,14 +54,12 @@ public class Kneel : MzmCharBaseCard
         {
             await Sts2Compat.PowerApply<PlatingPower>(ctx, Owner.Creature,
                 DynamicVars["PlatingPower"].BaseValue, Owner.Creature, this, false);
-            await CombatCounters.BumpMortisCard(ctx, Owner);
             await Forms.EnterMutsumi(Owner, this, ctx);
         }
         else
         {
             await Sts2Compat.PowerApply<HalfDamagePower>(ctx, Owner.Creature,
                 DynamicVars["HalfDamagePower"].BaseValue, Owner.Creature, this, false);
-            await CombatCounters.BumpMutsumiCard(ctx, Owner);
         }
     }
 

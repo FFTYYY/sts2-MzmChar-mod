@@ -60,7 +60,6 @@ public class MuMonologue : MzmCharBaseCard
         {
             await PlayCast();
             await Sts2Compat.PowerApply<PerformancePassionPower>(ctx, Owner.Creature, 1, Owner.Creature, this, false);
-            await BumpFormCard(ctx);
             return;
         }
         int hits = (int)DynamicVars["Hits"].BaseValue;
@@ -69,16 +68,7 @@ public class MuMonologue : MzmCharBaseCard
         {
             await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
                 .FromCard(this).Targeting(play.Target).WithHitCount(hits).Execute(ctx);
-            if (Forms.IsMortisForm(Owner))
-                CombatCounters.StruckByMortisThisTurn[play.Target] += hits;
         }
-        await BumpFormCard(ctx);
-    }
-
-    private async Task BumpFormCard(PlayerChoiceContext ctx)
-    {
-        if (Forms.IsMortisForm(Owner)) await CombatCounters.BumpMortisCard(ctx, Owner);
-        else await CombatCounters.BumpMutsumiCard(ctx, Owner);
     }
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch

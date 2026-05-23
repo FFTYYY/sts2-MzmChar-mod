@@ -69,8 +69,6 @@ public class MaskedPlay : MzmCharBaseCard
         {
             await CardPileCmd.Draw(ctx, DynamicVars.Cards.BaseValue, Owner, false);
         }
-        if (Forms.IsMortisForm(Owner)) await CombatCounters.BumpMortisCard(ctx, Owner);
-        else                            await CombatCounters.BumpMutsumiCard(ctx, Owner);
     }
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
