@@ -15,7 +15,7 @@ dest_files=["res://.godot/imported/chase_cat.png-14cf4755d08aaac93acf6e82bc38b55
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

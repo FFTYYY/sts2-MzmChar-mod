@@ -11,7 +11,8 @@ using MegaCrit.Sts2.Core.Models.Powers;
 namespace MzmChar.Game;
 
 /// <summary>
-/// 死亡之湖：如果你以小墨人格开始回合，则获得 3×Amount 点临时力量。
+/// 死亡之湖：如果你以小墨人格开始回合，则获得 Amount 点**永久**力量（StrengthPower，无 TempStr）。
+/// 多次叠加 Power（多次打卡）→ Amount 累加 → 每回合 Mo 时给的力量随之累加。
 /// 用 AfterPlayerTurnStartEarly 在 TransformPersonaPower 之前结算。
 /// </summary>
 public class DeathLakePower : CustomPowerModel
@@ -26,21 +27,19 @@ public class DeathLakePower : CustomPowerModel
     {
         if (player.Creature != Owner) return;
         if (!Forms.IsMortisForm(player)) return;
-        int gain = 3 * (int)Amount;
+        int gain = (int)Amount;
         if (gain <= 0) return;
         Flash();
         await Sts2Compat.PowerApply<StrengthPower>(ctx, Owner, gain, Owner, null, false);
-        await Sts2Compat.PowerApply<TempStrengthPower>(ctx, Owner, gain, Owner, null, true);
     }
 
-    // 派生值（3×Amount）无法用框架自动注入显示 → desc 都不写具体数字（玩家从卡描述拿数）
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new PowerLoc("死亡之湖",
-            "以[gold]小墨[/gold]人格开始回合时，本回合获得[gold]力量[/gold]。",
-            "以[gold]小墨[/gold]人格开始回合时，本回合获得[gold]力量[/gold]。"),
+            "以[gold]小墨[/gold]开始回合时，获得[gold]力量[/gold]。",
+            "以[gold]小墨[/gold]开始回合时，获得{Amount}点[gold]力量[/gold]。"),
         _ => new PowerLoc("Lake of Death",
-            "If you start your turn as [gold]Mo[/gold], gain [gold]Strength[/gold] this turn.",
-            "If you start your turn as [gold]Mo[/gold], gain [gold]Strength[/gold] this turn."),
+            "If you start your turn as [gold]Mo[/gold], gain [gold]Strength[/gold].",
+            "If you start your turn as [gold]Mo[/gold], gain {Amount} [gold]Strength[/gold]."),
     };
 }

@@ -15,7 +15,7 @@ dest_files=["res://.godot/imported/front_persona.png-9e3ea9ab2ed0e193630b9b6763a
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

@@ -16,9 +16,8 @@ namespace MzmChar.Game;
 
 /// <summary>
 /// 温室少女：1 费蓝色技能。
-///   小墨：消耗最多 2/3 张手牌
+///   小墨：从弃牌堆中选择至多 2/3 张牌消耗
 ///   小睦：获得 8/10 点格挡
-/// 消耗手牌实现参考 vanilla BurningPact。
 /// </summary>
 [Pool(typeof(MzmCharCardPool))]
 public class GreenhouseGirl : MzmCharBaseCard
@@ -45,8 +44,8 @@ public class GreenhouseGirl : MzmCharBaseCard
         if (Forms.IsMortisForm(Owner))
         {
             int count = (int)DynamicVars["MoExhaust"].BaseValue;
-            var hand = PileType.Hand.GetPile(Owner);
-            var candidates = hand?.Cards.Where(c => c != this).ToList() ?? new List<CardModel>();
+            var discard = PileType.Discard.GetPile(Owner);
+            var candidates = discard?.Cards.ToList() ?? new List<CardModel>();
             if (candidates.Count > 0)
             {
                 var prefs = new CardSelectorPrefs(SelectionScreenPrompt, 0, count);
@@ -64,11 +63,11 @@ public class GreenhouseGirl : MzmCharBaseCard
     {
         "zhs" => new CardLoc("温室少女",
             "{MuSec}{MuOpen}小睦{MuClose}：获得{Block:diff()}点[gold]格挡[/gold]。{MuSecEnd}\n" +
-            "{MoSec}{MoOpen}小墨{MoClose}：消耗至多{MoExhaust:diff()}张手牌。{MoSecEnd}",
-            ("selectionScreenPrompt", "选最多{MoExhaust}张手牌消耗")),
+            "{MoSec}{MoOpen}小墨{MoClose}：从[gold]弃牌堆[/gold]中选择至多{MoExhaust:diff()}张牌，将其消耗。{MoSecEnd}",
+            ("selectionScreenPrompt", "选最多{MoExhaust}张弃牌堆中的牌消耗")),
         _ => new CardLoc("Greenhouse Girl",
             "{MuSec}{MuOpen}Mu{MuClose}: Gain {Block:diff()} [gold]Block[/gold].{MuSecEnd}\n" +
-            "{MoSec}{MoOpen}Mo{MoClose}: Exhaust up to {MoExhaust:diff()} hand cards.{MoSecEnd}",
-            ("selectionScreenPrompt", "Choose up to {MoExhaust} cards to Exhaust")),
+            "{MoSec}{MoOpen}Mo{MoClose}: Choose up to {MoExhaust:diff()} cards from your [gold]discard pile[/gold] and exhaust them.{MoSecEnd}",
+            ("selectionScreenPrompt", "Choose up to {MoExhaust} discarded cards to Exhaust")),
     };
 }

@@ -15,7 +15,7 @@ dest_files=["res://.godot/imported/play_double_moon.png-76928487f0e41884d238a9a4
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

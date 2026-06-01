@@ -28,6 +28,29 @@ public class Imitate : MzmCharBaseCard
 {
     public override string PortraitPath => "res://MzmChar/cards/imitate.png";
 
+    // canonical-safe LambdaVar：卡组大全里 base.UpdateCardPreview 访问 card.Owner 抛
+    // CanonicalModelException → BaseValue 留在 base(name, 0) 的 0 → 显示 0。
+    // 本地子类：ctor 把三个值默认成 1；try/catch 兜住 canonical 异常；最后跟 1 取 max
+    // 保证显示不低于 1（lambda 在「无攻击意图」分支返回 1，跟这个 floor 语义一致）
+    private class MoDmgVar : LambdaVar
+    {
+        public MoDmgVar(string name, System.Func<CardModel, Creature?, decimal> calc)
+            : base(name, calc, ModifierKind.Damage)
+        {
+            BaseValue = 1m;
+            EnchantedValue = 1m;
+            PreviewValue = 1m;
+        }
+        public override void UpdateCardPreview(CardModel card, CardPreviewMode previewMode, Creature? target, bool runGlobalHooks)
+        {
+            try { base.UpdateCardPreview(card, previewMode, target, runGlobalHooks); }
+            catch { /* canonical card → 保持 ctor 默认的 1 */ }
+            if (BaseValue < 1m) BaseValue = 1m;
+            if (PreviewValue < 1m) PreviewValue = 1m;
+            if (EnchantedValue < 1m) EnchantedValue = 1m;
+        }
+    }
+
     private readonly List<DynamicVar> _vars = new()
     {
         new BlockVar("MuBlock", 12m, ValueProp.Move),
@@ -35,7 +58,7 @@ public class Imitate : MzmCharBaseCard
         // Mo 实算：被瞄准的敌人意图攻击值（GetTotalDamage 含 Repeats + 怪物自身 modifier），无攻击意图则 1
         // ModifierKind.Damage 让显示值额外走 Hook.ModifyDamage —— 套上**我们**的 vigor / strength + 目标的 vuln / weak
         // 这样显示值就 == OnPlay 里 DamageCmd.Attack(dmg) 实际打出的伤害（OnPlay 也走同套 modifier 链）
-        new LambdaVar("MoDmg", (card, t) =>
+        new MoDmgVar("MoDmg", (card, t) =>
         {
             // Target-aware lambda：直接拿 UpdateCardPreview 的 target 参数，比 card.CurrentTarget 可靠
             // （hover 预览时 CurrentTarget 不一定及时同步）
@@ -45,7 +68,7 @@ public class Imitate : MzmCharBaseCard
             var targets = card.Owner?.Creature != null ? new[] { card.Owner.Creature } : System.Array.Empty<Creature>();
             int total = attackIntent.GetTotalDamage(targets, t);
             return total > 0 ? total : 1;
-        }, LambdaVar.ModifierKind.Damage),
+        }),
     };
     protected override IEnumerable<DynamicVar> CanonicalVars => _vars;
 
@@ -97,9 +120,9 @@ public class Imitate : MzmCharBaseCard
     {
         "zhs" => new CardLoc("模仿",
             "{MuSec}{MuOpen}小睦{MuClose}：获得{MuBlock:diff()}点[gold]格挡[/gold]。施加{WeakPower:diff()}层[gold]虚弱[/gold]。{MuSecEnd}\n" +
-            "{MoSec}{MoOpen}小墨{MoClose}：造成等同于目标攻击意图的伤害。无攻击意图则造成1点伤害。（造成{MoDmg:diff()}点伤害）{MoSecEnd}"),
+            "{MoSec}{MoOpen}小墨{MoClose}：造成{MoDmg:diff()}点伤害。若目标有攻击意图，则造成等同于目标攻击意图的伤害。{MoSecEnd}"),
         _ => new CardLoc("Imitate",
             "{MuSec}{MuOpen}Mu{MuClose}: Gain {MuBlock:diff()} [gold]Block[/gold]; apply {WeakPower:diff()} [gold]Weak[/gold].{MuSecEnd}\n" +
-            "{MoSec}{MoOpen}Mo{MoClose}: Deal damage equal to the target's attack intent ({MoDmg:diff()}); deal 1 damage if no attack intent.{MoSecEnd}"),
+            "{MoSec}{MoOpen}Mo{MoClose}: Deal {MoDmg:diff()} damage. If the target has an attack intent, deal damage equal to the target's attack intent.{MoSecEnd}"),
     };
 }

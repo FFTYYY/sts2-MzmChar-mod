@@ -32,7 +32,7 @@ public class Emptiness : MzmCharBaseCard
 {
     public override string PortraitPath => "res://MzmChar/cards/emptiness.png";
 
-    private const int BaseDex = 4;
+    private const int BaseDex = 3;
 
     // SavedProperty 跨战斗 / 读档持久化（vanilla GeneticAlgorithm 同款）
     [SavedProperty] public int CurrentDex { get; set; }
@@ -108,7 +108,7 @@ public class Emptiness : MzmCharBaseCard
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new CardLoc("空洞",
-            "本回合获得{Dex:diff()}点[gold]敏捷[/gold]。\n本牌每被打出一次，获得敏捷的量在本场游戏中永久增加1点。"),
+            "本回合获得{Dex:diff()}点[gold]敏捷[/gold]。\n这张牌每被打出一次，获得敏捷的量在本场游戏中永久增加1点。"),
         _ => new CardLoc("Emptiness",
             "Gain {Dex:diff()} [gold]Dexterity[/gold] this turn.\nEach time you play this card, increase the amount by 1 for the rest of this game."),
     };

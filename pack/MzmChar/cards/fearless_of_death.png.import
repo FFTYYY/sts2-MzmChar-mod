@@ -15,7 +15,7 @@ dest_files=["res://.godot/imported/fearless_of_death.png-50ac9915e20e6735c404a6a
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

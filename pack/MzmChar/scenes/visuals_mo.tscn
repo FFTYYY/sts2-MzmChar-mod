@@ -8,15 +8,12 @@
 [node name="_VisualsMu" type="AnimatedSprite2D" parent="." unique_id=1143599260]
 unique_name_in_owner = true
 position = Vector2(36, -142)
-scale = Vector2(0.26, 0.26)
+scale = Vector2(0.34666667, 0.34666667)
 sprite_frames = ExtResource("1_11boj")
 animation = &"cast"
 autoplay = "idle"
 frame = 47
 frame_progress = 1.0
-
-[node name="PhobiaModeVisuals" type="Node2D" parent="." unique_id=978172511]
-unique_name_in_owner = true
 
 [node name="Bounds" type="Control" parent="." unique_id=1167258580]
 unique_name_in_owner = true
@@ -48,7 +45,7 @@ position = Vector2(162, -316)
 
 [node name="_VisualsMo" type="AnimatedSprite2D" parent="." unique_id=1823716354]
 position = Vector2(30.692335, -152.73175)
-scale = Vector2(0.24801975, 0.24801971)
+scale = Vector2(0.330693, 0.33069295)
 sprite_frames = ExtResource("2_m84fr")
 animation = &"attack"
 autoplay = "idle"

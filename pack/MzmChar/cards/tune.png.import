@@ -15,7 +15,7 @@ dest_files=["res://.godot/imported/tune.png-c032c4f4a1e724062bbe73f01d205efd.cte
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

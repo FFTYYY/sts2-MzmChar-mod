@@ -15,7 +15,7 @@ dest_files=["res://.godot/imported/play_killkiss.png-bdb960fa010313c2b17464ea043
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

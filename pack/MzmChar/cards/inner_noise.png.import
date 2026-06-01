@@ -15,7 +15,7 @@ dest_files=["res://.godot/imported/inner_noise.png-5cc4fb7771a04d1bcebb0817b09c3
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

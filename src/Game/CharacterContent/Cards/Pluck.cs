@@ -15,9 +15,9 @@ using MegaCrit.Sts2.Core.ValueProps;
 namespace MzmChar.Game;
 
 /// <summary>
-/// 拨弦：1 费白色攻击。获得演艺热情。
+/// 拨弦：1 费白色攻击。获得 1 演艺热情。
 ///   小墨：造成 8/10 点伤害
-///   小睦：施加 2/3 层易伤 + 本回合获得 2 点力量
+///   小睦：获得 4/6 点活力
 /// </summary>
 [Pool(typeof(MzmCharCardPool))]
 public class Pluck : MzmCharBaseCard
@@ -27,8 +27,7 @@ public class Pluck : MzmCharBaseCard
     private readonly List<DynamicVar> _vars = new()
     {
         new DamageVar(8, ValueProp.Move),
-        new PowerVar<VulnerablePower>(2),
-        new DynamicVar("MuStr", 2m),
+        new PowerVar<VigorPower>(4),
     };
     protected override IEnumerable<DynamicVar> CanonicalVars => _vars;
 
@@ -37,22 +36,22 @@ public class Pluck : MzmCharBaseCard
         get
         {
             yield return HoverTipFactory.FromPower<PerformancePassionPower>();
-            yield return HoverTipFactory.FromPower<VulnerablePower>();
-            yield return HoverTipFactory.FromPower<StrengthPower>();
+            yield return HoverTipFactory.FromPower<VigorPower>();
         }
     }
 
     public Pluck() : base(1, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy) { }
 
+    // Mu 现在自给活力，不需要目标
     public override TargetType TargetType =>
         !IsCanonical && Owner != null && Forms.IsMutsumiForm(Owner)
-            ? TargetType.AnyEnemy   // 小睦施加易伤，还是要选目标
+            ? TargetType.Self
             : TargetType.AnyEnemy;
 
     protected override void OnUpgrade()
     {
         DynamicVars.Damage.UpgradeValueBy(2);           // 8 → 10
-        DynamicVars["VulnerablePower"].UpgradeValueBy(1); // 2 → 3
+        DynamicVars["VigorPower"].UpgradeValueBy(2);    // 4 → 6
     }
 
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay play)
@@ -69,11 +68,8 @@ public class Pluck : MzmCharBaseCard
         else
         {
             await PlayCast();
-            if (play.Target != null)
-                await Sts2Compat.PowerApply<VulnerablePower>(ctx, play.Target, DynamicVars["VulnerablePower"].BaseValue, Owner.Creature, this, false);
-            var str = DynamicVars["MuStr"].BaseValue;
-            await Sts2Compat.PowerApply<StrengthPower>(ctx, Owner.Creature, str, Owner.Creature, this, false);
-            await Sts2Compat.PowerApply<TempStrengthPower>(ctx, Owner.Creature, str, Owner.Creature, this, true);
+            await Sts2Compat.PowerApply<VigorPower>(ctx, Owner.Creature,
+                DynamicVars["VigorPower"].BaseValue, Owner.Creature, this, false);
         }
     }
 
@@ -81,11 +77,11 @@ public class Pluck : MzmCharBaseCard
     {
         "zhs" => new CardLoc("拨弦",
             "获得1点[gold]演艺热情[/gold]。\n" +
-            "{MuSec}{MuOpen}小睦{MuClose}：施加{VulnerablePower:diff()}层[gold]易伤[/gold]。本回合获得{MuStr}点[gold]力量[/gold]。{MuSecEnd}\n" +
+            "{MuSec}{MuOpen}小睦{MuClose}：获得{VigorPower:diff()}点[gold]活力[/gold]。{MuSecEnd}\n" +
             "{MoSec}{MoOpen}小墨{MoClose}：造成{Damage:diff()}点伤害。{MoSecEnd}"),
         _ => new CardLoc("Pluck",
             "Gain 1 [gold]Performance Passion[/gold].\n" +
-            "{MuSec}{MuOpen}Mu{MuClose}: Apply {VulnerablePower:diff()} [gold]Vulnerable[/gold]; this turn gain {MuStr} [gold]Strength[/gold].{MuSecEnd}\n" +
+            "{MuSec}{MuOpen}Mu{MuClose}: Gain {VigorPower:diff()} [gold]Vigor[/gold].{MuSecEnd}\n" +
             "{MoSec}{MoOpen}Mo{MoClose}: Deal {Damage:diff()} damage.{MoSecEnd}"),
     };
 }

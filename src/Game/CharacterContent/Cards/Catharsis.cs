@@ -17,7 +17,7 @@ namespace MzmChar.Game;
 /// <summary>
 /// 宣泄：1 费白色攻击。
 ///   小墨：造成 5/7 点伤害 2 次
-///   小睦：获得 4/6 临时力量
+///   小睦：本回合获得 5 点力量（升级后额外获得 4 点活力）
 /// </summary>
 [Pool(typeof(MzmCharCardPool))]
 public class Catharsis : MzmCharBaseCard
@@ -28,13 +28,18 @@ public class Catharsis : MzmCharBaseCard
     {
         new DamageVar(5, ValueProp.Move),
         new DynamicVar("Hits", 2m),
-        new DynamicVar("TempStr", 4m),
+        new DynamicVar("TempStr", 5m),         // Mu: 本回合 5 力量（无升级）
+        new PowerVar<VigorPower>(0),            // Mu: 升级后 +4 活力
     };
     protected override IEnumerable<DynamicVar> CanonicalVars => _vars;
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips
     {
-        get { yield return HoverTipFactory.FromPower<StrengthPower>(); }
+        get
+        {
+            yield return HoverTipFactory.FromPower<StrengthPower>();
+            yield return HoverTipFactory.FromPower<VigorPower>();
+        }
     }
 
     public Catharsis() : base(1, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy) { }
@@ -46,8 +51,8 @@ public class Catharsis : MzmCharBaseCard
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(2);      // 3 → 5
-        DynamicVars["TempStr"].UpgradeValueBy(2);  // 4 → 6
+        DynamicVars.Damage.UpgradeValueBy(2);              // 5 → 7
+        DynamicVars["VigorPower"].UpgradeValueBy(4);       // 0 → 4
     }
 
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay play)
@@ -69,16 +74,20 @@ public class Catharsis : MzmCharBaseCard
             var str = DynamicVars["TempStr"].BaseValue;
             await Sts2Compat.PowerApply<StrengthPower>(ctx, Owner.Creature, str, Owner.Creature, this, false);
             await Sts2Compat.PowerApply<TempStrengthPower>(ctx, Owner.Creature, str, Owner.Creature, this, true);
+
+            var vigor = DynamicVars["VigorPower"].BaseValue;
+            if (vigor > 0)
+                await Sts2Compat.PowerApply<VigorPower>(ctx, Owner.Creature, vigor, Owner.Creature, this, false);
         }
     }
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new CardLoc("宣泄",
-            "{MuSec}{MuOpen}小睦{MuClose}：本回合获得{TempStr:diff()}点[gold]力量[/gold]。{MuSecEnd}\n" +
+            "{MuSec}{MuOpen}小睦{MuClose}：本回合获得{TempStr}点[gold]力量[/gold]。{IfUpgraded:show:获得{VigorPower}点[gold]活力[/gold]。|}{MuSecEnd}\n" +
             "{MoSec}{MoOpen}小墨{MoClose}：造成{Damage:diff()}点伤害{Hits}次。{MoSecEnd}"),
         _ => new CardLoc("Catharsis",
-            "{MuSec}{MuOpen}Mu{MuClose}: This turn gain {TempStr:diff()} [gold]Strength[/gold].{MuSecEnd}\n" +
+            "{MuSec}{MuOpen}Mu{MuClose}: This turn gain {TempStr} [gold]Strength[/gold].{IfUpgraded:show: Gain {VigorPower} [gold]Vigor[/gold].|}{MuSecEnd}\n" +
             "{MoSec}{MoOpen}Mo{MoClose}: Deal {Damage:diff()} damage {Hits} times.{MoSecEnd}"),
     };
 }

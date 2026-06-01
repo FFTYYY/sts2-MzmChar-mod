@@ -13,7 +13,7 @@ using MegaCrit.Sts2.Core.Models.Powers;
 
 namespace MzmChar.Game;
 
-/// <summary>种植黄瓜：2 费蓝色能力。回合开始按形态触发：Mu +6/8 格挡 / Mo +5/7 活力（见 PlantCucumberPower）。
+/// <summary>种植黄瓜：2 费蓝色能力。回合开始按形态触发：Mu +6/8 格挡 / Mo +4/6 活力（见 PlantCucumberPower）。
 /// 卡上数值用 DynamicVar 走 :diff() 染色 → 升级版数字自动绿色；power 内部由 IsUpgradedVersion field 驱动同样数值。</summary>
 [Pool(typeof(MzmCharCardPool))]
 public class PlantCucumber : MzmCharBaseCard
@@ -23,7 +23,7 @@ public class PlantCucumber : MzmCharBaseCard
     private readonly List<DynamicVar> _vars = new()
     {
         new DynamicVar("MuBlock", 6m),    // 升级 +2 → 8
-        new DynamicVar("MoVigor", 5m),    // 升级 +2 → 7
+        new DynamicVar("MoVigor", 4m),    // 升级 +2 → 6
     };
     protected override IEnumerable<DynamicVar> CanonicalVars => _vars;
 
@@ -41,7 +41,7 @@ public class PlantCucumber : MzmCharBaseCard
     protected override void OnUpgrade()
     {
         DynamicVars["MuBlock"].UpgradeValueBy(2);    // 6 → 8
-        DynamicVars["MoVigor"].UpgradeValueBy(2);    // 5 → 7
+        DynamicVars["MoVigor"].UpgradeValueBy(2);    // 4 → 6
     }
 
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay play)

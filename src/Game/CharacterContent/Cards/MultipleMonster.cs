@@ -54,8 +54,8 @@ public class MultipleMonster : MzmCharBaseCard
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new CardLoc("多首的怪物",
-            "本场战斗中每切换过一次人格，就获得一层[gold]转换人格[/gold]。获得{Switches}层[gold]转换人格[/gold]。"),
+            "获得{Switches}层[gold]转换人格[/gold]。本场战斗中每切换过一次人格，就额外获得一层[gold]转换人格[/gold]。"),
         _ => new CardLoc("Many-Headed Monster",
-            "Gain 1 [gold]Transform Persona[/gold] for each persona switch this combat. (Gain {Switches} [gold]Transform Persona[/gold])"),
+            "Gain {Switches} [gold]Transform Persona[/gold]. Each persona switch this combat additionally grants 1 [gold]Transform Persona[/gold]."),
     };
 }

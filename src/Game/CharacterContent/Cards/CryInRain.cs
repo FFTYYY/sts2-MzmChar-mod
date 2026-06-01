@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using BaseLib.Abstracts;
-using BaseLib.Cards.Variables;
 using BaseLib.Utils;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -17,10 +16,10 @@ using MegaCrit.Sts2.Core.ValueProps;
 namespace MzmChar.Game;
 
 /// <summary>
-/// 雨中流泪：2 费攻击（蓝色，rare）。（原名「让吉他唱歌」）
+/// 雨中流泪：2 费攻击（蓝色，rare）。
 /// 共同：本场战斗每切换过一次人格，本回合获得 1/2 力量（一次性结算）。
-///   小睦：施加 3 虚弱。
-///   小墨：造成 7 伤害（升级不增加伤害）。
+///   小睦：施加 1 层易伤，[gold]进入小墨[/gold]。
+///   小墨：造成 5 点伤害。
 /// </summary>
 [Pool(typeof(MzmCharCardPool))]
 public class CryInRain : MzmCharBaseCard
@@ -33,8 +32,8 @@ public class CryInRain : MzmCharBaseCard
     {
         _vars = new List<DynamicVar>
         {
-            new DamageVar(7, ValueProp.Move),                    // Mo damage（不升级）
-            new PowerVar<WeakPower>(3),                          // Mu weak
+            new DamageVar(5, ValueProp.Move),                    // Mo damage（不升级）
+            new PowerVar<VulnerablePower>(1),                    // Mu vuln（不升级）
             new DynamicVar("StrPerSwitch", 1m),                  // 1 / 2 升级
             // 实算：本场切换次数 × StrPerSwitch
             new LambdaVar("StrTotal", card =>
@@ -52,15 +51,15 @@ public class CryInRain : MzmCharBaseCard
     {
         get
         {
+            foreach (var t in FormTooltips.EnterMo()) yield return t;
             yield return HoverTipFactory.FromPower<StrengthPower>();
-            yield return HoverTipFactory.FromPower<WeakPower>();
+            yield return HoverTipFactory.FromPower<VulnerablePower>();
         }
     }
 
     protected override void OnUpgrade()
     {
         DynamicVars["StrPerSwitch"].UpgradeValueBy(1);   // 1 → 2
-        // Mo damage / Mu weak 都不升级
     }
 
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay play)
@@ -84,10 +83,10 @@ public class CryInRain : MzmCharBaseCard
         }
         else
         {
-            await PlayCast();
             if (play.Target != null)
-                await Sts2Compat.PowerApply<WeakPower>(ctx, play.Target,
-                    DynamicVars["WeakPower"].BaseValue, Owner.Creature, this, false);
+                await Sts2Compat.PowerApply<VulnerablePower>(ctx, play.Target,
+                    DynamicVars["VulnerablePower"].BaseValue, Owner.Creature, this, false);
+            await Forms.EnterMortis(Owner, this, ctx);
         }
     }
 
@@ -95,11 +94,11 @@ public class CryInRain : MzmCharBaseCard
     {
         "zhs" => new CardLoc("雨中流泪",
             "本场战斗每切换过一次人格，本回合获得{StrPerSwitch:diff()}点[gold]力量[/gold]（{StrTotal}力量）。\n" +
-            "{MuSec}{MuOpen}小睦{MuClose}：施加{WeakPower}层[gold]虚弱[/gold]。{MuSecEnd}\n" +
+            "{MuSec}{MuOpen}小睦{MuClose}：施加{VulnerablePower}层[gold]易伤[/gold]。[gold]进入小墨[/gold]。{MuSecEnd}\n" +
             "{MoSec}{MoOpen}小墨{MoClose}：造成{Damage:diff()}点伤害。{MoSecEnd}"),
         _ => new CardLoc("Crying in the Rain",
             "Per persona switch this combat, gain {StrPerSwitch:diff()} [gold]Strength[/gold] this turn (total {StrTotal}).\n" +
-            "{MuSec}{MuOpen}Mu{MuClose}: Apply {WeakPower} [gold]Weak[/gold].{MuSecEnd}\n" +
+            "{MuSec}{MuOpen}Mu{MuClose}: Apply {VulnerablePower} [gold]Vulnerable[/gold]; [gold]Enter Mo[/gold].{MuSecEnd}\n" +
             "{MoSec}{MoOpen}Mo{MoClose}: Deal {Damage:diff()} damage.{MoSecEnd}"),
     };
 }

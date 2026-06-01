@@ -37,11 +37,14 @@ public class ConcertPower : CustomPowerModel
         return 0;
     }
 
-    // 回合开始：(1) 额外给 1 点能量；(2) 把所有「演奏」牌从抽/弃/消耗/出牌等位置移到手牌
+    // 回合开始：(1) 召出舞台聚光灯 VFX；(2) 额外给 1 点能量；(3) 把所有「演奏」牌从抽/弃/消耗/出牌等位置移到手牌
     public override async Task AfterPlayerTurnStartEarly(PlayerChoiceContext ctx, Player player)
     {
         if (player.Creature != Owner) return;
         if (player.PlayerCombatState == null) return;
+
+        // 召出聚光灯 VFX（per-client 渲染，fade-in ~1.5s 后转 dim 持续）
+        ConcertSpotlightVfx.SpawnFor(player.Creature);
 
         // 额外 1 费（演奏会专属）
         await PlayerCmd.GainEnergy(1, player);
@@ -75,14 +78,16 @@ public class ConcertPower : CustomPowerModel
 #endif
     {
         if (side != Owner.Side) return;
+        // 先让聚光灯淡出（0.5s 后自销毁，不 await，跟 Remove 并行进行）
+        ConcertSpotlightVfx.DespawnFor(Owner);
         await PowerCmd.Remove<ConcertPower>(Owner);
     }
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new PowerLoc("演奏会",
-            "一个特殊的额外回合。回合开始时，移除所有「演艺热情」并跳过抽牌，额外获得1点能量，将所有[gold]演奏[/gold]牌移入手牌，不论其在何处。",
-            "一个特殊的额外回合。回合开始时，移除所有「演艺热情」并跳过抽牌，额外获得1点能量，将所有[gold]演奏[/gold]牌移入手牌，不论其在何处。"),
+            "一个特殊的额外回合。回合开始时，移除所有[gold]演艺热情[/gold]并跳过抽牌，额外获得1点能量，将所有[gold]演奏[/gold]牌移入手牌，不论其在何处。",
+            "一个特殊的额外回合。回合开始时，移除所有[gold]演艺热情[/gold]并跳过抽牌，额外获得1点能量，将所有[gold]演奏[/gold]牌移入手牌，不论其在何处。"),
         _ => new PowerLoc("Concert",
             "A special extra turn. At turn start, remove all [gold]Performance Passion[/gold], skip drawing, gain 1 extra energy, and move all [gold]Perform[/gold] cards into your hand regardless of their location.",
             "A special extra turn. At turn start, remove all [gold]Performance Passion[/gold], skip drawing, gain 1 extra energy, and move all [gold]Perform[/gold] cards into your hand regardless of their location."),

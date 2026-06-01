@@ -14,7 +14,7 @@ using MegaCrit.Sts2.Core.Models.Powers;
 namespace MzmChar.Game;
 
 /// <summary>
-/// 演技：1 费白色技能。抽 2/3 张牌，获得 1 层「转换人格」（升级后还本回合获得 2 力量 + 2 敏捷）。
+/// 演技：1 费白色技能。抽 2/3 张牌，获得 1 层「转换人格」（升级后还本回合获得 1 力量 + 1 敏捷）。
 ///   小睦：进入小墨。
 ///   小墨：进入小睦。
 /// </summary>
@@ -47,8 +47,8 @@ public class Acting : MzmCharBaseCard
     protected override void OnUpgrade()
     {
         DynamicVars.Cards.UpgradeValueBy(1);            // 抽牌 2 → 3
-        DynamicVars["TempStr"].UpgradeValueBy(2);       // 0 → 2
-        DynamicVars["TempDex"].UpgradeValueBy(2);       // 0 → 2
+        DynamicVars["TempStr"].UpgradeValueBy(1);       // 0 → 1
+        DynamicVars["TempDex"].UpgradeValueBy(1);       // 0 → 1
     }
 
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay play)

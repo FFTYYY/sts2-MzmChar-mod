@@ -55,7 +55,7 @@ public class NobleHouse : MzmCharBaseCard
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new CardLoc("名门",
-            "回合开始时，你每有1层[gold]演艺热情[/gold]，就获得{Block:diff()}点[gold]格挡[/gold]。"),
+            "回合开始时，你每有1点[gold]演艺热情[/gold]，就获得{Block:diff()}点[gold]格挡[/gold]。"),
         _ => new CardLoc("Noble House",
             "At turn start, gain {Block:diff()} [gold]Block[/gold] for each stack of [gold]Performance Passion[/gold]."),
     };

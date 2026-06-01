@@ -15,7 +15,7 @@ dest_files=["res://.godot/imported/masked_play.png-606fe4f7a2b5ac883e2eb22efb6df
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

@@ -17,8 +17,8 @@ using MegaCrit.Sts2.Core.ValueProps;
 namespace MzmChar.Game;
 
 /// <summary>
-/// 殴打镜子：0 费白色攻击。
-///   小睦：施加 1/2 易伤，获得 5/8 活力。
+/// 砸碎镜子：0 费白色攻击。
+///   小睦：施加 1/2 易伤，获得 3 活力。
 ///   小墨：造成 5/8 伤害，施加 1 层虚弱。
 /// </summary>
 [Pool(typeof(MzmCharCardPool))]
@@ -29,7 +29,7 @@ public class BeatMirror : MzmCharBaseCard
     private readonly List<DynamicVar> _vars = new()
     {
         new DamageVar(5, ValueProp.Move),                    // Mo damage
-        new PowerVar<VigorPower>(5),
+        new PowerVar<VigorPower>(3),
         new PowerVar<VulnerablePower>(1),                    // Mu Vulnerable
         new PowerVar<WeakPower>(1),                          // Mo Weak
     };
@@ -50,8 +50,8 @@ public class BeatMirror : MzmCharBaseCard
     protected override void OnUpgrade()
     {
         DynamicVars.Damage.UpgradeValueBy(3);                  // Mo: 5 → 8
-        DynamicVars["VigorPower"].UpgradeValueBy(3);           // Mu vigor: 5 → 8
         DynamicVars["VulnerablePower"].UpgradeValueBy(1);      // Mu vuln: 1 → 2
+        // Vigor 升级不再 +2，base 3 保持
     }
 
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay play)
@@ -78,10 +78,10 @@ public class BeatMirror : MzmCharBaseCard
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
-        "zhs" => new CardLoc("殴打镜子",
+        "zhs" => new CardLoc("砸碎镜子",
             "{MuSec}{MuOpen}小睦{MuClose}：施加{VulnerablePower:diff()}层[gold]易伤[/gold]，获得{VigorPower:diff()}点[gold]活力[/gold]。{MuSecEnd}\n" +
             "{MoSec}{MoOpen}小墨{MoClose}：造成{Damage:diff()}点伤害，施加{WeakPower}层[gold]虚弱[/gold]。{MoSecEnd}"),
-        _ => new CardLoc("Beat Mirror",
+        _ => new CardLoc("Shatter Mirror",
             "{MuSec}{MuOpen}Mu{MuClose}: Apply {VulnerablePower:diff()} [gold]Vulnerable[/gold]; gain {VigorPower:diff()} [gold]Vigor[/gold].{MuSecEnd}\n" +
             "{MoSec}{MoOpen}Mo{MoClose}: Deal {Damage:diff()} damage; apply {WeakPower} [gold]Weak[/gold].{MoSecEnd}"),
     };

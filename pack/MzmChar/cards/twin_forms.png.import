@@ -15,7 +15,7 @@ dest_files=["res://.godot/imported/twin_forms.png-4b6814df2b26c0801c708a5b5944be
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

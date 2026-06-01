@@ -15,7 +15,7 @@ dest_files=["res://.godot/imported/cucumber.png-7f9c4a2d1f728a087cb3a64974f16771
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

@@ -15,7 +15,7 @@ dest_files=["res://.godot/imported/wont_last_long.png-a635b5e3b7cc850ffc0e459e90
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

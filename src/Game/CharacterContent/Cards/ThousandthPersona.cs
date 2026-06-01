@@ -31,7 +31,7 @@ public class ThousandthPersona : MzmCharBaseCard, ITomeCard
 
     private readonly List<DynamicVar> _vars = new()
     {
-        new PowerVar<ThousandthPersonaPower>(2),
+        new PowerVar<ThousandthPersonaPower>(1),
     };
     protected override IEnumerable<DynamicVar> CanonicalVars => _vars;
 
@@ -62,8 +62,8 @@ public class ThousandthPersona : MzmCharBaseCard, ITomeCard
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new CardLoc("第一千个人格",
-            "每切换一次人格，本回合获得2点[gold]力量[/gold]和2点[gold]敏捷[/gold]。"),
+            "每切换一次人格，本回合获得{ThousandthPersonaPower}点[gold]力量[/gold]和{ThousandthPersonaPower}点[gold]敏捷[/gold]。"),
         _ => new CardLoc("Thousandth Persona",
-            "Per persona switch, this turn gain 2 [gold]Strength[/gold] and 2 [gold]Dexterity[/gold]."),
+            "Per persona switch, this turn gain {ThousandthPersonaPower} [gold]Strength[/gold] and {ThousandthPersonaPower} [gold]Dexterity[/gold]."),
     };
 }

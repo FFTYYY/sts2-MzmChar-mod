@@ -19,7 +19,7 @@ namespace MzmChar.Game;
 /// <summary>
 /// 吉他打击：2/1 费攻击。双形态。升级仅 -1 费，数值不变。（曾用名「强力和弦」/「吉他重击」）
 ///   小睦：对目标施加 3 层虚弱，本回合获得 4 力量
-///   小墨：造成 15 伤害，抽 2 张
+///   小墨：造成 12 伤害，抽 1 张
 /// </summary>
 [Pool(typeof(MzmCharCardPool))]
 public class GuitarSmash : MzmCharBaseCard
@@ -28,9 +28,9 @@ public class GuitarSmash : MzmCharBaseCard
 
     private readonly List<DynamicVar> _vars = new()
     {
-        new DamageVar(15, ValueProp.Move),                   // Mo damage
+        new DamageVar(12, ValueProp.Move),                   // Mo damage
         new DynamicVar("MuStr", 4m),                          // Mu: 本回合 4/6 力量
-        new CardsVar(2),
+        new CardsVar(1),
         new PowerVar<WeakPower>(3),
     };
     protected override IEnumerable<DynamicVar> CanonicalVars => _vars;

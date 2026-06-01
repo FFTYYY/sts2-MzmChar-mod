@@ -18,7 +18,7 @@ namespace MzmChar.Game;
 /// <summary>
 /// 「种植黄瓜」效果 buff：每回合开始时
 ///   - 小睦：获得 (6/8) 点格挡 per instance
-///   - 小墨：获得 (5/7) 点活力 per instance
+///   - 小墨：获得 (4/6) 点活力 per instance
 ///
 /// IsInstanced=true：多次施加产生独立 instance，每个 instance 自己的升级状态
 /// 各自触发（同 vanilla OrbitPower 模式）。
@@ -45,7 +45,7 @@ public class PlantCucumberPower : CustomPowerModel
     }
 
     private int MuBlockPerStack => IsUpgradedVersion ? 8 : 6;
-    private int MoVigorPerStack => IsUpgradedVersion ? 7 : 5;
+    private int MoVigorPerStack => IsUpgradedVersion ? 6 : 4;
 
     public override async Task AfterPlayerTurnStart(PlayerChoiceContext ctx, Player player)
     {

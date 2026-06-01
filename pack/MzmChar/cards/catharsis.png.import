@@ -15,7 +15,7 @@ dest_files=["res://.godot/imported/catharsis.png-1176fcac81380d1ce192f0b4ab7b3d6
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

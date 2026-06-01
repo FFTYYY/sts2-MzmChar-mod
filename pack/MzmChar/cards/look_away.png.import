@@ -15,7 +15,7 @@ dest_files=["res://.godot/imported/look_away.png-29f83b934bbb53cea706ae7aaa38eba
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

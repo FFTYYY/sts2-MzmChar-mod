@@ -9,13 +9,13 @@ using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Models.Powers;
-using MegaCrit.Sts2.Core.ValueProps;
 
 namespace MzmChar.Game;
 
 /// <summary>
-/// 「易伤翻倍」debuff：在目标身上时，[gold]易伤[/gold]带来的伤害加成翻倍。
-/// Amount = 剩余回合数。owner.Side 的回合结束时 -1，归零则自动移除。
+/// 「二重易伤」debuff：若 owner 身上有[gold]易伤[/gold]，vuln 的乘数**加性**再加 0.5。
+/// 加性而非乘性 → vuln 1.5 → 2.0 (+100%)；vuln+Debilitate 2.0 → 2.5 (+150%)。
+/// 详见 gotcha #59（跟 WeakDouble 同模式）。
 /// </summary>
 public class VulnerableDoublePower : CustomPowerModel
 {
@@ -42,12 +42,12 @@ public class VulnerableDoublePower : CustomPowerModel
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
-        "zhs" => new PowerLoc("易伤翻倍",
-            "目标身上的[gold]易伤[/gold]效果翻倍。",
-            "{Amount}回合内，目标身上的[gold]易伤[/gold]效果翻倍。"),
-        _ => new PowerLoc("Vulnerable x2",
-            "[gold]Vulnerable[/gold] effect on this target is doubled.",
-            "For {Amount} turns, [gold]Vulnerable[/gold] effect on this target is doubled."),
+        "zhs" => new PowerLoc("二重易伤",
+            "若目标身上有[gold]易伤[/gold]，则目标受到的伤害额外增加50%。",
+            "{Amount}回合内，若目标身上有[gold]易伤[/gold]，则目标受到的伤害额外增加50%。"),
+        _ => new PowerLoc("Double Vulnerable",
+            "If this target has [gold]Vulnerable[/gold], they take an additional 50% damage.",
+            "For {Amount} turns, if this target has [gold]Vulnerable[/gold], they take an additional 50% damage."),
     };
 }
 
@@ -59,9 +59,9 @@ public static class VulnerablePower_DoublePatch
     {
         if (target == null) return;
         if (!target.HasPower<VulnerableDoublePower>()) return;
-        // ModifyDamageMultiplicative 返回的是**乘数**（vuln 默认 1.5 = +50%）。
-        // "翻倍" = bonus 加倍：bonus = result - 1，新 bonus = 2 * bonus → new_result = 1 + 2 * (result - 1) = 2 * result - 1
-        // vuln 1.5 → 2.0 (+100% 伤害)
-        __result = 2m * __result - 1m;
+        // __result == 1m 表示 vuln 没生效 —— 我们也不该生效
+        if (__result <= 1m) return;
+        // 加性加 0.5：vuln 1.5 → 2.0 (+100%)；vuln+Debilitate 2.0 → 2.5 (+150%)
+        __result += 0.5m;
     }
 }

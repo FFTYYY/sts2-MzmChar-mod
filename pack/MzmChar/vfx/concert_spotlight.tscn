@@ -1,0 +1,306 @@
+[gd_scene format=3 uid="uid://cwaavet0yq45u"]
+
+[ext_resource type="Texture2D" uid="uid://crstpikyhtpoj" path="res://MzmChar/vfx/concert_frames/idle_00.png" id="Idle_00"]
+[ext_resource type="Texture2D" uid="uid://32urby0lxp47" path="res://MzmChar/vfx/concert_frames/idle_01.png" id="Idle_01"]
+[ext_resource type="Texture2D" uid="uid://mokd5yk00b6c" path="res://MzmChar/vfx/concert_frames/idle_02.png" id="Idle_02"]
+[ext_resource type="Texture2D" uid="uid://bhfisi2ewxpnc" path="res://MzmChar/vfx/concert_frames/idle_03.png" id="Idle_03"]
+[ext_resource type="Texture2D" uid="uid://b4rn4eh7x4c4d" path="res://MzmChar/vfx/concert_frames/idle_04.png" id="Idle_04"]
+[ext_resource type="Texture2D" uid="uid://bk1vmf1ujrwrk" path="res://MzmChar/vfx/concert_frames/idle_05.png" id="Idle_05"]
+[ext_resource type="Texture2D" uid="uid://bn2kx3fseqt2e" path="res://MzmChar/vfx/concert_frames/idle_06.png" id="Idle_06"]
+[ext_resource type="Texture2D" uid="uid://dr77qgcn3663y" path="res://MzmChar/vfx/concert_frames/idle_07.png" id="Idle_07"]
+[ext_resource type="Texture2D" uid="uid://dbvawite64px7" path="res://MzmChar/vfx/concert_frames/idle_08.png" id="Idle_08"]
+[ext_resource type="Texture2D" uid="uid://kyqa44hwitrt" path="res://MzmChar/vfx/concert_frames/idle_09.png" id="Idle_09"]
+[ext_resource type="Texture2D" uid="uid://brg8sgp5ve3o1" path="res://MzmChar/vfx/concert_frames/idle_10.png" id="Idle_10"]
+[ext_resource type="Texture2D" uid="uid://b0himwayrfrhc" path="res://MzmChar/vfx/concert_frames/idle_11.png" id="Idle_11"]
+[ext_resource type="Texture2D" uid="uid://dmyslk3tdxk8m" path="res://MzmChar/vfx/concert_frames/idle_12.png" id="Idle_12"]
+[ext_resource type="Texture2D" uid="uid://b0rd0iq4f8rcn" path="res://MzmChar/vfx/concert_frames/idle_13.png" id="Idle_13"]
+[ext_resource type="Texture2D" uid="uid://b3ovqlut10gvy" path="res://MzmChar/vfx/concert_frames/idle_14.png" id="Idle_14"]
+[ext_resource type="Texture2D" uid="uid://cc1ixbgemty48" path="res://MzmChar/vfx/concert_frames/idle_15.png" id="Idle_15"]
+[ext_resource type="Texture2D" uid="uid://b6g5ambn1ftds" path="res://MzmChar/vfx/concert_frames/idle_16.png" id="Idle_16"]
+[ext_resource type="Texture2D" uid="uid://ckwdxcy3hu5cj" path="res://MzmChar/vfx/concert_frames/idle_17.png" id="Idle_17"]
+[ext_resource type="Texture2D" uid="uid://cnrxr8u0iunwy" path="res://MzmChar/vfx/concert_frames/intro_00.png" id="Intro_00"]
+[ext_resource type="Texture2D" uid="uid://6n71a1we6q57" path="res://MzmChar/vfx/concert_frames/intro_01.png" id="Intro_01"]
+[ext_resource type="Texture2D" uid="uid://lvexrm52t0hc" path="res://MzmChar/vfx/concert_frames/intro_02.png" id="Intro_02"]
+[ext_resource type="Texture2D" uid="uid://dhny5ah37tla4" path="res://MzmChar/vfx/concert_frames/intro_03.png" id="Intro_03"]
+[ext_resource type="Texture2D" uid="uid://b7qkgjj4hefs6" path="res://MzmChar/vfx/concert_frames/intro_04.png" id="Intro_04"]
+[ext_resource type="Texture2D" uid="uid://dsl2e4lnfer8d" path="res://MzmChar/vfx/concert_frames/intro_05.png" id="Intro_05"]
+[ext_resource type="Texture2D" uid="uid://cfvhs20ok5y1a" path="res://MzmChar/vfx/concert_frames/intro_06.png" id="Intro_06"]
+[ext_resource type="Texture2D" uid="uid://etica8nyhs2q" path="res://MzmChar/vfx/concert_frames/intro_07.png" id="Intro_07"]
+[ext_resource type="Texture2D" uid="uid://cetpf54r7x8u7" path="res://MzmChar/vfx/concert_frames/intro_08.png" id="Intro_08"]
+[ext_resource type="Texture2D" uid="uid://52slw1eahe6l" path="res://MzmChar/vfx/concert_frames/intro_09.png" id="Intro_09"]
+[ext_resource type="Texture2D" uid="uid://cbmcafunah3if" path="res://MzmChar/vfx/concert_frames/intro_10.png" id="Intro_10"]
+[ext_resource type="Texture2D" uid="uid://dcu88amocmr72" path="res://MzmChar/vfx/concert_frames/intro_11.png" id="Intro_11"]
+[ext_resource type="Texture2D" uid="uid://dr8764ddkyxb" path="res://MzmChar/vfx/concert_frames/intro_12.png" id="Intro_12"]
+[ext_resource type="Texture2D" uid="uid://d0gk3dj5w56hv" path="res://MzmChar/vfx/concert_frames/intro_13.png" id="Intro_13"]
+[ext_resource type="Texture2D" uid="uid://d3ls28e4a3qtm" path="res://MzmChar/vfx/concert_frames/intro_14.png" id="Intro_14"]
+[ext_resource type="Texture2D" uid="uid://djyyvhhh8o8hx" path="res://MzmChar/vfx/concert_frames/intro_15.png" id="Intro_15"]
+[ext_resource type="Texture2D" uid="uid://er2pes6i2wsg" path="res://MzmChar/vfx/concert_frames/intro_16.png" id="Intro_16"]
+[ext_resource type="Texture2D" uid="uid://bhax845h8l4nf" path="res://MzmChar/vfx/concert_frames/intro_17.png" id="Intro_17"]
+[ext_resource type="Texture2D" uid="uid://cwlawkwj1c8yq" path="res://MzmChar/vfx/concert_frames/intro_18.png" id="Intro_18"]
+[ext_resource type="Texture2D" uid="uid://dtl5surhsobbb" path="res://MzmChar/vfx/concert_frames/intro_19.png" id="Intro_19"]
+[ext_resource type="Texture2D" uid="uid://iue5xfb52ii0" path="res://MzmChar/vfx/concert_frames/intro_20.png" id="Intro_20"]
+[ext_resource type="Texture2D" uid="uid://ccfi7qqu4lvmw" path="res://MzmChar/vfx/concert_frames/intro_21.png" id="Intro_21"]
+[ext_resource type="Texture2D" uid="uid://brsf0ghex3sjv" path="res://MzmChar/vfx/concert_frames/intro_22.png" id="Intro_22"]
+[ext_resource type="Texture2D" uid="uid://cjauvts4kjf24" path="res://MzmChar/vfx/concert_frames/intro_23.png" id="Intro_23"]
+[ext_resource type="Texture2D" uid="uid://cae8phg3e76ji" path="res://MzmChar/vfx/concert_frames/intro_24.png" id="Intro_24"]
+[ext_resource type="Texture2D" uid="uid://dd4ujtthb65b8" path="res://MzmChar/vfx/concert_frames/intro_25.png" id="Intro_25"]
+[ext_resource type="Texture2D" uid="uid://bahohlbd52iee" path="res://MzmChar/vfx/concert_frames/intro_26.png" id="Intro_26"]
+[ext_resource type="Texture2D" uid="uid://b1aqgutagesdc" path="res://MzmChar/vfx/concert_frames/intro_27.png" id="Intro_27"]
+[ext_resource type="Texture2D" uid="uid://dv7hbqsn5k23g" path="res://MzmChar/vfx/concert_frames/intro_28.png" id="Intro_28"]
+[ext_resource type="Texture2D" uid="uid://p88aoiew0xt0" path="res://MzmChar/vfx/concert_frames/intro_29.png" id="Intro_29"]
+[ext_resource type="Texture2D" uid="uid://dh43plqr8pdjv" path="res://MzmChar/vfx/concert_frames/outro_00.png" id="Outro_00"]
+[ext_resource type="Texture2D" uid="uid://c6bxiyk06tcch" path="res://MzmChar/vfx/concert_frames/outro_01.png" id="Outro_01"]
+[ext_resource type="Texture2D" uid="uid://c5lfnhl2ioe0s" path="res://MzmChar/vfx/concert_frames/outro_02.png" id="Outro_02"]
+[ext_resource type="Texture2D" uid="uid://dkr0u5x5qec0v" path="res://MzmChar/vfx/concert_frames/outro_03.png" id="Outro_03"]
+[ext_resource type="Texture2D" uid="uid://diimf4gbl8mqx" path="res://MzmChar/vfx/concert_frames/outro_04.png" id="Outro_04"]
+[ext_resource type="Texture2D" uid="uid://cyv5bx2tq0fan" path="res://MzmChar/vfx/concert_frames/outro_05.png" id="Outro_05"]
+[ext_resource type="Texture2D" uid="uid://digiiht03aqwm" path="res://MzmChar/vfx/concert_frames/outro_06.png" id="Outro_06"]
+[ext_resource type="Texture2D" uid="uid://d4d4yo6sjjqrx" path="res://MzmChar/vfx/concert_frames/outro_07.png" id="Outro_07"]
+[ext_resource type="Texture2D" uid="uid://nwwm3is17gjm" path="res://MzmChar/vfx/concert_frames/outro_08.png" id="Outro_08"]
+[ext_resource type="Texture2D" uid="uid://cuis6wrb8ky1y" path="res://MzmChar/vfx/concert_frames/outro_09.png" id="Outro_09"]
+[ext_resource type="Texture2D" uid="uid://ccs8borr57sdd" path="res://MzmChar/vfx/concert_frames/outro_10.png" id="Outro_10"]
+[ext_resource type="Texture2D" uid="uid://lsro8lc8hg3q" path="res://MzmChar/vfx/concert_frames/outro_11.png" id="Outro_11"]
+[ext_resource type="Texture2D" uid="uid://blnomrdyrjk4m" path="res://MzmChar/vfx/concert_frames/outro_12.png" id="Outro_12"]
+[ext_resource type="Texture2D" uid="uid://b0ecdewhf0rfm" path="res://MzmChar/vfx/concert_frames/outro_13.png" id="Outro_13"]
+[ext_resource type="Texture2D" uid="uid://dn2prwt6vmj2c" path="res://MzmChar/vfx/concert_frames/outro_14.png" id="Outro_14"]
+[ext_resource type="Texture2D" uid="uid://csexrxhlpb5ym" path="res://MzmChar/vfx/concert_frames/outro_15.png" id="Outro_15"]
+[ext_resource type="Texture2D" uid="uid://c6wg6hs7jq7gi" path="res://MzmChar/vfx/concert_frames/outro_16.png" id="Outro_16"]
+[ext_resource type="Texture2D" uid="uid://btfp0xw81x3ak" path="res://MzmChar/vfx/concert_frames/outro_17.png" id="Outro_17"]
+[ext_resource type="Texture2D" uid="uid://c2li7a50hv4qh" path="res://MzmChar/vfx/shadow.png" id="Shadow_tex"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_main"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("Idle_00")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Idle_01")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Idle_02")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Idle_03")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Idle_04")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Idle_05")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Idle_06")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Idle_07")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Idle_08")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Idle_09")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Idle_10")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Idle_11")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Idle_12")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Idle_13")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Idle_14")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Idle_15")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Idle_16")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Idle_17")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 12.86
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("Intro_00")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Intro_01")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Intro_02")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Intro_03")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Intro_04")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Intro_05")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Intro_06")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Intro_07")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Intro_08")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Intro_09")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Intro_10")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Intro_11")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Intro_12")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Intro_13")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Intro_14")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Intro_15")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Intro_16")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Intro_17")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Intro_18")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Intro_19")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Intro_20")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Intro_21")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Intro_22")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Intro_23")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Intro_24")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Intro_25")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Intro_26")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Intro_27")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Intro_28")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Intro_29")
+}],
+"loop": false,
+"name": &"intro",
+"speed": 42.86
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("Outro_00")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Outro_01")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Outro_02")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Outro_03")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Outro_04")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Outro_05")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Outro_06")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Outro_07")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Outro_08")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Outro_09")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Outro_10")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Outro_11")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Outro_12")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Outro_13")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Outro_14")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Outro_15")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Outro_16")
+}, {
+"duration": 1.0,
+"texture": ExtResource("Outro_17")
+}],
+"loop": false,
+"name": &"outro",
+"speed": 30.0
+}]
+
+[node name="ConcertSpotlight" type="Control" unique_id=118149107]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Cone" type="AnimatedSprite2D" parent="." unique_id=1279976991]
+z_index = 1
+position = Vector2(6, -143)
+sprite_frames = SubResource("SpriteFrames_main")
+animation = &"intro"
+autoplay = "intro"
+
+[node name="Shadow" type="Sprite2D" parent="." unique_id=2144779692]
+modulate = Color(1, 1, 1, 0)
+position = Vector2(11, 0)
+texture = ExtResource("Shadow_tex")

@@ -91,10 +91,10 @@ public class GhostScream : MzmCharBaseCard
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new CardLoc("鬼叫",
-            "{MuSec}{MuOpen}小睦{MuClose}：自身每有5点[gold]活力[/gold]，就获得{MuVigorBlock}点[gold]活力[/gold]（{MuActualVigor}活力）。施加{MuVulnerable}层[gold]易伤[/gold]。{MuSecEnd}\n" +
+            "{MuSec}{MuOpen}小睦{MuClose}：你每有5点[gold]活力[/gold]，就获得{MuVigorBlock}点[gold]活力[/gold]（{MuActualVigor}活力）。施加{MuVulnerable}层[gold]易伤[/gold]。{MuSecEnd}\n" +
             "{MoSec}{MoOpen}小墨{MoClose}：造成{Damage:diff()}点伤害。施加{WeakPower}层[gold]虚弱[/gold]。{MoSecEnd}"),
         _ => new CardLoc("Ghost Scream",
-            "{MuSec}{MuOpen}Mu{MuClose}: Per 5 [gold]Vigor[/gold] you have, gain {MuVigorBlock} [gold]Vigor[/gold] ({MuActualVigor}). Apply {MuVulnerable} [gold]Vulnerable[/gold].{MuSecEnd}\n" +
+            "{MuSec}{MuOpen}Mu{MuClose}: For every 5 [gold]Vigor[/gold] you have, gain {MuVigorBlock} [gold]Vigor[/gold] ({MuActualVigor}). Apply {MuVulnerable} [gold]Vulnerable[/gold].{MuSecEnd}\n" +
             "{MoSec}{MoOpen}Mo{MoClose}: Deal {Damage:diff()} damage; apply {WeakPower} [gold]Weak[/gold].{MoSecEnd}"),
     };
 }

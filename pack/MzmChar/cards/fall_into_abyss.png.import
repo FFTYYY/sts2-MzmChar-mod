@@ -15,7 +15,7 @@ dest_files=["res://.godot/imported/fall_into_abyss.png-19dcc0be59c264ccb1892ef82
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

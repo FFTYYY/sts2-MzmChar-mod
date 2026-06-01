@@ -15,7 +15,7 @@ dest_files=["res://.godot/imported/silence.png-33a8d949330459d477d1777e167f07df.
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

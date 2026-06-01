@@ -6,4 +6,6 @@
 
 [node name="Editor" type="AnimatedSprite2D" parent="." unique_id=1303718507]
 sprite_frames = ExtResource("1_default")
-animation = &"attack"
+animation = &"idle"
+frame = 24
+frame_progress = 0.77588063

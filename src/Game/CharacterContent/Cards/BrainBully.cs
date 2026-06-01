@@ -16,8 +16,8 @@ namespace MzmChar.Game;
 
 /// <summary>
 /// 脑内霸凌：2 费白色攻击。
-///   小睦：2/4 回合内目标[gold]易伤[/gold]效果翻倍。
-///   小墨：造成 10 伤害；2/4 回合内目标[gold]虚弱[/gold]效果翻倍。
+///   小睦：2/4 回合内给目标挂[gold]二重易伤[/gold]（有易伤时受伤再增加 50%）。
+///   小墨：造成 10 伤害；2/4 回合内给目标挂[gold]二重虚弱[/gold]（有虚弱时伤害再减少 25%）。
 /// </summary>
 [Pool(typeof(MzmCharCardPool))]
 public class BrainBully : MzmCharBaseCard
@@ -76,10 +76,10 @@ public class BrainBully : MzmCharBaseCard
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new CardLoc("脑内霸凌",
-            "{MuSec}{MuOpen}小睦{MuClose}：{VulnerableDoublePower:diff()}回合内，目标的[gold]易伤[/gold]效果翻倍。{MuSecEnd}\n" +
-            "{MoSec}{MoOpen}小墨{MoClose}：造成{Damage:diff()}点伤害。{WeakDoublePower:diff()}回合内，目标的[gold]虚弱[/gold]效果翻倍。{MoSecEnd}"),
+            "{MuSec}{MuOpen}小睦{MuClose}：{VulnerableDoublePower:diff()}回合内，若目标有[gold]易伤[/gold]，则其受到的伤害额外增加50%。{MuSecEnd}\n" +
+            "{MoSec}{MoOpen}小墨{MoClose}：造成{Damage:diff()}点伤害。{WeakDoublePower:diff()}回合内，若目标有[gold]虚弱[/gold]，则其造成的伤害额外减少25%。{MoSecEnd}"),
         _ => new CardLoc("Brain Bully",
-            "{MuSec}{MuOpen}Mu{MuClose}: For {VulnerableDoublePower:diff()} turns, the target's [gold]Vulnerable[/gold] is doubled.{MuSecEnd}\n" +
-            "{MoSec}{MoOpen}Mo{MoClose}: Deal {Damage:diff()} damage; for {WeakDoublePower:diff()} turns, the target's [gold]Weak[/gold] is doubled.{MoSecEnd}"),
+            "{MuSec}{MuOpen}Mu{MuClose}: For {VulnerableDoublePower:diff()} turns, if the target has [gold]Vulnerable[/gold], they take an additional 50% damage.{MuSecEnd}\n" +
+            "{MoSec}{MoOpen}Mo{MoClose}: Deal {Damage:diff()} damage. For {WeakDoublePower:diff()} turns, if the target has [gold]Weak[/gold], they deal an additional 25% less damage.{MoSecEnd}"),
     };
 }

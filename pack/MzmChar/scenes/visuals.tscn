@@ -7,13 +7,10 @@
 [node name="Visuals" type="AnimatedSprite2D" parent="." unique_id=1143599260]
 unique_name_in_owner = true
 position = Vector2(33, -141)
-scale = Vector2(0.26, 0.26)
+scale = Vector2(0.34666667, 0.34666667)
 sprite_frames = ExtResource("1_11boj")
 animation = &"idle"
 autoplay = "idle"
-
-[node name="PhobiaModeVisuals" type="Node2D" parent="." unique_id=978172511]
-unique_name_in_owner = true
 
 [node name="Bounds" type="Control" parent="." unique_id=1167258580]
 unique_name_in_owner = true

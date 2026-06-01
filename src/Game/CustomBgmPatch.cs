@@ -13,9 +13,11 @@ using MzmChar.Config;
 namespace MzmChar.Game;
 
 /// <summary>
-/// 战斗 BGM 替换：若叶睦在场且非 boss 战时，把 vanilla 区域 / 战斗曲静音，从 pack/MzmChar/audio/
-/// 随机抽一首 mp3 循环播放；boss 战保留 vanilla 专属曲。战斗结束 / 败北时渐弱停止。
-/// 通过 Settings → Mods → 若叶睦角色 → 启用自定义战斗 BGM 开关。
+/// 战斗 BGM 替换：若叶睦在场时，从 pack/MzmChar/audio/ 随机抽一首 mp3 循环播放，把 vanilla
+/// 区域 / 战斗曲静音。战斗结束 / 败北时渐弱停止。
+/// 两个独立开关（Settings → Mods → 若叶睦角色）：
+///   - `EnableCustomBgm`     非 boss 战
+///   - `EnableCustomBgmBoss` boss 战（默认关，让原版 boss 主题曲优先）
 /// </summary>
 [HarmonyPatch]
 internal static class CustomBgmPatch
@@ -48,15 +50,22 @@ internal static class CustomBgmPatch
         return false;
     }
 
+    /// <summary>根据房间类型选用对应开关。</summary>
+    private static bool ShouldUseCustomBgm(RoomType roomType)
+    {
+        if (roomType == RoomType.Boss)
+            return MzmCharConfig.EnableCustomBgmBoss;
+        return MzmCharConfig.EnableCustomBgm;
+    }
+
     // vanilla EncounterModel.HasBgm defaults to false for non-boss encounters, so PlayCustomMusic
     // is never invoked. Force HasBgm=true and CustomBgm=<marker> so the call chain reaches us.
     [HarmonyPatch(typeof(EncounterModel), "get_HasBgm")]
     [HarmonyPostfix]
     private static void HasBgm_Postfix(EncounterModel __instance, ref bool __result)
     {
-        if (!MzmCharConfig.EnableCustomBgm) return;
+        if (!ShouldUseCustomBgm(__instance.RoomType)) return;
         if (!IsOurCharInCombat(null)) return;
-        if (__instance.RoomType == RoomType.Boss) return;
         __result = true;
     }
 
@@ -64,9 +73,8 @@ internal static class CustomBgmPatch
     [HarmonyPostfix]
     private static void CustomBgm_Postfix(EncounterModel __instance, ref string __result)
     {
-        if (!MzmCharConfig.EnableCustomBgm) return;
+        if (!ShouldUseCustomBgm(__instance.RoomType)) return;
         if (!IsOurCharInCombat(null)) return;
-        if (__instance.RoomType == RoomType.Boss) return;
         __result = DummyBgmKey;
     }
 
@@ -74,10 +82,10 @@ internal static class CustomBgmPatch
     [HarmonyPrefix]
     private static bool PlayCustomMusic_Prefix(NRunMusicController __instance, string customMusic)
     {
-        if (!MzmCharConfig.EnableCustomBgm) return true;
+        // Marker DummyBgmKey 只在 ShouldUseCustomBgm 命中时由 CustomBgm_Postfix 设置 →
+        // 走到这里就说明对应房间开关已开 + 角色在场，不再重复 config check
+        if (customMusic != DummyBgmKey) return true;  // 真 FMOD event (如 vanilla boss) 透传
         if (!IsOurCharInCombat(__instance)) return true;
-        // Real FMOD events (e.g. vanilla boss themes) pass through.
-        if (customMusic != DummyBgmKey) return true;
         StopVanillaMusicViaProxy(__instance);
         StartCustom();
         return false;

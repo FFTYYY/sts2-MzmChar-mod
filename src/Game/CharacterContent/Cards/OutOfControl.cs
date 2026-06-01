@@ -16,7 +16,7 @@ namespace MzmChar.Game;
 
 /// <summary>
 /// 失控：1 费白色攻击。
-///   小墨：造成 8/10 伤害
+///   小墨：造成 9/12 伤害
 ///   小睦：获得 5/7 层活力
 /// 之后随机进入小睦或小墨。
 /// </summary>
@@ -27,7 +27,7 @@ public class OutOfControl : MzmCharBaseCard
 
     private readonly List<DynamicVar> _vars = new()
     {
-        new DamageVar(8, ValueProp.Move),
+        new DamageVar(9, ValueProp.Move),
         new PowerVar<VigorPower>(5),
     };
     protected override IEnumerable<DynamicVar> CanonicalVars => _vars;
@@ -50,7 +50,7 @@ public class OutOfControl : MzmCharBaseCard
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(2);          // 8 → 10
+        DynamicVars.Damage.UpgradeValueBy(3);          // 9 → 12
         DynamicVars["VigorPower"].UpgradeValueBy(2);   // 5 → 7
     }
 
@@ -80,7 +80,7 @@ public class OutOfControl : MzmCharBaseCard
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new CardLoc("失控",
-            "{MuSec}{MuOpen}小睦{MuClose}：获得{VigorPower:diff()}层[gold]活力[/gold]。{MuSecEnd}\n" +
+            "{MuSec}{MuOpen}小睦{MuClose}：获得{VigorPower:diff()}点[gold]活力[/gold]。{MuSecEnd}\n" +
             "{MoSec}{MoOpen}小墨{MoClose}：造成{Damage:diff()}点伤害。{MoSecEnd}\n" +
             "之后随机[gold]进入小睦[/gold]或[gold]进入小墨[/gold]。"),
         _ => new CardLoc("Out of Control",

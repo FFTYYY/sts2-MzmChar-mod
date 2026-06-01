@@ -13,9 +13,10 @@ using MegaCrit.Sts2.Core.ValueProps;
 namespace MzmChar.Game;
 
 /// <summary>
-/// 人偶们的轮舞：X 费金色技能。造成 0 点伤害 floor(1.5X) 次，获得 0 点格挡 X 次。
+/// 人偶们的轮舞：X 费金色技能。对随机敌人造成 0 点伤害 floor(1.5X) 次（每次独立随机），获得 0 点格挡 X 次。
 /// 升级：攻击次数变 2X。
-/// X 费：override HasEnergyCostX + ResolveEnergyXValue（参考 Whirlwind）
+/// X 费：override HasEnergyCostX + ResolveEnergyXValue（参考 Whirlwind）。
+/// 随机攻击模式参考 ChaseCat：TargetType.RandomEnemy + TargetingRandomOpponents(cs, allowDuplicates: true)。
 /// </summary>
 [Pool(typeof(MzmCharCardPool))]
 public class DollWaltz : MzmCharBaseCard
@@ -42,7 +43,7 @@ public class DollWaltz : MzmCharBaseCard
         description.Add("XBlock", (decimal)x);
     }
 
-    public DollWaltz() : base(0, CardType.Attack, CardRarity.Rare, TargetType.AllEnemies) { }
+    public DollWaltz() : base(0, CardType.Attack, CardRarity.Rare, TargetType.RandomEnemy) { }
 
     protected override void OnUpgrade() { /* IsUpgraded 控制攻击次数倍率 */ }
 
@@ -54,12 +55,12 @@ public class DollWaltz : MzmCharBaseCard
         int blockHits = x;
 
         var cs = Owner.Creature.CombatState;
-        // 单 AttackCommand + WithHitCount → 力量/活力 等 modifier 算一次但应用到每次 hit
-        // （如果 loop 多次单独 Execute，活力会在第一次后被消耗，后续 hit 没活力加成）
+        // 单 AttackCommand + WithHitCount + TargetingRandomOpponents(allowDuplicates=true)
+        // → 每次 hit 框架内部独立选随机敌人（可重复）；力量/活力 modifier 算一次但应用到每次 hit
         if (cs != null && cs.HittableEnemies.Count > 0 && attackHits > 0)
         {
             await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-                .FromCard(this).TargetingAllOpponents(cs)
+                .FromCard(this).TargetingRandomOpponents(cs, allowDuplicates: true)
                 .WithHitCount(attackHits).Execute(ctx);
         }
         for (int i = 0; i < blockHits; i++)
@@ -72,8 +73,8 @@ public class DollWaltz : MzmCharBaseCard
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new CardLoc("人偶们的轮舞",
-            "对全体敌人造成{Damage:diff()}点伤害{IfUpgraded:show:2X|1.5X}次（{XAttack}次）。获得{Block:diff()}点[gold]格挡[/gold]X次（{XBlock}次）。"),
+            "对随机敌人造成{Damage:diff()}点伤害{IfUpgraded:show:2X|1.5X}次（{XAttack}次）。获得{Block:diff()}点[gold]格挡[/gold]X次（{XBlock}次）。"),
         _ => new CardLoc("Doll Waltz",
-            "Deal {Damage:diff()} damage to ALL enemies {IfUpgraded:show:2X|1.5X}({XAttack}) times. Gain {Block:diff()} [gold]Block[/gold] X({XBlock}) times."),
+            "Deal {Damage:diff()} damage to a random enemy {IfUpgraded:show:2X|1.5X}({XAttack}) times. Gain {Block:diff()} [gold]Block[/gold] X({XBlock}) times."),
     };
 }

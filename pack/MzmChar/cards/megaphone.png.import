@@ -15,7 +15,7 @@ dest_files=["res://.godot/imported/megaphone.png-588f65d02436ec4006c942630e543b9
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

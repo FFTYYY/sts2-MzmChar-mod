@@ -13,7 +13,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 namespace MzmChar.Game;
 
 /// <summary>
-/// 和声：1 费攻击。抽 1/2 张。
+/// 和声：1 费攻击。抽 1 张。
 ///   小睦：获得 8/11 格挡
 ///   小墨：造成 8/11 伤害
 /// </summary>
@@ -46,7 +46,6 @@ public class Harmony : MzmCharBaseCard
     {
         DynamicVars.Damage.UpgradeValueBy(3);                // 8 → 11
         DynamicVars.Block.UpgradeValueBy(3);                 // 8 → 11
-        DynamicVars.Cards.UpgradeValueBy(1);                 // 1 → 2
     }
 
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay play)
@@ -71,11 +70,11 @@ public class Harmony : MzmCharBaseCard
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new CardLoc("和声",
-            "抽{Cards:diff()}张牌。\n" +
+            "抽{Cards}张牌。\n" +
             "{MuSec}{MuOpen}小睦{MuClose}：获得{Block:diff()}点[gold]格挡[/gold]。{MuSecEnd}\n" +
             "{MoSec}{MoOpen}小墨{MoClose}：造成{Damage:diff()}点伤害。{MoSecEnd}"),
         _ => new CardLoc("Harmony",
-            "Draw {Cards:diff()}.\n" +
+            "Draw {Cards}.\n" +
             "{MuSec}{MuOpen}Mu{MuClose}: Gain {Block:diff()} [gold]Block[/gold].{MuSecEnd}\n" +
             "{MoSec}{MoOpen}Mo{MoClose}: Deal {Damage:diff()} damage.{MoSecEnd}"),
     };

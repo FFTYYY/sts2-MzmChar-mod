@@ -81,7 +81,7 @@ public class MoveCard : MzmCharBaseCard
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new CardLoc("移动",
-            "{MuSec}{MuOpen}小睦{MuClose}：获得{Block:diff()}点[gold]格挡[/gold]。从[gold]弃牌堆[/gold]选一张牌加入手牌。{MuSecEnd}\n" +
+            "{MuSec}{MuOpen}小睦{MuClose}：获得{Block:diff()}点[gold]格挡[/gold]。从[gold]弃牌堆[/gold]选择一张牌加入手牌。{MuSecEnd}\n" +
             "{MoSec}{MoOpen}小墨{MoClose}：抽{Cards:diff()}张牌。{MoSecEnd}",
             ("selectionScreenPrompt", "选一张牌加入手牌")),
         _ => new CardLoc("Move",

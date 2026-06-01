@@ -15,7 +15,7 @@ dest_files=["res://.godot/imported/distort.png-15ce9c2e0605eb779bb30b20d792f653.
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

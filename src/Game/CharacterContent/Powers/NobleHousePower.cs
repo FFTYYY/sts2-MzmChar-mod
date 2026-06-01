@@ -42,8 +42,8 @@ public class NobleHousePower : CustomPowerModel
         // 卡 hover (Amount 默认 0 时 canonical 显示)：写无数字 vague 版（保持跟 CutLine 同款）
         // buff hover：{Amount} 框架自动注入，显示当前堆叠后每层换算的格挡数
         "zhs" => new PowerLoc("名门",
-            "回合开始时，你每有1层[gold]演艺热情[/gold]，就获得[gold]格挡[/gold]。",
-            "回合开始时，你每有1层[gold]演艺热情[/gold]，就获得{Amount}点[gold]格挡[/gold]。"),
+            "回合开始时，你每有1点[gold]演艺热情[/gold]，就获得[gold]格挡[/gold]。",
+            "回合开始时，你每有1点[gold]演艺热情[/gold]，就获得{Amount}点[gold]格挡[/gold]。"),
         _ => new PowerLoc("Noble House",
             "At turn start, per stack of [gold]Performance Passion[/gold], gain [gold]Block[/gold].",
             "At turn start, per stack of [gold]Performance Passion[/gold], gain {Amount} [gold]Block[/gold]."),

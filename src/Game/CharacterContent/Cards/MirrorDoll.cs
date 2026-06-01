@@ -19,7 +19,7 @@ namespace MzmChar.Game;
 /// <summary>
 /// 镜中人偶：2 费金色攻击。
 ///   小墨：造成 3/5 点伤害 2 次。本回合中小睦每打出过一张牌就额外攻击一次。进入小睦
-///   小睦：获得 2/3 费，进入小墨
+///   小睦：获得 2/3 费，获得 5 格挡，进入小墨
 /// </summary>
 [Pool(typeof(MzmCharCardPool))]
 public class MirrorDoll : MzmCharBaseCard
@@ -31,6 +31,7 @@ public class MirrorDoll : MzmCharBaseCard
         new DamageVar(3, ValueProp.Move),
         new DynamicVar("BaseHits", 2m),
         new EnergyVar(2),
+        new BlockVar(5, ValueProp.Move),
         // 自定义 var：EnchantedValue = baseHits（基线 3）；PreviewValue = baseHits + 小睦出牌数
         // → {ActualHits:diff()} 在累计 > 3 时框架自动绿色染色
         new GrowingHitsVar(),
@@ -91,17 +92,19 @@ public class MirrorDoll : MzmCharBaseCard
         else
         {
             await PlayerCmd.GainEnergy(DynamicVars.Energy.IntValue, Owner);
+            await CreatureCmd.GainBlock(Owner.Creature,
+                DynamicVars.Block.BaseValue, ValueProp.Move, play, false);
             await Forms.EnterMortis(Owner, this, ctx);
         }
     }
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
-        "zhs" => new CardLoc("镜中人偶",
-            "{MuSec}{MuOpen}小睦{MuClose}：获得{Energy:energyIcons()}。[gold]进入小墨[/gold]。{MuSecEnd}\n" +
-            "{MoSec}{MoOpen}小墨{MoClose}：造成{Damage:diff()}点伤害{ActualHits:diff()}次。本回合中小睦每打出过一张牌就额外攻击一次。[gold]进入小睦[/gold]。{MoSecEnd}"),
+        "zhs" => new CardLoc("镜中人",
+            "{MuSec}{MuOpen}小睦{MuClose}：获得{Energy:energyIcons()}，获得{Block:diff()}点[gold]格挡[/gold]。[gold]进入小墨[/gold]。{MuSecEnd}\n" +
+            "{MoSec}{MoOpen}小墨{MoClose}：造成{Damage:diff()}点伤害{ActualHits:diff()}次。本回合中小睦每打出过一张牌，就额外攻击1次。[gold]进入小睦[/gold]。{MoSecEnd}"),
         _ => new CardLoc("Mirror Doll",
-            "{MuSec}{MuOpen}Mu{MuClose}: Gain {Energy:energyIcons()}. [gold]Enter Mo[/gold].{MuSecEnd}\n" +
+            "{MuSec}{MuOpen}Mu{MuClose}: Gain {Energy:energyIcons()}; gain {Block:diff()} [gold]Block[/gold]. [gold]Enter Mo[/gold].{MuSecEnd}\n" +
             "{MoSec}{MoOpen}Mo{MoClose}: Deal {Damage:diff()} damage {ActualHits:diff()} times. +1 hit for each Mu card played this turn. [gold]Enter Mu[/gold].{MoSecEnd}"),
     };
 }

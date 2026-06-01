@@ -67,8 +67,8 @@ public class CantPlayAtAll : MzmCharBaseCard
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new CardLoc("全都不会弹！",
-            "{MuSec}{MuOpen}小睦{MuClose}：获得{StrengthPower:diff()}点[gold]力量[/gold]和-1[gold]敏捷[/gold]。{MuSecEnd}\n" +
-            "{MoSec}{MoOpen}小墨{MoClose}：获得{DexterityPower:diff()}点[gold]敏捷[/gold]和-1[gold]力量[/gold]。{MoSecEnd}"),
+            "{MuSec}{MuOpen}小睦{MuClose}：获得{StrengthPower:diff()}点[gold]力量[/gold]和-1点[gold]敏捷[/gold]。{MuSecEnd}\n" +
+            "{MoSec}{MoOpen}小墨{MoClose}：获得{DexterityPower:diff()}点[gold]敏捷[/gold]和-1点[gold]力量[/gold]。{MoSecEnd}"),
         _ => new CardLoc("Can't Play Anything!",
             "{MuSec}{MuOpen}Mu{MuClose}: Gain {StrengthPower:diff()} [gold]Strength[/gold]; -1 [gold]Dexterity[/gold].{MuSecEnd}\n" +
             "{MoSec}{MoOpen}Mo{MoClose}: Gain {DexterityPower:diff()} [gold]Dexterity[/gold]; -1 [gold]Strength[/gold].{MoSecEnd}"),

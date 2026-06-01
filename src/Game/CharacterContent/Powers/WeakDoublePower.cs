@@ -9,12 +9,13 @@ using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Models.Powers;
-using MegaCrit.Sts2.Core.ValueProps;
 
 namespace MzmChar.Game;
 
 /// <summary>
-/// 「虚弱翻倍」debuff：当 owner 攻击时，自身[gold]虚弱[/gold]带来的减伤翻倍。
+/// 「二重虚弱」debuff：若 owner 身上有[gold]虚弱[/gold]，weak 的乘数**加性**再减 0.25。
+/// 加性而非乘性 → Debilitate 把 weak 改成 0.5 后再 −0.25 = 0.25（75% 减伤），不会破到 0。
+/// 详见 gotcha #59。
 /// </summary>
 public class WeakDoublePower : CustomPowerModel
 {
@@ -41,12 +42,12 @@ public class WeakDoublePower : CustomPowerModel
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
-        "zhs" => new PowerLoc("虚弱翻倍",
-            "目标身上的[gold]虚弱[/gold]效果翻倍。",
-            "{Amount}回合内，目标身上的[gold]虚弱[/gold]效果翻倍。"),
-        _ => new PowerLoc("Weak x2",
-            "[gold]Weak[/gold] effect on this target is doubled.",
-            "For {Amount} turns, [gold]Weak[/gold] effect on this target is doubled."),
+        "zhs" => new PowerLoc("二重虚弱",
+            "若目标身上有[gold]虚弱[/gold]，则目标造成的伤害额外减少25%。",
+            "{Amount}回合内，若目标身上有[gold]虚弱[/gold]，则目标造成的伤害额外减少25%。"),
+        _ => new PowerLoc("Double Weak",
+            "If this target has [gold]Weak[/gold], they deal an additional 25% less damage.",
+            "For {Amount} turns, if this target has [gold]Weak[/gold], they deal an additional 25% less damage."),
     };
 }
 
@@ -58,9 +59,10 @@ public static class WeakPower_DoublePatch
     {
         if (dealer == null) return;
         if (!dealer.HasPower<WeakDoublePower>()) return;
-        // ModifyDamageMultiplicative 返回的是**乘数**（weak 默认 0.75 = -25%）。
-        // "翻倍" = penalty 加倍：penalty = 1 - result，新 penalty = 2 * penalty → new_result = 1 - 2 * (1 - result) = 2 * result - 1
-        // weak 0.75 → 0.5 (-50% 伤害)
-        __result = 2m * __result - 1m;
+        // __result == 1m 表示 weak 没生效（不是攻击 / 非本 dealer）—— 我们也不该生效
+        if (__result >= 1m) return;
+        // 加性减 0.25：weak 0.75 → 0.5 (50% 减伤)；weak+Debilitate 0.5 → 0.25 (75% 减伤)
+        __result -= 0.25m;
+        if (__result < 0m) __result = 0m;
     }
 }

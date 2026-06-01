@@ -10,6 +10,7 @@ using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
+using MegaCrit.Sts2.Core.ValueProps;
 
 namespace MzmChar.Game;
 
@@ -55,11 +56,11 @@ public class BullyingYou : MzmCharBaseCard
         await PlayerCmd.GainEnergy(DynamicVars.Energy.IntValue, allyPlayer);
         await CardPileCmd.Draw(ctx, DynamicVars.Cards.BaseValue, allyPlayer, false);
 
-        // 失去生命：直接 set HP，钳制 ≥ 1（不杀死队友）
-        int hpLoss = (int)DynamicVars["HpLoss"].BaseValue;
-        var newHp = play.Target.CurrentHp - hpLoss;
-        if (newHp < 1) newHp = 1;
-        await CreatureCmd.SetCurrentHp(play.Target, newHp);
+        // 走 CreatureCmd.Damage 而非 SetCurrentHp，让队友的 AfterDamageReceived 遗物（百年积木等）能触发。
+        // ValueProp 14 = Unblockable | Unpowered | Move。不钳制 —— 霸凌允许杀死队友。
+        await CreatureCmd.Damage(ctx, play.Target, DynamicVars["HpLoss"].BaseValue,
+            ValueProp.Unblockable | ValueProp.Unpowered | ValueProp.Move,
+            Owner.Creature, this);
 
         await Sts2Compat.PowerApply<VulnerablePower>(ctx, play.Target,
             DynamicVars["VulnerablePower"].BaseValue, Owner.Creature, this, false);

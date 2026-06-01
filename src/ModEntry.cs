@@ -17,7 +17,7 @@ namespace MzmChar;
 public static class ModEntry
 {
     public const string ModId   = "MzmChar";
-    public const string Version = "0.1.0";
+    public const string Version = "0.2.0";
     public static HarmonyLib.Harmony? Harmony { get; private set; }
 
     public static void OnModLoaded()
@@ -33,6 +33,8 @@ public static class ModEntry
 
         // 预加载形态 SpriteFrames（含几十 MB atlas）—— 避免战斗中第一次切形态时同步加载卡顿
         Forms.Preload();
+        // 预加载演奏会聚光灯 VFX（PackedScene + 66 帧锥光 + 1 影子）—— 避免第一次进 concert 卡顿
+        ConcertSpotlightVfx.Preload();
 
         Log($"{ModId} loaded — character/cards/relic auto-registered via BaseLib.");
     }

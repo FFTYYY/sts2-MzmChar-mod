@@ -113,10 +113,10 @@ public class DevourSelf : MzmCharBaseCard
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new CardLoc("吞噬自己",
-            "{MuSec}{MuOpen}小睦{MuClose}：获得当前[gold]敏捷[/gold]{MuMult:diff()}倍的[gold]活力[/gold]（{MuVigor}活力）。[gold]进入小墨[/gold]。{MuSecEnd}\n" +
-            "{MoSec}{MoOpen}小墨{MoClose}：造成当前[gold]敏捷[/gold]{MoMult:diff()}倍的伤害（{MoDmg:diff()}伤害）。[gold]进入小睦[/gold]。{MoSecEnd}"),
+            "{MuSec}{MuOpen}小睦{MuClose}：获得当前[gold]敏捷[/gold]层数{MuMult:diff()}倍的[gold]活力[/gold]（{MuVigor}活力）。[gold]进入小墨[/gold]。{MuSecEnd}\n" +
+            "{MoSec}{MoOpen}小墨{MoClose}：造成当前[gold]敏捷[/gold]层数{MoMult:diff()}倍的伤害（{MoDmg:diff()}伤害）。[gold]进入小睦[/gold]。{MoSecEnd}"),
         _ => new CardLoc("Devour Self",
-            "{MuSec}{MuOpen}Mu{MuClose}: Gain [gold]Vigor[/gold] equal to {MuMult:diff()}× your current [gold]Dexterity[/gold] ({MuVigor}). [gold]Enter Mo[/gold].{MuSecEnd}\n" +
-            "{MoSec}{MoOpen}Mo{MoClose}: Deal damage equal to {MoMult:diff()}× your current [gold]Dexterity[/gold] ({MoDmg:diff()}). [gold]Enter Mu[/gold].{MoSecEnd}"),
+            "{MuSec}{MuOpen}Mu{MuClose}: Gain [gold]Vigor[/gold] equal to {MuMult:diff()}× your current [gold]Dexterity[/gold] stacks ({MuVigor}). [gold]Enter Mo[/gold].{MuSecEnd}\n" +
+            "{MoSec}{MoOpen}Mo{MoClose}: Deal damage equal to {MoMult:diff()}× your current [gold]Dexterity[/gold] stacks ({MoDmg:diff()}). [gold]Enter Mu[/gold].{MoSecEnd}"),
     };
 }

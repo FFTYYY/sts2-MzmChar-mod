@@ -105,27 +105,17 @@ public class AncientSecondPersonaRelic : CustomRelicModel
         return Task.CompletedTask;
     }
 
-    // 全局卡牌打出 hook —— 见 SecondPersonaRelic 同名 override 注释
-    public override Task BeforeCardPlayed(CardPlay cardPlay)
-    {
-        if (Owner != null) CombatCounters.OnBeforeCardPlayed(Owner, cardPlay);
-        return Task.CompletedTask;
-    }
-
-    public override async Task AfterCardPlayed(PlayerChoiceContext ctx, CardPlay cardPlay)
-    {
-        if (Owner != null) await CombatCounters.OnAfterCardPlayed(ctx, Owner, cardPlay);
-    }
+    // 卡牌 played hook 已下沉到 MutsumiFormPower / MortisFormPower —— 见 SecondPersonaRelic 同位置注释
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new RelicLoc(
             Title:       "灵魂双生",
             Description: "战斗开始时，[gold]进入小睦[/gold]，并将一张[gold]表人格+[/gold]和一张[gold]里人格+[/gold]加入手牌。",
-            Flavor:      "她不止两个，可能还有别的，沉睡在更古老的弦音里。"),
+            Flavor:      "她不止两个，可能还有别的。"),
         _ => new RelicLoc(
             Title:       "Soul Twin",
             Description: "At combat start, enter [gold]Mu[/gold] form and add an upgraded [gold]Front Persona[/gold] and an upgraded [gold]Back Persona[/gold] to your hand.",
-            Flavor:      "Two are not all. Older songs hold more."),
+            Flavor:      "Two are not all."),
     };
 }

@@ -30,9 +30,9 @@ public static class Forms
     /// <summary>每个形态对应的 AnimatedSprite2D position/scale，从 pack/MzmChar/scenes/visuals_mo.tscn
     /// 的 _VisualsMu / _VisualsMo 节点抄过来（手调对齐过的数值）。</summary>
     private static readonly Godot.Vector2 MutsumiPosition = new(36f, -142f);
-    private static readonly Godot.Vector2 MutsumiScale    = new(0.26f, 0.26f);
+    private static readonly Godot.Vector2 MutsumiScale    = new(0.34666667f, 0.34666667f);
     private static readonly Godot.Vector2 MortisPosition  = new(30.692335f, -152.73175f);
-    private static readonly Godot.Vector2 MortisScale     = new(0.24801975f, 0.24801971f);
+    private static readonly Godot.Vector2 MortisScale     = new(0.330693f, 0.33069295f);
 
     private static SpriteFrames? _mutsumiFrames;
     private static SpriteFrames? _mortisFrames;

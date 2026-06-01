@@ -43,7 +43,7 @@ public class Reminisce : MzmCharBaseCard
         }
     }
 
-    public Reminisce() : base(1, CardType.Attack, CardRarity.Uncommon, TargetType.AllEnemies) { }
+    public Reminisce() : base(1, CardType.Attack, CardRarity.Common, TargetType.AllEnemies) { }
 
     protected override void OnUpgrade()
     {

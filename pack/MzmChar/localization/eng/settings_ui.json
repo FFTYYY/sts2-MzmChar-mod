@@ -1,7 +1,10 @@
 {
-  "MZMCHAR.mod_title": "Mutsumi Character - v0.1.5",
+  "MZMCHAR.mod_title": "Mutsumi Character - v0.2.0",
   "MZMCHAR-音频设置.title": "Audio",
-  "MZMCHAR-ENABLE_CUSTOM_BGM.title": "Custom Combat BGM",
-  "MZMCHAR-ENABLE_CUSTOM_BGM.hover.title": "Custom Combat BGM",
-  "MZMCHAR-ENABLE_CUSTOM_BGM.hover.desc": "Replace vanilla combat music with custom music except boss fights."
+  "MZMCHAR-ENABLE_CUSTOM_BGM.title": "Custom BGM in Non-Boss Combat",
+  "MZMCHAR-ENABLE_CUSTOM_BGM.hover.title": "Custom BGM in Non-Boss Combat",
+  "MZMCHAR-ENABLE_CUSTOM_BGM.hover.desc": "Replace vanilla combat music with custom tracks in regular combats.",
+  "MZMCHAR-ENABLE_CUSTOM_BGM_BOSS.title": "Custom BGM in Boss Combat",
+  "MZMCHAR-ENABLE_CUSTOM_BGM_BOSS.hover.title": "Custom BGM in Boss Combat",
+  "MZMCHAR-ENABLE_CUSTOM_BGM_BOSS.hover.desc": "Replace vanilla boss music with custom tracks during boss fights."
 }

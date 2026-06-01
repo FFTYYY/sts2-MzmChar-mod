@@ -2,7 +2,7 @@
 
 **简体中文** | [English](README_EN.md)
 
-为 **杀戮尖塔2（Slay the Spire 2）** 开发的自定义角色 mod，加入新角色**若叶睦**。包含完整的 88 张专属卡牌、专属遗物，以及 5 首专属 BGM。支持中英双语 UI。
+为 **杀戮尖塔2（Slay the Spire 2）** 开发的自定义角色 mod，加入新角色**若叶睦**。包含完整的 90 张专属卡牌、9 个专属遗物，3 个专属药水，以及 10 首专属 BGM。支持中英双语 UI。
 
 [B站演示视频](https://www.bilibili.com/video/BV1G3Ln6nESD/)
 

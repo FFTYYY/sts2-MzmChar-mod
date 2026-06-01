@@ -16,7 +16,7 @@ namespace MzmChar.Game;
 
 /// <summary>
 /// 小跟班：1 费蓝色攻击。
-///   小墨：造成 8/12 点伤害
+///   小墨：造成 10/13 点伤害
 ///   小睦：为至多 2/3 张手牌添加「虚无」
 /// </summary>
 [Pool(typeof(MzmCharCardPool))]
@@ -26,7 +26,7 @@ public class Sidekick : MzmCharBaseCard
 
     private readonly List<DynamicVar> _vars = new()
     {
-        new DamageVar(8, ValueProp.Move),
+        new DamageVar(10, ValueProp.Move),
         new DynamicVar("MuCount", 2m),
     };
     protected override IEnumerable<DynamicVar> CanonicalVars => _vars;
@@ -40,7 +40,7 @@ public class Sidekick : MzmCharBaseCard
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(4);     // 8 → 12
+        DynamicVars.Damage.UpgradeValueBy(3);     // 10 → 13
         DynamicVars["MuCount"].UpgradeValueBy(1); // 2 → 3
     }
 

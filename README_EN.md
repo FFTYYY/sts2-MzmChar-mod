@@ -2,7 +2,7 @@
 
 **English** | [简体中文](README.md)
 
-A custom character mod for **Slay the Spire 2**, adding the new character **Wakaba Mutsumi**. Includes a complete set of 88 exclusive character cards, exclusive relics, and 5 exclusive BGM tracks. Supports both Chinese and English UI.
+A custom character mod developed for **Slay the Spire 2**, adding the new character **Mutsumi Wakaba**. It includes a complete set of 90 exclusive cards, 9 exclusive relics, 3 exclusive potions, and 10 exclusive BGM tracks. Supports bilingual UI in Chinese and English.
 
 [Bilibili demo video](https://www.bilibili.com/video/BV1G3Ln6nESD/)
 

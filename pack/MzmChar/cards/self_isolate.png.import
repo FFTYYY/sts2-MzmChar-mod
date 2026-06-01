@@ -15,7 +15,7 @@ dest_files=["res://.godot/imported/self_isolate.png-a04ad5f5e08a9064d1b3e4fb5b55
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

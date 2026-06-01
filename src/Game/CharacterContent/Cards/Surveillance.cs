@@ -18,7 +18,7 @@ namespace MzmChar.Game;
 
 /// <summary>
 /// 监控：1 费蓝色技能。
-///   小睦：获得等同于自身[gold]格挡[/gold]值的[gold]活力[/gold]。[gold]进入小墨[/gold]。
+///   小睦：施加[gold]监视[/gold]（本回合每次获得格挡同时获等量活力）。[gold]进入小墨[/gold]。
 ///         （升级后：下回合开始时格挡不消失）
 ///   小墨：对随机敌人造成 5/7 伤害，本回合获得 3/4 敏捷。[gold]进入小睦[/gold]。
 /// </summary>
@@ -31,12 +31,6 @@ public class Surveillance : MzmCharBaseCard
     {
         new DamageVar(5, ValueProp.Move),                    // Mo 伤害
         new DynamicVar("MoDex", 3m),
-        // 实算：Mu 获得的活力 = 当前格挡（不带 modifier kind —— 活力本身不被 buff 修饰）
-        new LambdaVar("MuVigorGain", card =>
-        {
-            if (card.Owner?.Creature == null) return 0;
-            return card.Owner.Creature.Block;
-        }),
     };
     protected override IEnumerable<DynamicVar> CanonicalVars => _vars;
 
@@ -45,6 +39,7 @@ public class Surveillance : MzmCharBaseCard
         get
         {
             foreach (var t in FormTooltips.BothEnter()) yield return t;
+            yield return HoverTipFactory.FromPower<SurveillanceBuffPower>();
             yield return HoverTipFactory.FromPower<VigorPower>();
             yield return HoverTipFactory.FromPower<DexterityPower>();
             yield return HoverTipFactory.FromPower<BlockRetainTurnPower>();
@@ -76,9 +71,7 @@ public class Surveillance : MzmCharBaseCard
         }
         else
         {
-            int blockAmt = Owner.Creature.Block;
-            if (blockAmt > 0)
-                await Sts2Compat.PowerApply<VigorPower>(ctx, Owner.Creature, blockAmt, Owner.Creature, this, false);
+            await Sts2Compat.PowerApply<SurveillanceBuffPower>(ctx, Owner.Creature, 1, Owner.Creature, this, false);
 
             // 升级后：下回合开始时格挡不消失
             if (IsUpgraded)
@@ -90,15 +83,15 @@ public class Surveillance : MzmCharBaseCard
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
-        "zhs" => new CardLoc("监控",
-            "{MuSec}{MuOpen}小睦{MuClose}：获得等同于自身[gold]格挡[/gold]值的[gold]活力[/gold]（{MuVigorGain}[gold]活力[/gold]）。" +
+        "zhs" => new CardLoc("盯——",
+            "{MuSec}{MuOpen}小睦{MuClose}：本回合内，你获得[gold]格挡[/gold]时，同时获得等量的[gold]活力[/gold]。" +
             "{IfUpgraded:show:下回合开始时，[gold]格挡[/gold]不会消失。|}" +
             "[gold]进入小墨[/gold]。{MuSecEnd}\n" +
             "{MoSec}{MoOpen}小墨{MoClose}：对随机敌人造成{Damage:diff()}点伤害。本回合获得{MoDex:diff()}点[gold]敏捷[/gold]。[gold]进入小睦[/gold]。{MoSecEnd}"),
         _ => new CardLoc("Surveillance",
-            "{MuSec}{MuOpen}Mu{MuClose}: Gain [gold]Vigor[/gold] equal to your current [gold]Block[/gold] ({MuVigorGain} [gold]Vigor[/gold]). " +
+            "{MuSec}{MuOpen}Mu{MuClose}: This turn, whenever you gain [gold]Block[/gold], gain that much [gold]Vigor[/gold]. " +
             "{IfUpgraded:show:[gold]Block[/gold] is not removed at start of next turn. |}" +
             "[gold]Enter Mo[/gold].{MuSecEnd}\n" +
-            "{MoSec}{MoOpen}Mo{MoClose}: Deal {Damage:diff()} damage to a random enemy; this turn gain {MoDex:diff()} [gold]Dexterity[/gold]. [gold]Enter Mu[/gold].{MoSecEnd}"),
+            "{MoSec}{MoOpen}Mo{MoClose}: Deal {Damage:diff()} damage to a random enemy. This turn, gain {MoDex:diff()} [gold]Dexterity[/gold]. [gold]Enter Mu[/gold].{MoSecEnd}"),
     };
 }

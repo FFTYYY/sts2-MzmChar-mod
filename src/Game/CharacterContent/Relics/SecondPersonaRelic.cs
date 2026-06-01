@@ -106,18 +106,10 @@ public class SecondPersonaRelic : CustomRelicModel
         return Task.CompletedTask;
     }
 
-    // 全局卡牌打出 hook —— 计 Mu / Mo 出牌数。这里集中算保证覆盖 vanilla + 其它 mod 的卡
-    // （之前是每张我们的卡 OnPlay 末尾显式 Bump，会漏算非 MzmChar 卡）。详见 CombatCounters 注释。
-    public override Task BeforeCardPlayed(CardPlay cardPlay)
-    {
-        if (Owner != null) CombatCounters.OnBeforeCardPlayed(Owner, cardPlay);
-        return Task.CompletedTask;
-    }
-
-    public override async Task AfterCardPlayed(PlayerChoiceContext ctx, CardPlay cardPlay)
-    {
-        if (Owner != null) await CombatCounters.OnAfterCardPlayed(ctx, Owner, cardPlay);
-    }
+    // 注：以前在这里 override BeforeCardPlayed / AfterCardPlayed → CombatCounters.OnBefore/AfterCardPlayed。
+    // 已下沉到 MutsumiFormPower / MortisFormPower（两个 form power 都各自 hook）。
+    // 这样任何持有 form power 的 creature（包括 HeartResonance 给队友 EnterMutsumi 之后的队友）
+    // 都自动 bump 计数，不再依赖遗物。这里不能再 hook 否则会跟 form power 双触发。
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {

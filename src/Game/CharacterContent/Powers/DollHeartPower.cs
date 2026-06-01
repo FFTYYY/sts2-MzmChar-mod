@@ -51,8 +51,8 @@ public class DollHeartPower : CustomPowerModel
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new PowerLoc("人偶之心",
-            "每当你打出[gold]能力[/gold]牌，获得1点[gold]力量[/gold]。",
-            "每当你打出[gold]能力[/gold]牌，获得{Amount}点[gold]力量[/gold]。"),
+            "每当你打出[gold]能力[/gold]牌时，获得1点[gold]力量[/gold]。",
+            "每当你打出[gold]能力[/gold]牌时，获得{Amount}点[gold]力量[/gold]。"),
         _ => new PowerLoc("Doll Heart",
             "Whenever you play a [gold]Power[/gold] card, gain 1 [gold]Strength[/gold].",
             "Whenever you play a [gold]Power[/gold] card, gain {Amount} [gold]Strength[/gold]."),

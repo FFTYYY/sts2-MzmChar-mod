@@ -15,7 +15,7 @@ dest_files=["res://.godot/imported/disharmony.png-1db8dc05e10ddd82b9b549d0772905
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

@@ -15,7 +15,7 @@ dest_files=["res://.godot/imported/multiple_monster.png-9222ab25d8242832db3a8800
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

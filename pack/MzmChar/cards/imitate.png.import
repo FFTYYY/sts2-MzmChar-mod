@@ -15,7 +15,7 @@ dest_files=["res://.godot/imported/imitate.png-5d81ef8a1375d7797b4b6e2cdb5cc1ca.
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

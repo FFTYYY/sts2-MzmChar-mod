@@ -15,7 +15,7 @@ dest_files=["res://.godot/imported/phantom_persona.png-5d3f1b784cc374405b9b8f509
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

@@ -15,7 +15,7 @@ namespace MzmChar.Game;
 
 /// <summary>
 /// 不会长久的：1 费白色能力。
-///   小睦：获得 40 活力。每打出 1/2 张牌，本回合失去 1 力量。进入小墨。
+///   小睦：获得 25 活力。每打出 1/2 张牌，本回合失去 1 力量。进入小墨。
 ///   小墨：获得 3 层无实体。每打出 1/2 张牌，本回合失去 1 敏捷。进入小睦。
 ///
 /// 注意：阈值是 1（基础）/ 2（升级），升级让触发*更慢*（"失力"是 downside）。
@@ -27,7 +27,7 @@ public class WontLastLong : MzmCharBaseCard
 
     private readonly List<DynamicVar> _vars = new()
     {
-        new PowerVar<VigorPower>(35),
+        new PowerVar<VigorPower>(25),
         new PowerVar<IntangiblePower>(3),
         new DynamicVar("MuPer", 1m),
         new DynamicVar("MoPer", 1m),
