@@ -16,8 +16,8 @@ namespace MzmChar.Game;
 
 /// <summary>
 /// 失控：1 费白色攻击。
-///   小墨：造成 9/12 伤害
-///   小睦：获得 5/7 层活力
+///   小墨：造成 12/15 伤害
+///   小睦：获得 6/8 层活力
 /// 之后随机进入小睦或小墨。
 /// </summary>
 [Pool(typeof(MzmCharCardPool))]
@@ -27,8 +27,8 @@ public class OutOfControl : MzmCharBaseCard
 
     private readonly List<DynamicVar> _vars = new()
     {
-        new DamageVar(9, ValueProp.Move),
-        new PowerVar<VigorPower>(5),
+        new DamageVar(12, ValueProp.Move),
+        new PowerVar<VigorPower>(6),
     };
     protected override IEnumerable<DynamicVar> CanonicalVars => _vars;
 
@@ -50,8 +50,8 @@ public class OutOfControl : MzmCharBaseCard
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(3);          // 9 → 12
-        DynamicVars["VigorPower"].UpgradeValueBy(2);   // 5 → 7
+        DynamicVars.Damage.UpgradeValueBy(3);          // 12 → 15
+        DynamicVars["VigorPower"].UpgradeValueBy(2);   // 6 → 8
     }
 
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay play)

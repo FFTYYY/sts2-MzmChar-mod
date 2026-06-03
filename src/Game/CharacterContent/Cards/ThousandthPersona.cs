@@ -15,7 +15,7 @@ namespace MzmChar.Game;
 
 /// <summary>
 /// 第一千个人格 (Thousandth Persona)：达弗（Darv）的尘封魔典（DustyTome）给若叶睦的专属先古牌。
-/// 1 费先古能力牌：每切换一次人格，本回合获得 2 力量 + 2 敏捷（每张本卡都独立叠加）。升级添加「固有」。
+/// 1 费先古能力牌：每切换一次人格，本回合获得 2 力量 + 2 敏捷（每张打出叠 2 层；多张叠加）。升级添加「固有」。
 ///
 /// `[Pool(...)]` 必挂；`CardRarity.Ancient` 给"无边框"先古卡面样式。
 /// 实现 `ITomeCard` 让 BaseLib DustyTomePatch 把它加入本角色的 tome 候选池。
@@ -31,7 +31,7 @@ public class ThousandthPersona : MzmCharBaseCard, ITomeCard
 
     private readonly List<DynamicVar> _vars = new()
     {
-        new PowerVar<ThousandthPersonaPower>(1),
+        new PowerVar<ThousandthPersonaPower>(2),
     };
     protected override IEnumerable<DynamicVar> CanonicalVars => _vars;
 

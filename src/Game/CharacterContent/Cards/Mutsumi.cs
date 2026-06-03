@@ -17,7 +17,7 @@ namespace MzmChar.Game;
 
 /// <summary>
 /// 睦头人：1 费蓝色技能。（原名「Killkiss」）
-///   小睦：获得 7 格挡 + 进入小墨（升级：额外本回合 +2 力量）。
+///   小睦：获得 4 格挡 × 2 次 + 进入小墨（升级：额外本回合 +2 力量）。
 ///   小墨：对全体敌人施加 1/2 虚弱，本回合 +3 敏捷，进入小睦。
 /// </summary>
 [Pool(typeof(MzmCharCardPool))]
@@ -27,7 +27,8 @@ public class Mutsumi : MzmCharBaseCard
 
     private readonly List<DynamicVar> _vars = new()
     {
-        new BlockVar(7, ValueProp.Move),
+        new BlockVar(4, ValueProp.Move),
+        new DynamicVar("MuHits", 2m),
         new DynamicVar("MuStr", 0m),    // base 0；升级 +2
         new DynamicVar("MoDex", 3m),
         new DynamicVar("MoWeak", 1m),   // base 1；升级 +1
@@ -71,7 +72,12 @@ public class Mutsumi : MzmCharBaseCard
         }
         else
         {
-            await CreatureCmd.GainBlock(Owner.Creature, DynamicVars.Block.BaseValue, ValueProp.Move, play, false);
+            // 4 格挡 × 2 次：分多次 GainBlock 让 dex 等 modifier 应用到每次（TearMaskGold 同 pattern）
+            int hits = (int)DynamicVars["MuHits"].BaseValue;
+            for (int i = 0; i < hits; i++)
+            {
+                await CreatureCmd.GainBlock(Owner.Creature, DynamicVars.Block.BaseValue, ValueProp.Move, play, false);
+            }
             var str = DynamicVars["MuStr"].BaseValue;
             if (str > 0)
             {
@@ -85,10 +91,10 @@ public class Mutsumi : MzmCharBaseCard
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new CardLoc("睦头人",
-            "{MuSec}{MuOpen}小睦{MuClose}：获得{Block:diff()}点[gold]格挡[/gold]。{IfUpgraded:show:本回合获得{MuStr:diff()}点[gold]力量[/gold]。|}[gold]进入小墨[/gold]。{MuSecEnd}\n" +
+            "{MuSec}{MuOpen}小睦{MuClose}：获得{Block:diff()}点[gold]格挡[/gold]{MuHits}次。{IfUpgraded:show:本回合获得{MuStr:diff()}点[gold]力量[/gold]。|}[gold]进入小墨[/gold]。{MuSecEnd}\n" +
             "{MoSec}{MoOpen}小墨{MoClose}：给所有敌人施加{MoWeak:diff()}层[gold]虚弱[/gold]。本回合获得{MoDex}点[gold]敏捷[/gold]。[gold]进入小睦[/gold]。{MoSecEnd}"),
         _ => new CardLoc("Mutsumi",
-            "{MuSec}{MuOpen}Mu{MuClose}: Gain {Block:diff()} [gold]Block[/gold].{IfUpgraded:show: This turn gain {MuStr:diff()} [gold]Strength[/gold].|} [gold]Enter Mo[/gold].{MuSecEnd}\n" +
+            "{MuSec}{MuOpen}Mu{MuClose}: Gain {Block:diff()} [gold]Block[/gold] {MuHits} times.{IfUpgraded:show: This turn gain {MuStr:diff()} [gold]Strength[/gold].|} [gold]Enter Mo[/gold].{MuSecEnd}\n" +
             "{MoSec}{MoOpen}Mo{MoClose}: Apply {MoWeak:diff()} [gold]Weak[/gold] to ALL enemies; this turn gain {MoDex} [gold]Dexterity[/gold]. [gold]Enter Mu[/gold].{MoSecEnd}"),
     };
 }

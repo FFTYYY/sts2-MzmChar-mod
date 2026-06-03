@@ -103,8 +103,8 @@ public class Alone : MzmCharBaseCard
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new CardLoc("独处",
-            "{MuSec}{MuOpen}小睦{MuClose}：获得{MuBlock:diff()}[gold]格挡[/gold]。自己每有3[gold]敏捷[/gold]，就获得1[gold]力量[/gold]（{MuStrBonus}力量）。{MuSecEnd}\n" +
-            "{MoSec}{MoOpen}小墨{MoClose}：造成{Damage:diff()}伤害。自己每有3[gold]力量[/gold]，就获得1[gold]敏捷[/gold]（{MoDexBonus}敏捷）。{MoSecEnd}"),
+            "{MuSec}{MuOpen}小睦{MuClose}：获得{MuBlock:diff()}[gold]格挡[/gold]。你每有3[gold]敏捷[/gold]，就获得1[gold]力量[/gold]（{MuStrBonus}力量）。{MuSecEnd}\n" +
+            "{MoSec}{MoOpen}小墨{MoClose}：造成{Damage:diff()}伤害。你每有3[gold]力量[/gold]，就获得1[gold]敏捷[/gold]（{MoDexBonus}敏捷）。{MoSecEnd}"),
         _ => new CardLoc("Alone",
             "{MuSec}{MuOpen}Mu{MuClose}: Gain {MuBlock:diff()} [gold]Block[/gold]. Per 3 [gold]Dexterity[/gold] you have, gain 1 [gold]Strength[/gold] ({MuStrBonus}).{MuSecEnd}\n" +
             "{MoSec}{MoOpen}Mo{MoClose}: Deal {Damage:diff()} damage. Per 3 [gold]Strength[/gold] you have, gain 1 [gold]Dexterity[/gold] ({MoDexBonus}).{MoSecEnd}"),

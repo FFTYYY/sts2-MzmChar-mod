@@ -17,8 +17,8 @@ namespace MzmChar.Game;
 
 /// <summary>
 /// 表演：1 费白色攻击。
-///   小睦：获得 3/5 格挡，施加 2/3 层虚弱，[gold]进入小墨[/gold]。
-///   小墨：造成 8/11 点伤害，[gold]进入小睦[/gold]。
+///   小睦：获得 7/10 格挡，施加 1/2 层虚弱，[gold]进入小墨[/gold]。
+///   小墨：造成 10/14 点伤害，[gold]进入小睦[/gold]。
 /// </summary>
 [Pool(typeof(MzmCharCardPool))]
 public class Performance : MzmCharBaseCard
@@ -27,9 +27,9 @@ public class Performance : MzmCharBaseCard
 
     private readonly List<DynamicVar> _vars = new()
     {
-        new DamageVar(8, ValueProp.Move),
-        new BlockVar(3, ValueProp.Move),
-        new PowerVar<WeakPower>(2),
+        new DamageVar(10, ValueProp.Move),
+        new BlockVar(7, ValueProp.Move),
+        new PowerVar<WeakPower>(1),
     };
     protected override IEnumerable<DynamicVar> CanonicalVars => _vars;
 
@@ -46,9 +46,9 @@ public class Performance : MzmCharBaseCard
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(3);              // 8 → 11
-        DynamicVars.Block.UpgradeValueBy(2);               // 3 → 5
-        DynamicVars["WeakPower"].UpgradeValueBy(1);        // 2 → 3
+        DynamicVars.Damage.UpgradeValueBy(4);              // 10 → 14
+        DynamicVars.Block.UpgradeValueBy(3);               // 7 → 10
+        DynamicVars["WeakPower"].UpgradeValueBy(1);        // 1 → 2
     }
 
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay play)
@@ -78,7 +78,7 @@ public class Performance : MzmCharBaseCard
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new CardLoc("表演",
-            "{MuSec}{MuOpen}小睦{MuClose}：获得{Block:diff()}点[gold]格挡[/gold]，施加{WeakPower:diff()}层[gold]虚弱[/gold]。[gold]进入小墨[/gold]。{MuSecEnd}\n" +
+            "{MuSec}{MuOpen}小睦{MuClose}：获得{Block:diff()}点[gold]格挡[/gold]。施加{WeakPower:diff()}层[gold]虚弱[/gold]。[gold]进入小墨[/gold]。{MuSecEnd}\n" +
             "{MoSec}{MoOpen}小墨{MoClose}：造成{Damage:diff()}点伤害。[gold]进入小睦[/gold]。{MoSecEnd}"),
         _ => new CardLoc("Performance",
             "{MuSec}{MuOpen}Mu{MuClose}: Gain {Block:diff()} [gold]Block[/gold]; apply {WeakPower:diff()} [gold]Weak[/gold]; [gold]Enter Mo[/gold].{MuSecEnd}\n" +

@@ -18,7 +18,7 @@ namespace MzmChar.Game;
 /// <summary>
 /// 撕下面具（金）：1 费金色技能。
 ///   小睦：获得 2/4 格挡 × 4 次（不切形态）
-///   小墨：获得 1/2 费，获得 4 活力，进入小睦
+///   小墨：获得 1/2 费，获得 5 活力，进入小睦
 /// </summary>
 [Pool(typeof(MzmCharCardPool))]
 public class TearMaskGold : MzmCharBaseCard
@@ -30,7 +30,7 @@ public class TearMaskGold : MzmCharBaseCard
         new BlockVar(2, ValueProp.Move),
         new DynamicVar("Hits", 4m),
         new EnergyVar(1),
-        new PowerVar<VigorPower>(4),
+        new PowerVar<VigorPower>(5),
     };
     protected override IEnumerable<DynamicVar> CanonicalVars => _vars;
 

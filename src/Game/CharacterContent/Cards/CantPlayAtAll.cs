@@ -16,7 +16,7 @@ namespace MzmChar.Game;
 /// <summary>
 /// 全都不会弹！：1 费金色能力卡。
 ///   小睦：获得 4/6 点力量，敏捷 -1
-///   小墨：获得 4/6 点敏捷，力量 -1
+///   小墨：获得 4/5 点敏捷，力量 -1
 /// </summary>
 [Pool(typeof(MzmCharCardPool))]
 public class CantPlayAtAll : MzmCharBaseCard
@@ -43,8 +43,8 @@ public class CantPlayAtAll : MzmCharBaseCard
 
     protected override void OnUpgrade()
     {
-        DynamicVars["StrengthPower"].UpgradeValueBy(2);
-        DynamicVars["DexterityPower"].UpgradeValueBy(2);
+        DynamicVars["StrengthPower"].UpgradeValueBy(2);   // 4 → 6
+        DynamicVars["DexterityPower"].UpgradeValueBy(1);  // 4 → 5
     }
 
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay play)

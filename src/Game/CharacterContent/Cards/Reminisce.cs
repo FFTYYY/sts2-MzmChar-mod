@@ -18,7 +18,7 @@ namespace MzmChar.Game;
 /// <summary>
 /// 回忆：1 费蓝色攻击（AOE）。（原名「演奏《春日影》」）
 ///   小睦：对全体施加 1/2 虚弱 + 1/2 易伤，[gold]进入小墨[/gold]。
-///   小墨：对全体造成 10/15 伤害，[gold]进入小睦[/gold]。
+///   小墨：对全体造成 9/12 伤害，[gold]进入小睦[/gold]。
 /// </summary>
 [Pool(typeof(MzmCharCardPool))]
 public class Reminisce : MzmCharBaseCard
@@ -27,7 +27,7 @@ public class Reminisce : MzmCharBaseCard
 
     private readonly List<DynamicVar> _vars = new()
     {
-        new DamageVar(10, ValueProp.Move),
+        new DamageVar(9, ValueProp.Move),
         new PowerVar<WeakPower>(1),
         new PowerVar<VulnerablePower>(1),
     };
@@ -47,7 +47,7 @@ public class Reminisce : MzmCharBaseCard
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(5);              // 10 → 15
+        DynamicVars.Damage.UpgradeValueBy(3);              // 9 → 12
         DynamicVars["WeakPower"].UpgradeValueBy(1);        // 1 → 2
         DynamicVars["VulnerablePower"].UpgradeValueBy(1);  // 1 → 2
     }

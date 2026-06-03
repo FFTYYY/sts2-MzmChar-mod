@@ -13,7 +13,8 @@ namespace MzmChar.Game;
 
 /// <summary>
 /// 死亡之湖：2 费蓝色能力，自带「虚无」(Ethereal) keyword。
-/// 如果你以小墨人格开始回合，则获得 1 点永久力量。升级：去掉「虚无」（费用不变）。
+/// 如果你以小墨人格开始回合，则获得 2 点永久力量（每次打出叠 2 层 DeathLakePower）。
+/// 升级：去掉「虚无」（费用不变）。
 /// 力量是永久的（StrengthPower，无 TempStrengthPower 配对）。
 /// </summary>
 [Pool(typeof(MzmCharCardPool))]
@@ -36,14 +37,14 @@ public class DeathLake : MzmCharBaseCard
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay play)
     {
         await PlayCast();
-        await Sts2Compat.PowerApply<DeathLakePower>(ctx, Owner.Creature, 1, Owner.Creature, this, false);
+        await Sts2Compat.PowerApply<DeathLakePower>(ctx, Owner.Creature, 2, Owner.Creature, this, false);
     }
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new CardLoc("死亡之湖",
-            "以[gold]小墨[/gold]开始回合时，获得1点[gold]力量[/gold]。"),
+            "以[gold]小墨[/gold]开始回合时，获得2点[gold]力量[/gold]。"),
         _ => new CardLoc("Lake of Death",
-            "If you start your turn as [gold]Mo[/gold], gain 1 [gold]Strength[/gold]."),
+            "If you start your turn as [gold]Mo[/gold], gain 2 [gold]Strength[/gold]."),
     };
 }

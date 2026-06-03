@@ -15,8 +15,8 @@ using MegaCrit.Sts2.Core.ValueProps;
 namespace MzmChar.Game;
 
 /// <summary>
-/// 鬼叫：2/1 费蓝色攻击。
-///   小睦：自己每有 5 点活力，就获得 2 点活力。给目标 1 易伤。
+/// 鬼叫：2/1 费蓝色攻击（Mu 不要目标，Mo 要目标）。
+///   小睦：自己每有 4 点活力，就额外获得 2 点活力。
 ///   小墨：造成 12 伤害，给目标 2 虚弱。
 /// </summary>
 [Pool(typeof(MzmCharCardPool))]
@@ -32,19 +32,24 @@ public class GhostScream : MzmCharBaseCard
         {
             new DamageVar(12, ValueProp.Move),
             new PowerVar<WeakPower>(2),
-            new DynamicVar("MuVigorBlock", 2m),       // Mu: 每 5 vigor 给 2 vigor
-            new DynamicVar("MuVulnerable", 1m),
-            // Mu 实算：根据当前 vigor 算 bonus vigor
+            new DynamicVar("MuVigorBlock", 2m),       // Mu: 每 4 vigor 给 2 vigor
+            // Mu 实算：根据当前 vigor 算 bonus vigor。canonical 显示 0
             new LambdaVar("MuActualVigor", card =>
             {
                 if (card.Owner?.Creature == null) return 0;
                 var vp = card.Owner.Creature.GetPower<VigorPower>();
                 int v = vp != null ? (int)vp.Amount : 0;
                 int per = (int)card.DynamicVars["MuVigorBlock"].BaseValue;
-                return (v / 5) * per;
+                return (v / 4) * per;
             }),
         };
     }
+
+    // Mu 不要目标（只自给 vigor），Mo 要敌人目标
+    public override TargetType TargetType =>
+        !IsCanonical && Owner != null && Forms.IsMutsumiForm(Owner)
+            ? TargetType.Self
+            : TargetType.AnyEnemy;
 
     protected override IEnumerable<DynamicVar> CanonicalVars => _vars;
 
@@ -53,7 +58,6 @@ public class GhostScream : MzmCharBaseCard
         get
         {
             yield return HoverTipFactory.FromPower<VigorPower>();
-            yield return HoverTipFactory.FromPower<VulnerablePower>();   // Mu 的易伤
             yield return HoverTipFactory.FromPower<WeakPower>();
         }
     }
@@ -79,22 +83,19 @@ public class GhostScream : MzmCharBaseCard
             await PlayCast();
             var vp = Owner.Creature.GetPower<VigorPower>();
             int v = vp != null ? (int)vp.Amount : 0;
-            int bonusVigor = (v / 5) * (int)DynamicVars["MuVigorBlock"].BaseValue;
+            int bonusVigor = (v / 4) * (int)DynamicVars["MuVigorBlock"].BaseValue;
             if (bonusVigor > 0)
                 await Sts2Compat.PowerApply<VigorPower>(ctx, Owner.Creature, bonusVigor, Owner.Creature, this, false);
-            if (play.Target != null)
-                await Sts2Compat.PowerApply<VulnerablePower>(ctx, play.Target,
-                    DynamicVars["MuVulnerable"].BaseValue, Owner.Creature, this, false);
         }
     }
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new CardLoc("鬼叫",
-            "{MuSec}{MuOpen}小睦{MuClose}：你每有5点[gold]活力[/gold]，就获得{MuVigorBlock}点[gold]活力[/gold]（{MuActualVigor}活力）。施加{MuVulnerable}层[gold]易伤[/gold]。{MuSecEnd}\n" +
+            "{MuSec}{MuOpen}小睦{MuClose}：获得{MuActualVigor}点[gold]活力[/gold]。你每有4点[gold]活力[/gold]，就额外获得{MuVigorBlock}点[gold]活力[/gold]。{MuSecEnd}\n" +
             "{MoSec}{MoOpen}小墨{MoClose}：造成{Damage:diff()}点伤害。施加{WeakPower}层[gold]虚弱[/gold]。{MoSecEnd}"),
         _ => new CardLoc("Ghost Scream",
-            "{MuSec}{MuOpen}Mu{MuClose}: For every 5 [gold]Vigor[/gold] you have, gain {MuVigorBlock} [gold]Vigor[/gold] ({MuActualVigor}). Apply {MuVulnerable} [gold]Vulnerable[/gold].{MuSecEnd}\n" +
+            "{MuSec}{MuOpen}Mu{MuClose}: Gain {MuActualVigor} [gold]Vigor[/gold]. For every 4 [gold]Vigor[/gold] you have, gain {MuVigorBlock} additional [gold]Vigor[/gold].{MuSecEnd}\n" +
             "{MoSec}{MoOpen}Mo{MoClose}: Deal {Damage:diff()} damage; apply {WeakPower} [gold]Weak[/gold].{MoSecEnd}"),
     };
 }

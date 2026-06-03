@@ -18,7 +18,7 @@ namespace MzmChar.Game;
 
 /// <summary>
 /// 监控：1 费蓝色技能。
-///   小睦：施加[gold]监视[/gold]（本回合每次获得格挡同时获等量活力）。[gold]进入小墨[/gold]。
+///   小睦：施加[gold]监视[/gold]（本回合每次获得格挡同时获等量活力）。
 ///         （升级后：下回合开始时格挡不消失）
 ///   小墨：对随机敌人造成 5/7 伤害，本回合获得 3/4 敏捷。[gold]进入小睦[/gold]。
 /// </summary>
@@ -38,7 +38,8 @@ public class Surveillance : MzmCharBaseCard
     {
         get
         {
-            foreach (var t in FormTooltips.BothEnter()) yield return t;
+            // Mu 不再进入 Mo，只有 Mo→Mu 切换 → 仅 EnterMu
+            foreach (var t in FormTooltips.EnterMu()) yield return t;
             yield return HoverTipFactory.FromPower<SurveillanceBuffPower>();
             yield return HoverTipFactory.FromPower<VigorPower>();
             yield return HoverTipFactory.FromPower<DexterityPower>();
@@ -77,7 +78,7 @@ public class Surveillance : MzmCharBaseCard
             if (IsUpgraded)
                 await Sts2Compat.PowerApply<BlockRetainTurnPower>(ctx, Owner.Creature, 1, Owner.Creature, this, false);
 
-            await Forms.EnterMortis(Owner, this, ctx);
+            // 不再进入小墨
         }
     }
 
@@ -85,13 +86,11 @@ public class Surveillance : MzmCharBaseCard
     {
         "zhs" => new CardLoc("盯——",
             "{MuSec}{MuOpen}小睦{MuClose}：本回合内，你获得[gold]格挡[/gold]时，同时获得等量的[gold]活力[/gold]。" +
-            "{IfUpgraded:show:下回合开始时，[gold]格挡[/gold]不会消失。|}" +
-            "[gold]进入小墨[/gold]。{MuSecEnd}\n" +
+            "{IfUpgraded:show:下回合开始时，[gold]格挡[/gold]不会消失。|}{MuSecEnd}\n" +
             "{MoSec}{MoOpen}小墨{MoClose}：对随机敌人造成{Damage:diff()}点伤害。本回合获得{MoDex:diff()}点[gold]敏捷[/gold]。[gold]进入小睦[/gold]。{MoSecEnd}"),
         _ => new CardLoc("Surveillance",
-            "{MuSec}{MuOpen}Mu{MuClose}: This turn, whenever you gain [gold]Block[/gold], gain that much [gold]Vigor[/gold]. " +
-            "{IfUpgraded:show:[gold]Block[/gold] is not removed at start of next turn. |}" +
-            "[gold]Enter Mo[/gold].{MuSecEnd}\n" +
+            "{MuSec}{MuOpen}Mu{MuClose}: This turn, whenever you gain [gold]Block[/gold], gain that much [gold]Vigor[/gold]." +
+            "{IfUpgraded:show: [gold]Block[/gold] is not removed at start of next turn.|}{MuSecEnd}\n" +
             "{MoSec}{MoOpen}Mo{MoClose}: Deal {Damage:diff()} damage to a random enemy. This turn, gain {MoDex:diff()} [gold]Dexterity[/gold]. [gold]Enter Mu[/gold].{MoSecEnd}"),
     };
 }

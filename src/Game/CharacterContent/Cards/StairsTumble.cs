@@ -16,7 +16,7 @@ namespace MzmChar.Game;
 
 /// <summary>
 /// 楼梯打滚：1 费白色攻击。
-///   小睦：获得 3 点活力，给目标施加 1/2 易伤。
+///   小睦：获得 5/7 点活力，给目标施加 1/2 易伤。
 ///   小墨：造成 4/7 伤害 2 次。
 /// </summary>
 [Pool(typeof(MzmCharCardPool))]
@@ -27,7 +27,7 @@ public class StairsTumble : MzmCharBaseCard
     private readonly List<DynamicVar> _vars = new()
     {
         new DamageVar(4, ValueProp.Move),
-        new PowerVar<VigorPower>(3),
+        new PowerVar<VigorPower>(5),
         new PowerVar<VulnerablePower>(1),
         new DynamicVar("Hits", 2m),
     };
@@ -47,6 +47,7 @@ public class StairsTumble : MzmCharBaseCard
     protected override void OnUpgrade()
     {
         DynamicVars.Damage.UpgradeValueBy(3);               // 4 → 7
+        DynamicVars["VigorPower"].UpgradeValueBy(2);        // 5 → 7
         DynamicVars["VulnerablePower"].UpgradeValueBy(1);   // 1 → 2
     }
 
@@ -77,10 +78,10 @@ public class StairsTumble : MzmCharBaseCard
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new CardLoc("楼梯打滚",
-            "{MuSec}{MuOpen}小睦{MuClose}：获得{VigorPower}点[gold]活力[/gold]。施加{VulnerablePower:diff()}层[gold]易伤[/gold]。{MuSecEnd}\n" +
+            "{MuSec}{MuOpen}小睦{MuClose}：获得{VigorPower:diff()}点[gold]活力[/gold]。施加{VulnerablePower:diff()}层[gold]易伤[/gold]。{MuSecEnd}\n" +
             "{MoSec}{MoOpen}小墨{MoClose}：造成{Damage:diff()}点伤害{Hits}次。{MoSecEnd}"),
         _ => new CardLoc("Stairs Tumble",
-            "{MuSec}{MuOpen}Mu{MuClose}: Gain {VigorPower} [gold]Vigor[/gold]; apply {VulnerablePower:diff()} [gold]Vulnerable[/gold].{MuSecEnd}\n" +
+            "{MuSec}{MuOpen}Mu{MuClose}: Gain {VigorPower:diff()} [gold]Vigor[/gold]; apply {VulnerablePower:diff()} [gold]Vulnerable[/gold].{MuSecEnd}\n" +
             "{MoSec}{MoOpen}Mo{MoClose}: Deal {Damage:diff()} damage {Hits} times.{MoSecEnd}"),
     };
 }

@@ -19,7 +19,7 @@ namespace MzmChar.Game;
 /// <summary>
 /// 镜中人偶：2 费金色攻击。
 ///   小墨：造成 3/5 点伤害 2 次。本回合中小睦每打出过一张牌就额外攻击一次。进入小睦
-///   小睦：获得 2/3 费，获得 5 格挡，进入小墨
+///   小睦：获得 2 费，获得 6/9 格挡，进入小墨
 /// </summary>
 [Pool(typeof(MzmCharCardPool))]
 public class MirrorDoll : MzmCharBaseCard
@@ -31,7 +31,7 @@ public class MirrorDoll : MzmCharBaseCard
         new DamageVar(3, ValueProp.Move),
         new DynamicVar("BaseHits", 2m),
         new EnergyVar(2),
-        new BlockVar(5, ValueProp.Move),
+        new BlockVar(6, ValueProp.Move),
         // 自定义 var：EnchantedValue = baseHits（基线 3）；PreviewValue = baseHits + 小睦出牌数
         // → {ActualHits:diff()} 在累计 > 3 时框架自动绿色染色
         new GrowingHitsVar(),
@@ -71,7 +71,8 @@ public class MirrorDoll : MzmCharBaseCard
     protected override void OnUpgrade()
     {
         DynamicVars.Damage.UpgradeValueBy(2);   // Mo: 3 → 5
-        DynamicVars.Energy.UpgradeValueBy(1);   // Mu energy gain: 2 → 3
+        DynamicVars.Block.UpgradeValueBy(3);    // Mu: 6 → 9
+        // Mu energy 不再升级（保持 2）
     }
 
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay play)

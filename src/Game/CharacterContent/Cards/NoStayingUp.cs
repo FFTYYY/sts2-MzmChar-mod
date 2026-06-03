@@ -79,10 +79,10 @@ public class NoStayingUp : MzmCharBaseCard
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new CardLoc("熬夜禁止",
-            "{MuSec}{MuOpen}小睦{MuClose}：自身每有3点[gold]力量[/gold]，就额外获得1点[gold]力量[/gold]（{MuStrBonus}力量）。{MuSecEnd}\n" +
+            "{MuSec}{MuOpen}小睦{MuClose}：获得点{MuStrBonus}点力量。你每有3点[gold]力量[/gold]，就额外获得1点[gold]力量[/gold]。{MuSecEnd}\n" +
             "{MoSec}{MoOpen}小墨{MoClose}：下{VigorPreservePower}次攻击造成伤害时，[gold]活力[/gold]不会消失。{MoSecEnd}"),
         _ => new CardLoc("No Staying Up",
-            "{MuSec}{MuOpen}Mu{MuClose}: Per 3 [gold]Strength[/gold] you have, gain 1 [gold]Strength[/gold] ({MuStrBonus}).{MuSecEnd}\n" +
+            "{MuSec}{MuOpen}Mu{MuClose}: Gain {MuStrBonus} [gold]Strength[/gold]. For every 3 [gold]Strength[/gold] you have, gain 1 additional [gold]Strength[/gold].{MuSecEnd}\n" +
             "{MoSec}{MoOpen}Mo{MoClose}: For your next {VigorPreservePower} attacks, [gold]Vigor[/gold] is not consumed.{MoSecEnd}"),
     };
 }

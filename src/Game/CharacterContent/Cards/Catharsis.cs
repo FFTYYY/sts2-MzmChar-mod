@@ -16,8 +16,8 @@ namespace MzmChar.Game;
 
 /// <summary>
 /// 宣泄：1 费白色攻击。
-///   小墨：造成 5/7 点伤害 2 次
-///   小睦：本回合获得 5 点力量（升级后额外获得 4 点活力）
+///   小墨：造成 7/9 点伤害 2 次
+///   小睦：本回合获得 6 点力量（升级后额外获得 4 点活力）
 /// </summary>
 [Pool(typeof(MzmCharCardPool))]
 public class Catharsis : MzmCharBaseCard
@@ -26,9 +26,9 @@ public class Catharsis : MzmCharBaseCard
 
     private readonly List<DynamicVar> _vars = new()
     {
-        new DamageVar(5, ValueProp.Move),
+        new DamageVar(7, ValueProp.Move),
         new DynamicVar("Hits", 2m),
-        new DynamicVar("TempStr", 5m),         // Mu: 本回合 5 力量（无升级）
+        new DynamicVar("TempStr", 6m),         // Mu: 本回合 6 力量（无升级）
         new PowerVar<VigorPower>(0),            // Mu: 升级后 +4 活力
     };
     protected override IEnumerable<DynamicVar> CanonicalVars => _vars;
@@ -51,7 +51,7 @@ public class Catharsis : MzmCharBaseCard
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(2);              // 5 → 7
+        DynamicVars.Damage.UpgradeValueBy(2);              // 7 → 9
         DynamicVars["VigorPower"].UpgradeValueBy(4);       // 0 → 4
     }
 

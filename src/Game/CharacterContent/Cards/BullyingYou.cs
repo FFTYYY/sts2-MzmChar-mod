@@ -16,7 +16,7 @@ namespace MzmChar.Game;
 
 /// <summary>
 /// 霸凌着你：0 费蓝色技能。联机专用。
-/// 令一名其他玩家获得 2 费、抽 1/2 张牌、失去 3 点生命、获得 2 层易伤。
+/// 令一名其他玩家获得 2/3 费、抽 1/2 张牌、失去 3 点生命、获得 2 层易伤。
 /// 用 TargetType.AnyAlly：play.Target 是被点的队友 Creature → .Player 拿到对应 Player 实例。
 /// </summary>
 [Pool(typeof(MzmCharCardPool))]
@@ -42,7 +42,11 @@ public class BullyingYou : MzmCharBaseCard
 
     public BullyingYou() : base(0, CardType.Skill, CardRarity.Uncommon, TargetType.AnyAlly) { }
 
-    protected override void OnUpgrade() { DynamicVars.Cards.UpgradeValueBy(1); /* Cards 1 → 2 */ }
+    protected override void OnUpgrade()
+    {
+        DynamicVars.Cards.UpgradeValueBy(1);    // 1 → 2
+        DynamicVars.Energy.UpgradeValueBy(1);   // 2 → 3
+    }
 
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay play)
     {

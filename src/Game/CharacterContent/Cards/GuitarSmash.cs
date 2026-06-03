@@ -18,8 +18,8 @@ namespace MzmChar.Game;
 
 /// <summary>
 /// 吉他打击：2/1 费攻击。双形态。升级仅 -1 费，数值不变。（曾用名「强力和弦」/「吉他重击」）
-///   小睦：对目标施加 3 层虚弱，本回合获得 4 力量
-///   小墨：造成 12 伤害，抽 1 张
+///   小睦：对目标施加 2 层易伤，本回合获得 4 力量
+///   小墨：造成 12 伤害，抽 2 张
 /// </summary>
 [Pool(typeof(MzmCharCardPool))]
 public class GuitarSmash : MzmCharBaseCard
@@ -29,9 +29,9 @@ public class GuitarSmash : MzmCharBaseCard
     private readonly List<DynamicVar> _vars = new()
     {
         new DamageVar(12, ValueProp.Move),                   // Mo damage
-        new DynamicVar("MuStr", 4m),                          // Mu: 本回合 4/6 力量
-        new CardsVar(1),
-        new PowerVar<WeakPower>(3),
+        new DynamicVar("MuStr", 4m),                          // Mu: 本回合 4 力量
+        new CardsVar(2),
+        new PowerVar<VulnerablePower>(2),
     };
     protected override IEnumerable<DynamicVar> CanonicalVars => _vars;
 
@@ -44,7 +44,7 @@ public class GuitarSmash : MzmCharBaseCard
     {
         get
         {
-            yield return HoverTipFactory.FromPower<WeakPower>();
+            yield return HoverTipFactory.FromPower<VulnerablePower>();
             yield return HoverTipFactory.FromPower<StrengthPower>();
         }
     }
@@ -71,8 +71,8 @@ public class GuitarSmash : MzmCharBaseCard
         {
             await PlayCast();
             if (play.Target != null)
-                await Sts2Compat.PowerApply<WeakPower>(ctx, play.Target,
-                    DynamicVars["WeakPower"].BaseValue, Owner.Creature, this, false);
+                await Sts2Compat.PowerApply<VulnerablePower>(ctx, play.Target,
+                    DynamicVars["VulnerablePower"].BaseValue, Owner.Creature, this, false);
             var str = DynamicVars["MuStr"].BaseValue;
             await Sts2Compat.PowerApply<StrengthPower>(ctx, Owner.Creature, str, Owner.Creature, this, false);
             await Sts2Compat.PowerApply<TempStrengthPower>(ctx, Owner.Creature, str, Owner.Creature, this, true);
@@ -82,10 +82,10 @@ public class GuitarSmash : MzmCharBaseCard
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new CardLoc("吉他打击",
-            "{MuSec}{MuOpen}小睦{MuClose}：施加{WeakPower}层[gold]虚弱[/gold]。本回合获得{MuStr:diff()}点[gold]力量[/gold]。{MuSecEnd}\n" +
+            "{MuSec}{MuOpen}小睦{MuClose}：施加{VulnerablePower}层[gold]易伤[/gold]。本回合获得{MuStr:diff()}点[gold]力量[/gold]。{MuSecEnd}\n" +
             "{MoSec}{MoOpen}小墨{MoClose}：造成{Damage:diff()}点伤害。抽{Cards}张牌。{MoSecEnd}"),
         _ => new CardLoc("Guitar Strike",
-            "{MuSec}{MuOpen}Mu{MuClose}: Apply {WeakPower} [gold]Weak[/gold] to the target; this turn gain {MuStr:diff()} [gold]Strength[/gold].{MuSecEnd}\n" +
+            "{MuSec}{MuOpen}Mu{MuClose}: Apply {VulnerablePower} [gold]Vulnerable[/gold] to the target; this turn gain {MuStr:diff()} [gold]Strength[/gold].{MuSecEnd}\n" +
             "{MoSec}{MoOpen}Mo{MoClose}: Deal {Damage:diff()} damage. Draw {Cards}.{MoSecEnd}"),
     };
 }

@@ -15,7 +15,7 @@ namespace MzmChar.Game;
 /// <summary>
 /// 和声：1 费攻击。抽 1 张。
 ///   小睦：获得 8/11 格挡
-///   小墨：造成 8/11 伤害
+///   小墨：造成 8/9 伤害；升级后额外抽 1 张牌
 /// </summary>
 [Pool(typeof(MzmCharCardPool))]
 public class Harmony : MzmCharBaseCard
@@ -44,8 +44,8 @@ public class Harmony : MzmCharBaseCard
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(3);                // 8 → 11
-        DynamicVars.Block.UpgradeValueBy(3);                 // 8 → 11
+        DynamicVars.Damage.UpgradeValueBy(1);                // 8 → 9（Mo）
+        DynamicVars.Block.UpgradeValueBy(3);                 // 8 → 11（Mu）
     }
 
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay play)
@@ -59,6 +59,9 @@ public class Harmony : MzmCharBaseCard
                 await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
                     .FromCard(this).Targeting(play.Target).Execute(ctx);
             }
+            // Mo 升级额外抽 1 张
+            if (IsUpgraded)
+                await CardPileCmd.Draw(ctx, 1, Owner, false);
         }
         else
         {
@@ -72,10 +75,10 @@ public class Harmony : MzmCharBaseCard
         "zhs" => new CardLoc("和声",
             "抽{Cards}张牌。\n" +
             "{MuSec}{MuOpen}小睦{MuClose}：获得{Block:diff()}点[gold]格挡[/gold]。{MuSecEnd}\n" +
-            "{MoSec}{MoOpen}小墨{MoClose}：造成{Damage:diff()}点伤害。{MoSecEnd}"),
+            "{MoSec}{MoOpen}小墨{MoClose}：造成{Damage:diff()}点伤害。{IfUpgraded:show:抽1张牌。|}{MoSecEnd}"),
         _ => new CardLoc("Harmony",
             "Draw {Cards}.\n" +
             "{MuSec}{MuOpen}Mu{MuClose}: Gain {Block:diff()} [gold]Block[/gold].{MuSecEnd}\n" +
-            "{MoSec}{MoOpen}Mo{MoClose}: Deal {Damage:diff()} damage.{MoSecEnd}"),
+            "{MoSec}{MoOpen}Mo{MoClose}: Deal {Damage:diff()} damage.{IfUpgraded:show: Draw 1 more.|}{MoSecEnd}"),
     };
 }

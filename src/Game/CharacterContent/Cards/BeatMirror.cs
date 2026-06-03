@@ -79,8 +79,8 @@ public class BeatMirror : MzmCharBaseCard
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new CardLoc("砸碎镜子",
-            "{MuSec}{MuOpen}小睦{MuClose}：施加{VulnerablePower:diff()}层[gold]易伤[/gold]，获得{VigorPower:diff()}点[gold]活力[/gold]。{MuSecEnd}\n" +
-            "{MoSec}{MoOpen}小墨{MoClose}：造成{Damage:diff()}点伤害，施加{WeakPower}层[gold]虚弱[/gold]。{MoSecEnd}"),
+            "{MuSec}{MuOpen}小睦{MuClose}：获得{VigorPower:diff()}点[gold]活力[/gold]。施加{VulnerablePower:diff()}层[gold]易伤[/gold]。{MuSecEnd}\n" +
+            "{MoSec}{MoOpen}小墨{MoClose}：造成{Damage:diff()}点伤害。施加{WeakPower}层[gold]虚弱[/gold]。{MoSecEnd}"),
         _ => new CardLoc("Shatter Mirror",
             "{MuSec}{MuOpen}Mu{MuClose}: Apply {VulnerablePower:diff()} [gold]Vulnerable[/gold]; gain {VigorPower:diff()} [gold]Vigor[/gold].{MuSecEnd}\n" +
             "{MoSec}{MoOpen}Mo{MoClose}: Deal {Damage:diff()} damage; apply {WeakPower} [gold]Weak[/gold].{MoSecEnd}"),

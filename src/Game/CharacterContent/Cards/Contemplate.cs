@@ -17,7 +17,7 @@ namespace MzmChar.Game;
 /// <summary>
 /// 低头沉思：1 费蓝色技能。
 ///   小墨：从弃牌堆选一张加入手牌（升级：被选中的牌获得「保留」）
-///   小睦：获得 8/12 点格挡
+///   小睦：获得 9/13 点格挡
 /// </summary>
 [Pool(typeof(MzmCharCardPool))]
 public class Contemplate : MzmCharBaseCard
@@ -26,7 +26,7 @@ public class Contemplate : MzmCharBaseCard
 
     private readonly List<DynamicVar> _vars = new()
     {
-        new BlockVar(8, ValueProp.Move),
+        new BlockVar(9, ValueProp.Move),
     };
     protected override IEnumerable<DynamicVar> CanonicalVars => _vars;
 
@@ -34,7 +34,7 @@ public class Contemplate : MzmCharBaseCard
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Block.UpgradeValueBy(4);   // 8 → 12
+        DynamicVars.Block.UpgradeValueBy(4);   // 9 → 13
     }
 
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay play)

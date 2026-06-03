@@ -16,8 +16,8 @@ namespace MzmChar.Game;
 
 /// <summary>
 /// 崩坏：2 费金色攻击。
-///   小墨：造成 3 点伤害 3 次。对方每有 1 层易伤，额外造成 1/2 点伤害
-///   小睦：施加 4/6 层易伤
+///   小墨：造成 3 点伤害 3/4 次。对方每有 1 层易伤，额外造成 1 点伤害（不再升级）
+///   小睦：施加 6/8 层易伤
 /// </summary>
 [Pool(typeof(MzmCharCardPool))]
 public class Crumble : MzmCharBaseCard
@@ -28,8 +28,8 @@ public class Crumble : MzmCharBaseCard
     {
         new DamageVar(3, ValueProp.Move),
         new DynamicVar("Hits", 3m),
-        new PowerVar<VulnerablePower>(4),
-        new DynamicVar("BonusPerVuln", 1m),     // 每层易伤的额外伤害；升级 +1 → 2，:diff() 自动绿色
+        new PowerVar<VulnerablePower>(6),
+        new DynamicVar("BonusPerVuln", 1m),     // 每层易伤的额外伤害（不再升级）
         // Mo 实算：base + 目标 Vuln 层数。ModifierKind.Damage 让显示走 Hook.ModifyDamage
         // 套上力量/活力/易伤 multiplier —— 这样 hover 显示就 == OnPlay 实际打出的伤害
         // Target-aware lambda：直接拿 UpdateCardPreview 的 target 参数（比 card.CurrentTarget 可靠，
@@ -58,9 +58,9 @@ public class Crumble : MzmCharBaseCard
 
     protected override void OnUpgrade()
     {
-        // 伤害不升级；vuln 升级 +2（4→6）；BonusPerVuln 升级 +1（1→2）
-        DynamicVars["VulnerablePower"].UpgradeValueBy(2);    // 4 → 6
-        DynamicVars["BonusPerVuln"].UpgradeValueBy(1);       // 1 → 2
+        // 伤害不升级；vuln 升级 +2（6→8）；Hits 升级 +1（3→4）；BonusPerVuln 不再升级
+        DynamicVars["VulnerablePower"].UpgradeValueBy(2);    // 6 → 8
+        DynamicVars["Hits"].UpgradeValueBy(1);               // 3 → 4
     }
 
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay play)
@@ -92,9 +92,9 @@ public class Crumble : MzmCharBaseCard
     {
         "zhs" => new CardLoc("崩坏",
             "{MuSec}{MuOpen}小睦{MuClose}：施加{VulnerablePower:diff()}层[gold]易伤[/gold]。{MuSecEnd}\n" +
-            "{MoSec}{MoOpen}小墨{MoClose}：造成{MoDmg:diff()}点伤害{Hits}次。对方每有1层[gold]易伤[/gold]，额外造成{BonusPerVuln:diff()}点伤害。{MoSecEnd}"),
+            "{MoSec}{MoOpen}小墨{MoClose}：造成{MoDmg:diff()}点伤害{Hits:diff()}次。对方每有1层[gold]易伤[/gold]，额外造成{BonusPerVuln}点伤害。{MoSecEnd}"),
         _ => new CardLoc("Crumble",
             "{MuSec}{MuOpen}Mu{MuClose}: Apply {VulnerablePower:diff()} [gold]Vulnerable[/gold].{MuSecEnd}\n" +
-            "{MoSec}{MoOpen}Mo{MoClose}: Deal {MoDmg:diff()} damage {Hits} times. For each [gold]Vulnerable[/gold] on the target, deal {BonusPerVuln:diff()} extra damage.{MoSecEnd}"),
+            "{MoSec}{MoOpen}Mo{MoClose}: Deal {MoDmg:diff()} damage {Hits:diff()} times. For each [gold]Vulnerable[/gold] on the target, deal {BonusPerVuln} extra damage.{MoSecEnd}"),
     };
 }

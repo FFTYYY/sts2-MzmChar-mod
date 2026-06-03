@@ -15,8 +15,8 @@ namespace MzmChar.Game;
 
 /// <summary>
 /// 电话（稀有）：
-///   每当进入小墨时，本回合获得 1 点力量（Str + TempStr 组合）。
-///   每当进入小睦时，本回合获得 1 点敏捷（Dex + TempDex 组合）。
+///   每当进入小墨时，本回合获得 2 点力量（Str + TempStr 组合）。
+///   每当进入小睦时，本回合获得 2 点敏捷（Dex + TempDex 组合）。
 /// 监听 AfterPowerAmountChanged: MutsumiFormPower / MortisFormPower 在 owner 自己身上 0→正。
 /// Forms.EnterMortis 先 PowerCmd.Remove&lt;MutsumiFormPower&gt;（IL-verified：走
 /// `&lt;Remove&gt;d__8.MoveNext` → RemoveInternal + AfterRemoved，不触发本 hook）再
@@ -66,14 +66,14 @@ public class SlipperPhoneRelic : CustomRelicModel
         if (power is MortisFormPower)
         {
             Flash();
-            await Sts2Compat.PowerApply<StrengthPower>(ctx, c, 1, c, null, false);
-            await Sts2Compat.PowerApply<TempStrengthPower>(ctx, c, 1, c, null, true);
+            await Sts2Compat.PowerApply<StrengthPower>(ctx, c, 2, c, null, false);
+            await Sts2Compat.PowerApply<TempStrengthPower>(ctx, c, 2, c, null, true);
         }
         else if (power is MutsumiFormPower)
         {
             Flash();
-            await Sts2Compat.PowerApply<DexterityPower>(ctx, c, 1, c, null, false);
-            await Sts2Compat.PowerApply<TempDexterityPower>(ctx, c, 1, c, null, true);
+            await Sts2Compat.PowerApply<DexterityPower>(ctx, c, 2, c, null, false);
+            await Sts2Compat.PowerApply<TempDexterityPower>(ctx, c, 2, c, null, true);
         }
     }
 
@@ -81,11 +81,11 @@ public class SlipperPhoneRelic : CustomRelicModel
     {
         "zhs" => new RelicLoc(
             Title:       "电话",
-            Description: "每当你[gold]进入小墨[/gold]时，本回合获得1点[gold]力量[/gold]；每当你[gold]进入小睦[/gold]时，本回合获得1点[gold]敏捷[/gold]。",
+            Description: "每当你[gold]进入小墨[/gold]时，本回合获得2点[gold]力量[/gold]；每当你[gold]进入小睦[/gold]时，本回合获得2点[gold]敏捷[/gold]。",
             Flavor:      "实际上是芭蕾舞鞋。"),
         _ => new RelicLoc(
             Title:       "Phone",
-            Description: "Whenever you [gold]Enter Mo[/gold], gain 1 [gold]Strength[/gold] this turn. Whenever you [gold]Enter Mu[/gold], gain 1 [gold]Dexterity[/gold] this turn.",
+            Description: "Whenever you [gold]Enter Mo[/gold], gain 2 [gold]Strength[/gold] this turn. Whenever you [gold]Enter Mu[/gold], gain 2 [gold]Dexterity[/gold] this turn.",
             Flavor:      "Actually a ballet shoe."),
     };
 }

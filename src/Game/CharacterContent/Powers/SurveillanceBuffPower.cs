@@ -68,13 +68,15 @@ public class SurveillanceBuffPower : CustomPowerModel
         await PowerCmd.Remove<SurveillanceBuffPower>(Owner);
     }
 
+    // arg 2 = DumbHoverTip / 关键字 hover 用（vanilla 渲染时不注入 Amount → 不能写 {Amount}，gotcha #43）
+    // arg 3 = power 实活 hover（带 Amount 当前层数）
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new PowerLoc("盯",
-            "本回合内，你每获得1点[gold]格挡[/gold]，同时获得{Amount}点[gold]活力[/gold]。",
+            "本回合内，你每获得1点[gold]格挡[/gold]，同时获得[gold]活力[/gold]。",
             "本回合内，你每获得1点[gold]格挡[/gold]，同时获得{Amount}点[gold]活力[/gold]。"),
         _ => new PowerLoc("Watching",
-            "This turn, for each 1 [gold]Block[/gold] you gain, also gain {Amount} [gold]Vigor[/gold].",
+            "This turn, for each 1 [gold]Block[/gold] you gain, also gain [gold]Vigor[/gold].",
             "This turn, for each 1 [gold]Block[/gold] you gain, also gain {Amount} [gold]Vigor[/gold]."),
     };
 }

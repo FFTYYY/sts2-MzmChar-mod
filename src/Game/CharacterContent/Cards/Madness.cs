@@ -16,22 +16,23 @@ using MegaCrit.Sts2.Core.Saves.Runs;
 namespace MzmChar.Game;
 
 /// <summary>
-/// 疯癫：2 费蓝色技能。
-///   通用：获得 (1 + PlayCount) 能量 —— 每打出一次后，下次基础获得能量量 +1（本战斗内永久）
+/// 疯癫：1 费蓝色技能。
+///   通用：获得 PlayCount 点能量 —— 初始 0（不再获得费用）。每打出一次后，下次能量量 +1（本战斗内永久）
 ///   小睦：额外获得 2/3 能量（不受 PlayCount 影响），进入小墨
-///   小墨：抽 (2/3 + PlayCount) 张牌，进入小睦 —— 每打出一次抽数也 +1
+///   小墨：抽 (3/4 + PlayCount) 张牌，进入小睦 —— 每打出一次抽数也 +1
 ///   每打出一次：(1) 耗能 +1（EnergyCost.AddThisCombat）；(2) 通用 gain +1；(3) Mo 抽数 +1（都靠 PlayCount）
 ///
 /// 自增长部分参考 Emptiness.GrowingDexVar：自定义 DynamicVar 读 SavedProperty，
 /// 让卡描述的 {Gain:energyIcons()} / {Cards:diff()} 动态反映 base + PlayCount。
+/// 顶部「获得能量」一行用 HasGain (IfUpgradedVar) 在 PlayCount=0 时隐藏（卡库 / 未打出过时不显示空 line）。
 /// </summary>
 [Pool(typeof(MzmCharCardPool))]
 public class Madness : MzmCharBaseCard
 {
     public override string PortraitPath => "res://MzmChar/cards/madness.png";
 
-    private const int BaseGain = 1;
-    private const int CardsBaseUnupgraded = 2;
+    private const int BaseGain = 0;            // 初始 0（再不获得费用）；PlayCount 决定增长
+    private const int CardsBaseUnupgraded = 3;
     private const int CardsUpgradeBonus = 1;
 
     // 本战斗内累积：每打出一次 +1。SavedProperty 跨存档持久化；
@@ -40,7 +41,7 @@ public class Madness : MzmCharBaseCard
 
     private readonly List<DynamicVar> _vars;
 
-    public Madness() : base(2, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
+    public Madness() : base(1, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
     {
         _vars = new List<DynamicVar>
         {
@@ -98,6 +99,20 @@ public class Madness : MzmCharBaseCard
     // 双形态都「进入X」 → 双挂 form tip
     protected override IEnumerable<IHoverTip> ExtraHoverTips => FormTooltips.BothEnter();
 
+    // HasGain：PlayCount > 0 时为 true，控制描述顶部「获得能量」一行的显隐。
+    // 用 IfUpgradedVar (不是裸 bool) 因为自定义 token 的 :show: formatter 要 isinst IfUpgradedVar
+    // （参 MzmCharBaseCard.ShowRealEffect 同模式）
+    protected override void AddExtraArgsToDescription(LocString description)
+    {
+        base.AddExtraArgsToDescription(description);
+        bool hasGain = !IsCanonical && Owner != null && PlayCount > 0;
+        var hasGainVar = new IfUpgradedVar("HasGain", hasGain ? 1m : 0m)
+        {
+            upgradeDisplay = hasGain ? UpgradeDisplay.Upgraded : UpgradeDisplay.Normal,
+        };
+        description.Add(hasGainVar);
+    }
+
     protected override void OnUpgrade()
     {
         DynamicVars["MuExtra"].UpgradeValueBy(1);  // Mu 额外 2 → 3
@@ -106,9 +121,10 @@ public class Madness : MzmCharBaseCard
 
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay play)
     {
-        // 通用：获得 (1 + PlayCount) 能量
+        // 通用：获得 PlayCount 点能量（BaseGain=0 → 首次打出 0 能量）
         int gain = BaseGain + PlayCount;
-        await PlayerCmd.GainEnergy(gain, Owner);
+        if (gain > 0)
+            await PlayerCmd.GainEnergy(gain, Owner);
 
         if (Forms.IsMortisForm(Owner))
         {
@@ -136,14 +152,14 @@ public class Madness : MzmCharBaseCard
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new CardLoc("疯癫",
-            "获得{Gain:energyIcons()}。\n" +
-            "{MuSec}{MuOpen}小睦{MuClose}：额外获得{IfUpgraded:show:{energyPrefix:energyIcons(3)}|{energyPrefix:energyIcons(2)}}。[gold]进入小墨[/gold]。{MuSecEnd}\n" +
+            "{HasGain:show:获得{Gain:energyIcons()}。\n|}" +
+            "{MuSec}{MuOpen}小睦{MuClose}：获得{IfUpgraded:show:{energyPrefix:energyIcons(3)}|{energyPrefix:energyIcons(2)}}。[gold]进入小墨[/gold]。{MuSecEnd}\n" +
             "{MoSec}{MoOpen}小墨{MoClose}：抽{Cards:diff()}张牌。[gold]进入小睦[/gold]。{MoSecEnd}\n" +
-            "这张牌每被打出一次，耗能增加1，获得{energyPrefix:energyIcons(1)}的数量增加1，[gold]小墨[/gold]抽牌数增加1。"),
+            "这张牌每被打出一次，耗能增加1，[gold]小墨[/gold]抽牌数增加1，且为这张牌添加效果：获得{energyPrefix:energyIcons(1)}。"),
         _ => new CardLoc("Madness",
-            "Gain {Gain:energyIcons()}.\n" +
+            "{HasGain:show:Gain {Gain:energyIcons()}.\n|}" +
             "{MuSec}{MuOpen}Mu{MuClose}: Gain {IfUpgraded:show:{energyPrefix:energyIcons(3)}|{energyPrefix:energyIcons(2)}} more; [gold]Enter Mo[/gold].{MuSecEnd}\n" +
             "{MoSec}{MoOpen}Mo{MoClose}: Draw {Cards:diff()}; [gold]Enter Mu[/gold].{MoSecEnd}\n" +
-            "Each time this card is played, its cost increases by 1, the {energyPrefix:energyIcons(1)} it grants increases by 1, and [gold]Mo[/gold] draw count increases by 1."),
+            "Each time this card is played, its cost increases by 1, add the effect to this card: gain {energyPrefix:energyIcons(1)}, and [gold]Mo[/gold] draw count increases by 1."),
     };
 }

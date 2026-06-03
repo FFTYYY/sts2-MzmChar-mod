@@ -16,7 +16,7 @@ namespace MzmChar.Game;
 
 /// <summary>
 /// 拨弦：1 费白色攻击。获得 1 演艺热情。
-///   小墨：造成 8/10 点伤害
+///   小墨：造成 8/12 点伤害
 ///   小睦：获得 4/6 点活力
 /// </summary>
 [Pool(typeof(MzmCharCardPool))]
@@ -50,7 +50,7 @@ public class Pluck : MzmCharBaseCard
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(2);           // 8 → 10
+        DynamicVars.Damage.UpgradeValueBy(4);           // 8 → 12
         DynamicVars["VigorPower"].UpgradeValueBy(2);    // 4 → 6
     }
 
