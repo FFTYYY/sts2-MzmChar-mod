@@ -14,21 +14,13 @@ namespace MzmChar.Game;
 
 /// <summary>
 /// 「演艺热情」buff：Amount 达到 5 时，当前回合结束后立刻开启额外回合。
-///
-/// 实现参考 vanilla `PaelsEye` relic（IL-verified）：
-///   1. override `ShouldTakeExtraTurn(player)` 返回 `Amount &gt;= 5`
-///   2. override `AfterTakingExtraTurn(player)` 在新回合开始前 apply ConcertPower + 自移除
-///
-/// beta 兼容：AfterTakingExtraTurn 不带 ctx，但 beta 的 PowerCmd.Apply 必须有 ctx。
-/// 我们自己构造一个 HookPlayerChoiceContext（vanilla 的 Hook.* 内部也是这么造的）。
-/// 必须在 AfterTakingExtraTurn 里 apply（不是 AfterPlayerTurnStartEarly），
-/// 否则错过本回合的 ModifyHandDraw / AfterPlayerTurnStartEarly 这两个 hook iteration。
-///
-/// ⚠️ AfterTakingExtraTurn 必须 guard `Amount >= Threshold`：vanilla
-/// `Hook.AfterTakingExtraTurn` 对**所有** listeners 广播，不只触发源那个。
-/// 如果玩家同时有 PaelsEye（PaelsEye 在玩家放置回合触发 extra turn），我们这个 hook
-/// 会被错误调用——若不 guard 就会在 PP 未到 5 时也 apply ConcertPower + 清零 PP。
-/// 见 report_44。
+/// 参考 vanilla <c>PaelsEye</c>：
+///   1. <c>ShouldTakeExtraTurn</c> 返回 <c>Amount &gt;= 5</c>
+///   2. <c>AfterTakingExtraTurn</c> 在新回合开始前 apply ConcertPower + 自移除
+/// beta 路径 <c>AfterTakingExtraTurn</c> 不带 ctx 但 <c>PowerCmd.Apply</c> 需要 ctx，
+/// 自己 new <c>HookPlayerChoiceContext</c>。
+/// 必须 guard <c>Amount &gt;= Threshold</c>：<c>Hook.AfterTakingExtraTurn</c> 广播给所有 listeners
+/// （PaelsEye 触发 extra turn 时也会调到我们）。
 /// </summary>
 public class PerformancePassionPower : CustomPowerModel
 {
@@ -54,8 +46,7 @@ public class PerformancePassionPower : CustomPowerModel
     public override async Task AfterTakingExtraTurn(Player player)
     {
         if (Owner?.Player != player) return;
-        // 必须跟 ShouldTakeExtraTurn 的条件一致 —— 否则其它 listener（如 PaelsEye）触发 extra turn
-        // 时我们也会被广播调到，错误 apply ConcertPower + 清零 PP。见 report_44。
+        // 跟 ShouldTakeExtraTurn 条件一致（Hook 广播给所有 listeners）
         if (Amount < Threshold) return;
         Flash();
 

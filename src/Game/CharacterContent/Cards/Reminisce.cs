@@ -16,7 +16,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 namespace MzmChar.Game;
 
 /// <summary>
-/// 回忆：1 费蓝色攻击（AOE）。（原名「演奏《春日影》」）
+/// 回忆：1 费蓝色攻击（AOE）。
 ///   小睦：对全体施加 1/2 虚弱 + 1/2 易伤，[gold]进入小墨[/gold]。
 ///   小墨：对全体造成 9/12 伤害，[gold]进入小睦[/gold]。
 /// </summary>

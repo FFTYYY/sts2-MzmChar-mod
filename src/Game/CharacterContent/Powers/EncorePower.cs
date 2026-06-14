@@ -38,7 +38,7 @@ public class EncorePower : CustomPowerModel
     public override string? CustomPackedIconPath => "res://MzmChar/powers/encore.png";
     public override string? CustomBigIconPath    => "res://MzmChar/powers/encore.png";
 
-    // Counter 层数上限 —— 用户要求：每次演奏会结束最多获得 2 点演艺热情
+    // Counter 层数上限
     private const int MaxStack = 2;
 
     /// <summary>

@@ -95,9 +95,7 @@ public class SecondPersonaRelic : CustomRelicModel
         return Task.CompletedTask;
     }
 
-    // 诊断日志：观察到死亡（report_46 多 MzmChar 同死卡死调查）
-    // 这个 hook 在每个 alive creature 的 AfterDeath 广播链里都会触发，记录"谁观察到谁死了"
-    // 卡死时 log 会停在某个 player 的死亡序列中间 → 显示链中断在哪
+    // 诊断日志：每个 alive creature 的 AfterDeath 都会调一次
     public override Task AfterDeath(PlayerChoiceContext ctx, Creature creature, bool wasRemovalPrevented, float deathAnimLength)
     {
         var ownerId = Owner?.NetId.ToString() ?? "?";

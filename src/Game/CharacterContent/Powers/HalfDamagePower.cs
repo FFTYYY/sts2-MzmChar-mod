@@ -27,11 +27,9 @@ public class HalfDamagePower : CustomPowerModel
 
     public override decimal ModifyDamageMultiplicative(Creature? target, decimal amount, ValueProp props, Creature? dealer, CardModel? cardSource)
     {
-        // ⚠ ModifyDamageMultiplicative 返回**乘数**（非已乘 amount）—— 见 gotcha #21
-        // 这个方法对每个 power 都被调用一次，框架收集所有 multiplier 累乘。
-        // identity = 1m（不影响），不是 amount（amount 会污染整条 multiplier 链）
-        if (target != Owner) return 1m;   // 不是给 owner 的伤害 → identity，别影响别的卡
-        return 0.5m;                       // 给 owner 的伤害 → 0.5x = 减半
+        // 返回乘数（非已乘 amount）。identity = 1m。
+        if (target != Owner) return 1m;
+        return 0.5m;
     }
 
     // 在玩家**下回合开始**时减层（不是回合结束）—— 否则 1 层情况下：

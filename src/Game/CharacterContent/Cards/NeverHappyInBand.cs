@@ -14,17 +14,13 @@ using MegaCrit.Sts2.Core.Nodes.CommonUi;
 namespace MzmChar.Game;
 
 /// <summary>
-/// 从来没觉得玩乐队开心过（蓝、新版）：1 费蓝色技能。消耗。
-///   步骤 1：把消耗堆中所有[gold]演奏[/gold]牌移入抽牌堆（随机位置 = shuffle）
-///   步骤 2：把所有[gold]演奏[/gold]牌（在所有 pile 中）变化为 MzmChar 牌池里的随机牌
+/// 从来没觉得玩乐队开心过：1 费蓝色技能。消耗。
+///   步骤 1：把消耗堆中所有[gold]演奏[/gold]牌移入抽牌堆（随机位置）
+///   步骤 2：把所有[gold]演奏[/gold]牌变化为 MzmChar 池随机牌
 ///   升级：变化后的牌为升级版
 ///
-/// 之前版本（已重命名为 Rebellion 叛逆）作用的是 Strike 标签卡 → 无色牌。
-/// 这里换成「演奏词条卡 → MzmChar 池随机牌」+ 前置消耗堆回收。
-///
-/// 步骤 1 用 vanilla `CardPileCmd.Add(card, PileType.Draw, Random, null, false)`（参考
-/// `notes/implementation_patterns.md`「选牌」一节：第 4 参 source 必须 `null`，不是 `this`）。
-/// 步骤 2 沿用之前的 transform 逻辑（CombatState.CreateCard + CardCmd.Transform）。
+/// 步骤 1 用 <c>CardPileCmd.Add(card, PileType.Draw, Random, null, false)</c>，
+/// 第 4 参 source 必须 null。
 /// </summary>
 [Pool(typeof(MzmCharCardPool))]
 public class NeverHappyInBand : MzmCharBaseCard

@@ -12,7 +12,7 @@ using MegaCrit.Sts2.Core.Models;
 namespace MzmChar.Game;
 
 /// <summary>
-/// 人偶之心：2/1 费金色能力。每打出能力牌获得 1 点力量。
+/// 人偶之心：1 费金色能力。每打出能力牌获得 1 点力量。升级：加「固有」。
 /// </summary>
 [Pool(typeof(MzmCharCardPool))]
 public class DollHeart : MzmCharBaseCard
@@ -24,9 +24,9 @@ public class DollHeart : MzmCharBaseCard
         get { yield return HoverTipFactory.FromPower<DollHeartPower>(); }
     }
 
-    public DollHeart() : base(2, CardType.Power, CardRarity.Rare, TargetType.Self) { }
+    public DollHeart() : base(1, CardType.Power, CardRarity.Rare, TargetType.Self) { }
 
-    protected override void OnUpgrade() { EnergyCost.UpgradeBy(-1); }
+    protected override void OnUpgrade() { AddKeyword(CardKeyword.Innate); }
 
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay play)
     {

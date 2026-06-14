@@ -73,12 +73,9 @@ public class Madness : MzmCharBaseCard
     }
 
     /// <summary>
-    /// Mo 抽数 = base(2 或 3) + PlayCount。**必须从常量重算，不能从 BaseValue 累加**——
-    /// `DynamicVar.UpdateCardPreview` 和 `CardsVar.UpdateCardPreview` 都是空方法（IL-verified，size=1）。
-    /// 父类不重置 BaseValue → 之前 `: CardsVar` + `BaseValue = BaseValue + played` 写法每次
-    /// UpdateCardPreview 被调（hand 重排 / hover / UI 刷新都会调）都累加一次 PlayCount，
-    /// 视觉上看像"统计总打牌数"。OnPlay 用常量算所以实际抽数对，只是显示飘了。
-    /// 标准写法参考 Silence.GrowingDrawsVar / Emptiness.GrowingDexVar / MirrorDoll.GrowingHitsVar。
+    /// Mo 抽数 = base(2 或 3) + PlayCount。每次从常量重算（不要从 BaseValue 累加，
+    /// 因为 DynamicVar.UpdateCardPreview 不重置 BaseValue）。参考 Silence.GrowingDrawsVar /
+    /// Emptiness.GrowingDexVar / MirrorDoll.GrowingHitsVar。
     /// </summary>
     private class GrowingCardsVar : DynamicVar
     {

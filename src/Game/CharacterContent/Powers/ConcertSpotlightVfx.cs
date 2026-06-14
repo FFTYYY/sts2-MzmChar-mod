@@ -37,13 +37,13 @@ public static class ConcertSpotlightVfx
 
     // cone modulate dim transition (intro 完成后过渡到 hold)
     private const float ConeDimDuration = 0.3f;
-    private const float ConeAlphaHold   = 0.45f;  // 之前 0.7 太挡角色，降到 0.45 整体更透
+    private const float ConeAlphaHold   = 0.45f;
 
     // shadow
     private const float ShadowFadeInDuration = 0.5f;
     private const float ShadowFadeInDelay    = 0.25f;
     private const float ShadowFadeOutDuration = 0.5f;
-    private const float ShadowAlphaHold = 0.7f;   // 之前 0.45 看不见，加到 0.7
+    private const float ShadowAlphaHold = 0.7f;
 
     // 位置 offset —— 全部从 .tscn 里节点 Position 读，编辑器拖即可
     //   - Cone.Position   = "锥光 landing peak 相对角色 GlobalPosition 的偏移"

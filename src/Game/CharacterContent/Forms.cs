@@ -10,17 +10,10 @@ using MegaCrit.Sts2.Core.Nodes.Rooms;
 namespace MzmChar.Game;
 
 /// <summary>
-/// 形态识别 & 切换的 helper。所有双形态卡牌走这里判形态、切形态。
-///
-/// 规则（按 instructions_3.md）：
-///   - 仅有小墨 buff → 小墨形态
-///   - 仅有小睦 buff、两个都没、两个都有 → 小睦形态（默认）
-///
-/// 战斗开始保证有一个 buff（参见 SecondPersonaRelic.AfterPlayerTurnStart）。
-///
-/// 切换形态后会自动 swap visuals.tscn 主 Sprite2D 的 texture（小睦 = portrait.png，
-/// 小墨 = mortis_portrait.png）。Path：NCombatRoom.Instance.GetCreatureNode(creature)
-/// → NCreature.Visuals → NCreatureVisuals.GetCurrentBody() (Sprite2D) → 改 Texture。
+/// 形态识别 & 切换 helper。
+/// 规则：仅有小墨 buff → 小墨；其余（仅小睦 / 两都没 / 两都有）→ 小睦（默认）。
+/// 战斗开始保证有一个 buff（<see cref="SecondPersonaRelic"/> 处理）。
+/// 切换形态时 swap <c>visuals.tscn</c> 主 Sprite2D 的 texture。
 /// </summary>
 public static class Forms
 {

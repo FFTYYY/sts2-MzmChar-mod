@@ -20,11 +20,9 @@ namespace MzmChar.Game;
 /// power apply / sync 机制（PowerCmd.Apply 走 GameAction，自动多人同步）。
 ///
 /// 关键设置：
-/// - `IsVisibleInternal => false` —— UI buff 栏不显示（vanilla 默认 true）
-/// - `StackType = Counter` —— 多次 apply 累加 Amount
-/// - `AfterTurnEnd` 自移除 —— per-turn 计数器生命周期
-///
-/// 见 report_45（待写）：CombatCounters SpireField 多人同步重构。
+/// - <c>IsVisibleInternal => false</c>：UI buff 栏不显示
+/// - <c>StackType = Counter</c>：多次 apply 累加 Amount
+/// - <c>AfterTurnEnd</c> 自移除（per-turn 生命周期）
 /// </summary>
 public class MzmCharMutsumiCardsThisTurnPower : CustomPowerModel
 {

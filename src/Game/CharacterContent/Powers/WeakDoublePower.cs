@@ -13,9 +13,8 @@ using MegaCrit.Sts2.Core.Models.Powers;
 namespace MzmChar.Game;
 
 /// <summary>
-/// 「二重虚弱」debuff：若 owner 身上有[gold]虚弱[/gold]，weak 的乘数**加性**再减 0.25。
-/// 加性而非乘性 → Debilitate 把 weak 改成 0.5 后再 −0.25 = 0.25（75% 减伤），不会破到 0。
-/// 详见 gotcha #59。
+/// 「二重虚弱」debuff：若 owner 身上有[gold]虚弱[/gold]，weak 的乘数加性再减 0.25。
+/// 加性而非乘性 → Debilitate 把 weak 改成 0.5 后再 −0.25 = 0.25，不会破到 0。
 /// </summary>
 public class WeakDoublePower : CustomPowerModel
 {

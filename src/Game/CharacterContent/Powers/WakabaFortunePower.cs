@@ -12,9 +12,8 @@ namespace MzmChar.Game;
 
 /// <summary>
 /// 若叶家产：战斗结束后获得 Amount 点金币。
-/// Amount 由 WakabaFortune 卡在 OnPlay 时按当时的"已切换形态次数"快照应用并叠加（StackType.Counter）。
-/// 一旦应用后 Amount 就**冻结**——之后再切换形态不再自动 +1。要继续涨只能再次打出本卡。
-/// （之前版本在 OnPersonaSwitch 里自动 +1，违反 spec "一旦打出，power 层数不再随切换叠加"）
+/// Amount 由 WakabaFortune 卡在 OnPlay 时按当时的"已切换形态次数"快照应用并叠加
+/// （<c>StackType.Counter</c>）。一旦应用后 Amount 就冻结，要继续涨只能再次打出本卡。
 /// </summary>
 public class WakabaFortunePower : CustomPowerModel
 {

@@ -8,30 +8,15 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 namespace MzmChar.Game;
 
 /// <summary>
-/// 隐藏计数器 façade。**全部**底层用 vanilla power 存（自动多人同步），
-/// 见 `Powers/CounterPowers/Mzm*Power.cs`。
-///
-/// 历史：早期版本用 BaseLib `SpireField` 包装 `ConditionalWeakTable` 存计数。问题：SpireField
-/// 是 per-client 本地状态，**不参与 vanilla 多人协议同步**。多 MzmChar 玩家 + 长战斗下 client
-/// 状态分叉。现在所有计数都改用 vanilla `PowerCmd.Apply<TCounterPower>` 走 GameAction 自动同步。
-/// hidden power 通过 `IsVisibleInternal=false` 隐藏 UI buff 栏。
-///
-/// 当前**只保留有读取者的 3 个**计数器；之前的 per-combat 计数（MutsumiCardsThisCombat /
-/// MortisCardsThisCombat）和 per-creature 计数（StruckByMortisThisTurn）因为没卡牌读取已经清理。
-/// 将来需要时直接照样建一个 `Mzm*Power.cs` 即可。
+/// <summary>
+/// 隐藏计数器 façade。底层 hidden power 见 <c>Powers/CounterPowers/Mzm*Power.cs</c>
+/// （走 PowerCmd.Apply 自动多人同步，IsVisibleInternal=false 不显示 UI）。
 ///
 /// | counter                     | hidden power                              | reader |
 /// |---|---|---|
-/// | 本回合 Mu 出牌数               | `MzmCharMutsumiCardsThisTurnPower`         | `MirrorDoll`（额外攻击次数）|
-/// | 本回合 Mo 出牌数               | `MzmCharMortisCardsThisTurnPower`          | `Silence`（额外抽牌）|
-/// | 本场战斗形态切换次数            | `MzmCharPersonaSwitchesThisCombatPower`    | `CryInRain` / `MultipleMonster` / `WakabaFortune` |
-///
-/// 用法：
-///   await CombatCounters.BumpMutsumiCard(ctx, player);
-///   int n  = CombatCounters.GetMutsumiCardsThisTurn(player);
-///   int sw = CombatCounters.GetPersonaSwitchesThisCombat(player);
-///
-/// 回滚到 SpireField：见 `notes/rollback_spirefield_to_power.md`。
+/// | 本回合 Mu 出牌数               | <c>MzmCharMutsumiCardsThisTurnPower</c>    | <c>MirrorDoll</c> |
+/// | 本回合 Mo 出牌数               | <c>MzmCharMortisCardsThisTurnPower</c>     | <c>Silence</c> |
+/// | 本场战斗形态切换次数            | <c>MzmCharPersonaSwitchesThisCombatPower</c> | <c>CryInRain</c> / <c>MultipleMonster</c> / <c>WakabaFortune</c> |
 /// </summary>
 public static class CombatCounters
 {
@@ -56,27 +41,17 @@ public static class CombatCounters
         await Sts2Compat.PowerApply<MzmCharPersonaSwitchesThisCombatPower>(ctx, p.Creature, 1, p.Creature, null, silent: true);
     }
 
-    // ═══════════════ 卡牌打出全局 hook（覆盖 vanilla + 其它 mod 卡）═══════════════
+    // 卡牌打出全局 hook（覆盖 vanilla + 其它 mod 卡）
     //
-    // 问题：之前每张我们的卡在 OnPlay 末尾显式调 BumpMu/MoCard，会漏掉 vanilla / 其它 mod 的卡
-    //  （PandorasBox 加入的、变化牌产生的、MoveCard 选过来的等等）。Silence / MirrorDoll 这种
-    //  reader 卡就少算了形态非我们卡的打出次数。
+    // 在 SecondPersonaRelic / AncientSecondPersonaRelic 的 BeforeCardPlayed / AfterCardPlayed 调：
+    //   1. BeforeCardPlayed 时 snapshot 打牌瞬间的形态到 _formSnapshot
+    //   2. AfterCardPlayed 时读回 snapshot，Bump 对应 power
     //
-    // 修法：在 SecondPersonaRelic / AncientSecondPersonaRelic 的 BeforeCardPlayed + AfterCardPlayed
-    //  hook 里集中算。逻辑：
-    //   1. BeforeCardPlayed 时 snapshot 形态到 _formSnapshot（无 ctx，sync）
-    //   2. AfterCardPlayed 时读回 snapshot，用 hook 自带的 ctx Bump 对应 power（async）
+    // 用 snapshot 而不是 AfterCardPlayed 当场判：卡的 OnPlay 内部可能切形态，玩家直觉
+    // 「这张卡是以 Mu 形态打的」= 打牌瞬间的形态，BeforeCardPlayed 才是对的时间点。
     //
-    // 为什么用 snapshot 而不是 AfterCardPlayed 当场判形态：
-    //  - 卡的 OnPlay 内部可能切形态（如 BackPersona Mu 分支末尾 EnterMortis）
-    //  - 玩家直觉「这张卡是以 Mu 形态打的」= 打牌**那一刻**的形态，不是结束时的形态
-    //  - BeforeCardPlayed 时间点 = 打牌瞬间，最对
-    //
-    // 为什么用 ConditionalWeakTable：
-    //  - 嵌套打牌（AutoPlay 触发的子 play）可能在 outer BeforeCardPlayed 跟 outer AfterCardPlayed 之间
-    //    插入 inner Before / After 对，所以不能用单一 static field
-    //  - 用 CardPlay 实例做 key → 每张 play 一份 snapshot，互不干扰
-    //  - ConditionalWeakTable 让 CardPlay GC 后 entry 自动释放
+    // 用 ConditionalWeakTable<CardPlay, ...>：嵌套打牌（AutoPlay）可能在 outer Before/After
+    // 之间插入 inner pair，单一 static field 装不下；CardPlay 做 key + GC 后自动释放。
     private static readonly ConditionalWeakTable<CardPlay, object> _formSnapshot = new();
     private static readonly object _wasMo = true, _wasMu = false;
 

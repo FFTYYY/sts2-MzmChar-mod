@@ -30,11 +30,8 @@ public class MortisCardPower : CustomPowerModel
         var cs = player.Creature.CombatState;
         if (cs == null || cs.HittableEnemies.Count == 0) return;
         Flash();
-        // 标准模式（per vanilla PoisonPower / ThornsPower / FlameBarrierPower）：
-        // power 直接造伤用 CreatureCmd.Damage，不要走 AttackCommand。AttackCommand 是给卡牌攻击用的，
-        // 必须走 FromCard / FromMonster / FromOsty 设置 attacker，且 FromOsty 需要真正的 Osty 实体存在
-        // 之前用 FromOsty(player.Creature, source!) 会卡住（无 Osty 时 attack 流程死锁）
-        // ToList() 防迭代时 list 被修改（敌人死亡触发 cs.HittableEnemies 变化）
+        // power 造伤走 CreatureCmd.Damage（参考 vanilla PoisonPower / ThornsPower），
+        // AttackCommand 只给卡牌攻击用。ToList() 防敌人死亡修改 HittableEnemies。
         foreach (var enemy in cs.HittableEnemies.ToList())
             await CreatureCmd.Damage(ctx, enemy, Amount, ValueProp.Move | ValueProp.Unpowered, player.Creature);
     }

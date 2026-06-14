@@ -10,6 +10,7 @@ using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization;
+using MegaCrit.Sts2.Core.Rooms;
 
 namespace MzmChar.Game;
 
@@ -81,6 +82,21 @@ public class ConcertPower : CustomPowerModel
         // 先让聚光灯淡出（0.5s 后自销毁，不 await，跟 Remove 并行进行）
         ConcertSpotlightVfx.DespawnFor(Owner);
         await PowerCmd.Remove<ConcertPower>(Owner);
+    }
+
+    // 战斗结束兜底：聚光灯 VFX 不应该跨场景留下
+    // （即使 power 因为某些路径没有被 AfterSideTurnEnd 移除）
+    public override Task AfterCombatEnd(CombatRoom room)
+    {
+        if (Owner != null) ConcertSpotlightVfx.DespawnFor(Owner);
+        return Task.CompletedTask;
+    }
+
+    // power 被移除时（vanilla 死亡时会 auto-remove power，AfterRemoved 随之 fire）也清 VFX
+    public override Task AfterRemoved(Creature oldOwner)
+    {
+        if (oldOwner != null) ConcertSpotlightVfx.DespawnFor(oldOwner);
+        return Task.CompletedTask;
     }
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch

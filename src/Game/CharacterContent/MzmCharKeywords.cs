@@ -20,6 +20,6 @@ public static class MzmCharKeywords
     /// 显示规则由 MzmCharBaseCard 注入的 HasConcert 描述变量驱动。
     /// </summary>
     [CustomEnum]
-    [KeywordProperties(AutoKeywordPosition.Before, true)]   // 自动插入卡描述**开头**（用户希望演奏 tag 显眼）
+    [KeywordProperties(AutoKeywordPosition.Before, true)]   // 插到描述开头
     public static CardKeyword Perform = CardKeyword.None;
 }

@@ -11,12 +11,12 @@ namespace MzmChar.Config;
 /// </summary>
 public class MzmCharConfig : SimpleModConfig
 {
-    /// <summary>非 boss 战斗启用自定义 BGM（保留原有 property name，旧用户存档的开关状态延续）</summary>
+    /// <summary>非 boss 战斗启用自定义 BGM。</summary>
     [ConfigSection("音频设置")]
     [ConfigHoverTip]
     public static bool EnableCustomBgm { get; set; } = false;
 
-    /// <summary>boss 战也启用自定义 BGM（新选项；默认关，让原版 boss 主题曲优先）</summary>
+    /// <summary>boss 战也启用自定义 BGM。默认关，让原版 boss 主题曲优先。</summary>
     [ConfigHoverTip]
     public static bool EnableCustomBgmBoss { get; set; } = false;
 

@@ -17,6 +17,7 @@ namespace MzmChar.Game;
 /// 心灵共鸣：2/1 费蓝色技能。消耗。联机专用。
 ///   所有玩家进入小睦。在所有玩家的手牌、抽牌堆、弃牌堆**各**随机添加一张若叶睦的卡牌
 ///   （每玩家共 3 张，每个 pile 一张）。这些牌第一次打出免费。
+///   死亡玩家跳过（不切形态、不发牌）。
 ///
 /// 多人模式参考 BullyingYou（CardMultiplayerConstraint.MultiplayerOnly + 遍历
 /// Owner.RunState.Players）。
@@ -75,6 +76,8 @@ public class HeartResonance : MzmCharBaseCard
         foreach (var p in Owner.RunState.Players)
         {
             if (p?.Creature?.CombatState == null) continue;
+            // 跳过死亡玩家 —— 不给死人发牌，也不切形态
+            if (!p.Creature.IsAlive) continue;
 
             // 1) 所有玩家进入小睦
             await Forms.EnterMutsumi(p, this, ctx);

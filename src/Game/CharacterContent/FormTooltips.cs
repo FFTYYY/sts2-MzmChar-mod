@@ -5,12 +5,7 @@ namespace MzmChar.Game;
 
 /// <summary>
 /// 卡牌 / power 描述的常用 hover tooltip 帮手。
-///
-/// - <see cref="Both"/>：当卡描述里含「小睦」/「小墨」字眼时挂双形态 power tooltip
-/// - <see cref="BothEnter"/>：当卡描述含「进入小睦」/「进入小墨」时挂两个 Enter-X marker tooltip（"转换成 X 人格"）
-/// - <see cref="EnterMu"/> / <see cref="EnterMo"/>：单边
-///
-/// 注：「进入 X」的描述应当用 Enter-X tooltip 而非 form tooltip（按用户要求 / instructions_3）。
+/// <see cref="Both"/> 挂双形态 power tooltip；<see cref="BothEnter"/> 挂 Enter-X marker tooltip。
 /// </summary>
 public static class FormTooltips
 {

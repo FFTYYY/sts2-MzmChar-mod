@@ -68,7 +68,7 @@ public class SurveillanceBuffPower : CustomPowerModel
         await PowerCmd.Remove<SurveillanceBuffPower>(Owner);
     }
 
-    // arg 2 = DumbHoverTip / 关键字 hover 用（vanilla 渲染时不注入 Amount → 不能写 {Amount}，gotcha #43）
+    // arg 2 = DumbHoverTip / 关键字 hover（不能写 {Amount}，vanilla 不注入）
     // arg 3 = power 实活 hover（带 Amount 当前层数）
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {

@@ -13,9 +13,8 @@ using MegaCrit.Sts2.Core.Models.Powers;
 namespace MzmChar.Game;
 
 /// <summary>
-/// 「二重易伤」debuff：若 owner 身上有[gold]易伤[/gold]，vuln 的乘数**加性**再加 0.5。
-/// 加性而非乘性 → vuln 1.5 → 2.0 (+100%)；vuln+Debilitate 2.0 → 2.5 (+150%)。
-/// 详见 gotcha #59（跟 WeakDouble 同模式）。
+/// 「二重易伤」debuff：若 owner 身上有[gold]易伤[/gold]，vuln 的乘数加性再加 0.5。
+/// 加性而非乘性 → vuln 1.5 → 2.0；vuln+Debilitate 2.0 → 2.5。
 /// </summary>
 public class VulnerableDoublePower : CustomPowerModel
 {

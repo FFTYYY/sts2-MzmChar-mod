@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using BaseLib.Abstracts;
+using BaseLib.Patches.UI;  // RelicIconData (Yummy Cookie 自定义图标)
 using Godot;
 using MegaCrit.Sts2.Core.Entities.Characters;
 using MegaCrit.Sts2.Core.Helpers;
@@ -10,20 +11,9 @@ using MegaCrit.Sts2.Core.Models;
 namespace MzmChar.Game;
 
 /// <summary>
-/// MzmChar 的角色，直接继承 BaseLib.Abstracts.CustomCharacterModel。
-///
-/// 设计：所有 24 个 Custom* / *Sfx path 在本类里全部显式 override —— 一眼看清每项指向哪。
-///   - 标 [OURS] 的指向 pack/MzmChar/ 下我们自己出的资源
-///   - 标 [BORROW: ironclad] 的指向游戏内置 Ironclad 资源（确保跑得起来）—— 跟 BaseLib 的 PlaceholderCharacterModel 同样的路径
-///
-/// 想把任意一条换成自己的资源：
-///   1. 在 pack/MzmChar/ 下放好新资源，rebuild 让 MegaDot 把它打进 .pck
-///   2. 把对应那条的字符串改成 res://MzmChar/... 路径
-///   3. dotnet build → 重启游戏验证
-///
-/// 之前一次性把太多 path 切到自己版本，引发渲染白屏（最可疑：自做的 transition shader 输出全白）。
-/// 当前策略：把不影响"角色身份识别"的部分（战斗视觉/动画/转场/SFX）先借 Ironclad，
-/// 把"用户能直接看到这是 OUR 角色"的部分（select 屏图标 + select bg + 顶部头像）出自己的。
+/// 所有 Custom* / *Sfx path 在本类显式 override。
+///   - [OURS] 指向 pack/MzmChar/ 下的资源
+///   - [BORROW: ironclad] 指向 vanilla Ironclad 资源（占位）
 /// </summary>
 public class MutsumiCharacter : CustomCharacterModel
 {
@@ -39,12 +29,9 @@ public class MutsumiCharacter : CustomCharacterModel
     public override CharacterGender Gender => CharacterGender.Neutral;
     public override int StartingHp => 75;
 
-    // 默认 1.5s，但多个 MzmChar 同时死时 N 个并发 Cmd.Wait 进各自 player queue → combat-end
-    // 取消窗口里 sync 对不上 → 卡死（report_46 + 后续多人测试反复观察到）。
-    // 0 = 完全跳过 BaseLib CustomAnimationPatch.WaitCustomAnim 里的 Cmd.Wait → 不进 player queue
-    // → 彻底消除并发 wait 窗口。
-    // 代价：die anim 几乎瞬间被打断，但 AnimatedSprite2D 会停在播放到那一帧，AutoReturnToIdlePatch
-    // 看到 current=="die" 不切回 idle → 视觉上仍能看到一个死亡 pose 帧（不是完整动画）。
+    // 0 = 跳过 BaseLib CustomAnimationPatch.WaitCustomAnim 的 Cmd.Wait，避免多人同死时
+    // 并发 wait 窗口造成 combat-end sync 卡死。视觉上 AutoReturnToIdlePatch 让 die anim 停在
+    // 当前帧不切回 idle。
     public override float DeathAnimTime => 0f;
 
     // 池子用我们自己的（角色身份核心，不能借）
@@ -64,15 +51,11 @@ public class MutsumiCharacter : CustomCharacterModel
         new RelicModel[] { ModelDb.Relic<SecondPersonaRelic>() };
 
     // ===== [OURS] 我们自己出的视觉资源 ===== //
-    // 选角界面 —— 用户最直接看到我们角色的地方
     public override string? CustomCharacterSelectIconPath => "res://MzmChar/characters/select.png";
     public override string? CustomCharacterSelectLockedIconPath => "res://MzmChar/characters/select.png";
     public override string? CustomCharacterSelectBg => "res://MzmChar/scenes/char_select_bg.tscn";
-    // 顶部信息栏头像
-    // CustomIconTexturePath 被 vanilla 多处直接塞进 TextureRect.Texture（history page / continue
-    // run info / 多人 lobby / 对话框 speaker 等 7 处），节点 stretch_mode 由 vanilla 各 .tscn 决定。
-    // beta v0.105 改了 NRunHistoryPlayerIcon._icon 的 stretch 配置 → 大图（256×256）爆开。
-    // 走 vanilla 同尺寸范围（≤128）的 button_small.png；顶部 HUD 仍用 character_icon.tscn 引高清 button.png。
+    // CustomIconTexturePath 在 vanilla 多个 TextureRect 用，不同 .tscn stretch 不同。
+    // 用 ≤128 尺寸的 button_small.png 兼容；顶部 HUD 走 character_icon.tscn 引高清 button.png。
     public override string? CustomIconTexturePath => "res://MzmChar/characters/button_small.png";
     public override string? CustomIconOutlineTexturePath => "res://MzmChar/characters/button.png";
 
@@ -100,6 +83,13 @@ public class MutsumiCharacter : CustomCharacterModel
     public override string? CustomMapMarkerPath => ImageHelper.GetImagePath("packed/map/icons/map_marker_" + BorrowFrom + ".png");
     // 选角转场材质 —— 自做的 shader 是这次白屏的最可疑嫌犯，借 Ironclad 的稳
     public override string? CustomCharacterSelectTransitionPath => "res://materials/transitions/" + BorrowFrom + "_transition_mat.tres";
+    // Yummy Cookie 遗物的小睦定制饼干造型（BaseLib 在角色注册时自动绑定 RelicImageOverridePatch）
+    // 单 PNG 三用：Big/Packed/Outline 同图，跟我们其他遗物图标的做法一致
+    public override RelicIconData? CustomYummyCookie => new RelicIconData(
+        BigIconPath:           "res://MzmChar/relics/yummy_cookie_mzm.png",
+        PackedIconPath:        "res://MzmChar/relics/yummy_cookie_mzm.png",
+        PackedIconOutlinePath: "res://MzmChar/relics/yummy_cookie_mzm.png");
+
     // 多人模式手势贴图
     public override string? CustomArmPointingTexturePath => "res://MzmChar/characters/hand_point.png";
     public override string? CustomArmRockTexturePath => "res://MzmChar/characters/hand_rock.png";

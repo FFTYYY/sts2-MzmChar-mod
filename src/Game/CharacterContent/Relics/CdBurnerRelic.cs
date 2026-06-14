@@ -18,26 +18,17 @@ namespace MzmChar.Game;
 
 /// <summary>
 /// CD 刻录机（稀有）：战斗开始时，将 3 张随机[gold]演奏[/gold]牌加入抽牌堆。
-/// 每张牌的**第一次打出免费**，之后恢复正常费用。所有 3 张牌都获得附魔[gold]迅捷[/gold] 1。
+/// 每张牌的第一次打出免费，之后恢复正常费用。所有 3 张牌都获得附魔[gold]迅捷[/gold] 1。
 ///
-/// 触发时机判定：`_firedThisCombat` 私有 flag，`BeforeCombatStart` 重置，`AfterPlayerTurnStart`
-/// check + set。这条路径 stable / beta 通用 —— stable v0.103 的 `PlayerCombatState` 没
-/// `TurnNumber` 属性，所以不能用"判第 1 回合"的写法（beta v0.105+ 才有 TurnNumber）。
+/// 触发时机：<c>_firedThisCombat</c> 私有 flag，<c>BeforeCombatStart</c> 重置，
+/// <c>AfterPlayerTurnStart</c> check + set。stable / beta 通用。
 ///
-/// 「随机演奏」=从 MzmCharCardPool 的 unlocked cards 中过滤 Keywords.Contains(Perform) +
-/// CanBeGeneratedInCombat 后随机 distinct 3 张。
+/// 候选池：<c>MzmCharCardPool</c> unlocked cards 过滤 <c>Keywords.Contains(Perform)</c>
+/// + <c>CanBeGeneratedInCombat</c>，rng 取 3 张 distinct。
 ///
-/// **第一次免费的实现**：vanilla `card.EnergyCost.SetUntilPlayed(0, false)` 一行搞定。
-///   LocalCostModifier 加一条 `Expiration=WhenPlayed`（IL: LocalCostModifierExpiration=4）：
-///     - 跨回合保留（`EndOfTurnCleanup` 只清 EndOfTurn flag=2）→ 弃牌堆 / 抽牌堆始终显示 0
-///     - 打出一次后 `AfterCardPlayedCleanup.RemoveAll(HasFlag(WhenPlayed))` 自动清掉 → 恢复 base
-///   模式参考 vanilla `RocketPunch.AfterCardGeneratedForCombat`。
-///   **历史坑**：星 cost 版 `CardModel.SetStarCostUntilPlayed(0)` 实测不生效，但那是 TemporaryStarCost
-///   列表（另一套独立机制），能量 cost 走 LocalCostModifier 列表，跟星 cost 互不相干。
-///
-/// 附魔 = CardCmd.Enchant&lt;Swift&gt;(card, 1)。
-/// 动画 + 随机洗入：参考 vanilla Undeath，SINGLE 版 AddGeneratedCardToCombat(Random) +
-/// CardCmd.PreviewCardPileAdd(results, 2.2f, HorizontalLayout)。
+/// 首次免费实现：<c>card.EnergyCost.SetUntilPlayed(0, false)</c>。
+/// LocalCostModifier 加一条 <c>Expiration=WhenPlayed</c>，跨回合保留；
+/// 打出后 <c>AfterCardPlayedCleanup</c> 自动清。参考 vanilla <c>RocketPunch.AfterCardGeneratedForCombat</c>。
 /// </summary>
 [Pool(typeof(MzmCharRelicPool))]
 public class CdBurnerRelic : CustomRelicModel

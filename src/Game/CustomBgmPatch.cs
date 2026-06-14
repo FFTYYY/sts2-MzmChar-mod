@@ -82,13 +82,25 @@ internal static class CustomBgmPatch
     [HarmonyPrefix]
     private static bool PlayCustomMusic_Prefix(NRunMusicController __instance, string customMusic)
     {
-        // Marker DummyBgmKey 只在 ShouldUseCustomBgm 命中时由 CustomBgm_Postfix 设置 →
-        // 走到这里就说明对应房间开关已开 + 角色在场，不再重复 config check
-        if (customMusic != DummyBgmKey) return true;  // 真 FMOD event (如 vanilla boss) 透传
         if (!IsOurCharInCombat(__instance)) return true;
-        StopVanillaMusicViaProxy(__instance);
-        StartCustom();
-        return false;
+
+        if (customMusic == DummyBgmKey)
+        {
+            StopVanillaMusicViaProxy(__instance);
+            StartCustom();
+            return false;
+        }
+
+        // vanilla 子类 override CustomBgm 返回 FMOD event 时基类 postfix 不触发；
+        // 用非空 customMusic 兜底识别 boss/elite。
+        if (!string.IsNullOrEmpty(customMusic) && MzmCharConfig.EnableCustomBgmBoss)
+        {
+            StopVanillaMusicViaProxy(__instance);
+            StartCustom();
+            return false;
+        }
+
+        return true;
     }
 
     // Hook both victory (EndCombatInternal) and defeat (LoseCombat) so the fade-out always runs.

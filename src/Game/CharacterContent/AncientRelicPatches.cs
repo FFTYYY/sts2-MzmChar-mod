@@ -13,11 +13,7 @@ namespace MzmChar.Game;
 /// 不在 vanilla 字典里 → null lookup → NullReferenceException。所以必须 postfix patch
 /// 它们的字典 getter 把 Mu 的 entry 加进去。
 ///
-/// **为什么 patch getter 而非用 Prepare/postfix on AfterObtained**：字典是 static getter
-/// （每次调用都 new Dictionary{...}），patch getter 后 result 即可写入；不动 AfterObtained
-/// 的复杂业务逻辑，最低侵入。
-///
-/// 详见 reports/report_5.md「Part B」。
+/// patch getter（每次 new Dictionary）写入 result，避开 AfterObtained 的复杂逻辑，最低侵入。
 /// </summary>
 [HarmonyPatch(typeof(TouchOfOrobas), "RefinementUpgrades", MethodType.Getter)]
 public static class TouchOfOrobasMzmCharPatch

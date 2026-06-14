@@ -15,7 +15,7 @@ namespace MzmChar.Game;
 
 /// <summary>
 /// 逃离：0 费白色技能。本回合获得 3/5 点敏捷，[gold]进入小睦[/gold]。
-/// 单效果卡（不分形态分支）。Temp Dex 走 DexterityPower + TempDexterityPower 组合（gotcha #9）。
+/// 单效果卡（不分形态分支）。Temp Dex 走 DexterityPower + TempDexterityPower 组合。
 /// </summary>
 [Pool(typeof(MzmCharCardPool))]
 public class Escape : MzmCharBaseCard
