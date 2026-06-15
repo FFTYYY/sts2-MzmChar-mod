@@ -15,7 +15,7 @@ dest_files=["res://.godot/imported/grand_finale.png-94ff3dd4b21802abc6017d25b980
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
