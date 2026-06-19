@@ -37,8 +37,7 @@ public class SecondPersonaRelic : CustomRelicModel
     {
         Diag.Trace($"SecondPersonaRelic[owner={Owner?.NetId}].AfterCombatVictory: start");
         DidCombatStart = false;
-        // 战斗结束 reset 计数器（power 形式现在 → PowerCmd.Remove 是 async，方法签名跟着 async）
-        // 理论上 vanilla 战斗结束自动清所有 power，这里加一层保险
+        // 战斗结束 reset 计数器：vanilla 战斗结束自动清所有 power，这里加一层保险
         if (Owner != null) await CombatCounters.ResetThisCombat(null, Owner);
         Diag.Trace($"SecondPersonaRelic[owner={Owner?.NetId}].AfterCombatVictory: done");
     }
@@ -82,12 +81,7 @@ public class SecondPersonaRelic : CustomRelicModel
             new List<CardModel> { front, back }, PileType.Hand, player, addedByPlayer: true);
     }
 
-    // 0.106: AfterTurnEnd(ctx, side) → AfterSideTurnEnd(ctx, side, participants)
-#if BETA
     public override Task AfterSideTurnEnd(PlayerChoiceContext choiceContext, CombatSide side, IEnumerable<Creature> participants)
-#else
-    public override Task AfterTurnEnd(PlayerChoiceContext choiceContext, CombatSide side)
-#endif
     {
         var p = Owner;
         if (p != null && side == p.Creature.Side)

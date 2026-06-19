@@ -38,15 +38,8 @@ public class SevenStringGuitarRelic : CustomRelicModel
         }
     }
 
-    // stable: AfterPowerAmountChanged(PowerModel, decimal, Creature, CardModel)
-    // beta:   AfterPowerAmountChanged(PlayerChoiceContext, PowerModel, decimal, Creature?, CardModel?)
-#if BETA
     public override async Task AfterPowerAmountChanged(
         PlayerChoiceContext ctx, PowerModel power, decimal amount, Creature? applier, CardModel? cardSource)
-#else
-    public override async Task AfterPowerAmountChanged(
-        PowerModel power, decimal amount, Creature? applier, CardModel? cardSource)
-#endif
     {
         if (Owner == null) return;
         if (power.Owner != Owner.Creature) return;
@@ -54,11 +47,7 @@ public class SevenStringGuitarRelic : CustomRelicModel
         if (amount <= 0) return;  // 只关心 gain
 
         Flash();
-#if BETA
         await Sts2Compat.PowerApply<VigorPower>(ctx, Owner.Creature, 1, Owner.Creature, null, false);
-#else
-        await Sts2Compat.PowerApply<VigorPower>(null, Owner.Creature, 1, Owner.Creature, null, false);
-#endif
     }
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch

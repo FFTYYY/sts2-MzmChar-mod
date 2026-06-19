@@ -44,24 +44,14 @@ public class SlipperPhoneRelic : CustomRelicModel
         }
     }
 
-    // stable: AfterPowerAmountChanged(PowerModel, decimal, Creature, CardModel)
-    // beta:   AfterPowerAmountChanged(PlayerChoiceContext, PowerModel, decimal, Creature?, CardModel?)
-#if BETA
     public override async Task AfterPowerAmountChanged(
         PlayerChoiceContext ctx, PowerModel power, decimal amount, Creature? applier, CardModel? cardSource)
-#else
-    public override async Task AfterPowerAmountChanged(
-        PowerModel power, decimal amount, Creature? applier, CardModel? cardSource)
-#endif
     {
         if (Owner == null) return;
         if (power.Owner != Owner.Creature) return;
         if (amount <= 0) return;                  // 只关心 power 被"应用/增加"
         if (power.Amount != amount) return;       // 等价 oldAmount == 0（新值 == 本次 delta）
         var c = Owner.Creature;
-#if !BETA
-        PlayerChoiceContext? ctx = null;          // stable 无 ctx 参 → 局部 null 传 Sts2Compat
-#endif
 
         if (power is MortisFormPower)
         {

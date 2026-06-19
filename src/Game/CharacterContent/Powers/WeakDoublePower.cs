@@ -24,12 +24,7 @@ public class WeakDoublePower : CustomPowerModel
     public override string? CustomPackedIconPath => "res://MzmChar/powers/weak_double.png";
     public override string? CustomBigIconPath    => "res://MzmChar/powers/weak_double.png";
 
-    // 0.106: AfterTurnEnd(ctx, side) → AfterSideTurnEnd(ctx, side, participants)
-#if BETA
     public override async Task AfterSideTurnEnd(PlayerChoiceContext ctx, CombatSide side, IEnumerable<Creature> participants)
-#else
-    public override async Task AfterTurnEnd(PlayerChoiceContext ctx, CombatSide side)
-#endif
     {
         if (side != Owner.Side) return;
         Flash();

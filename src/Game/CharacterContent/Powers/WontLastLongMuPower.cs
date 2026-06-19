@@ -27,11 +27,7 @@ public class WontLastLongMuPower : CustomPowerModel
 {
     public override PowerType Type => PowerType.Debuff;
     public override PowerStackType StackType => PowerStackType.Counter;
-#if BETA
     public override PowerInstanceType InstanceType => PowerInstanceType.Instanced;
-#else
-    public override bool IsInstanced => true;
-#endif
 
     public override string? CustomPackedIconPath => "res://MzmChar/powers/wont_last_long_mu.png";
     public override string? CustomBigIconPath    => "res://MzmChar/powers/wont_last_long_mu.png";

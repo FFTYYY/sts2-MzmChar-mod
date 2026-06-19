@@ -17,7 +17,7 @@ namespace MzmChar.Game;
 /// 参考 vanilla <c>PaelsEye</c>：
 ///   1. <c>ShouldTakeExtraTurn</c> 返回 <c>Amount &gt;= 5</c>
 ///   2. <c>AfterTakingExtraTurn</c> 在新回合开始前 apply ConcertPower + 自移除
-/// beta 路径 <c>AfterTakingExtraTurn</c> 不带 ctx 但 <c>PowerCmd.Apply</c> 需要 ctx，
+/// <c>AfterTakingExtraTurn</c> 不带 ctx 但 <c>PowerCmd.Apply</c> 需要 ctx，
 /// 自己 new <c>HookPlayerChoiceContext</c>。
 /// 必须 guard <c>Amount &gt;= Threshold</c>：<c>Hook.AfterTakingExtraTurn</c> 广播给所有 listeners
 /// （PaelsEye 触发 extra turn 时也会调到我们）。
@@ -50,10 +50,7 @@ public class PerformancePassionPower : CustomPowerModel
         if (Amount < Threshold) return;
         Flash();
 
-        PlayerChoiceContext? ctx = null;
-#if BETA
-        ctx = new HookPlayerChoiceContext(this, player.NetId, CombatState, GameActionType.Combat);
-#endif
+        PlayerChoiceContext? ctx = new HookPlayerChoiceContext(this, player.NetId, CombatState, GameActionType.Combat);
         await Sts2Compat.PowerApply<ConcertPower>(ctx, player.Creature, 1, player.Creature, null, false);
         await PowerCmd.Remove<PerformancePassionPower>(Owner);
     }

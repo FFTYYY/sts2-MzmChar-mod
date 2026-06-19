@@ -34,12 +34,7 @@ public class CutLinePower : CustomPowerModel
         }
     }
 
-    // 0.106: BeforeTurnEnd(ctx, side) → BeforeSideTurnEnd(ctx, side, participants)
-#if BETA
     public override async Task BeforeSideTurnEnd(PlayerChoiceContext ctx, CombatSide side, IEnumerable<Creature> participants)
-#else
-    public override async Task BeforeTurnEnd(PlayerChoiceContext ctx, CombatSide side)
-#endif
     {
         if (Owner?.Player == null || side != CombatSide.Player) return;
         var tempStr = Owner.GetPower<TempStrengthPower>();

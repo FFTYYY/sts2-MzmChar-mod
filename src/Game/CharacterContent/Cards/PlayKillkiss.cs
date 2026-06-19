@@ -15,7 +15,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 namespace MzmChar.Game;
 
 /// <summary>
-/// 演奏《KillKiss》：1 费金色攻击。（原 PlayHaruhikageGold 改名）
+/// 演奏《KillKiss》：1 费金色攻击。
 /// Mo 造成 24/30 伤害；Mu 获得 7/9 覆甲。演奏 / 虚无 / 消耗。
 /// </summary>
 [Pool(typeof(MzmCharCardPool))]

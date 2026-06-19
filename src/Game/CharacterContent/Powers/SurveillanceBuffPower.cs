@@ -24,8 +24,8 @@ namespace MzmChar.Game;
 /// `amount` 是本次 gain 的**增量**（vanilla BeaconOfHopePower IL: `amount * 0.5m` 给队友 → 证实 delta）。
 /// 不 filter ValueProp（vanilla JuggernautPower 也不 filter）。
 ///
-/// ctx：AfterBlockGained 不带 ctx，沿用 `PerformancePassionPower` 同款做法：beta 路径构造
-/// `HookPlayerChoiceContext`；stable 路径 PowerCmd.Apply 不需要 ctx，直接 null。
+/// ctx：AfterBlockGained 不带 ctx，沿用 `PerformancePassionPower` 同款做法自己 new
+/// `HookPlayerChoiceContext`。
 /// </summary>
 public class SurveillanceBuffPower : CustomPowerModel
 {
@@ -48,20 +48,14 @@ public class SurveillanceBuffPower : CustomPowerModel
 
         Flash();
         PlayerChoiceContext? ctx = null;
-#if BETA
         if (Owner.Player != null)
             ctx = new HookPlayerChoiceContext(this, Owner.Player.NetId, CombatState, GameActionType.Combat);
-#endif
         // 每点格挡触发 Amount 点 vigor → 总 vigor = blockGained × stack
         await Sts2Compat.PowerApply<VigorPower>(ctx, Owner, (int)amount * (int)Amount, Owner, null, false);
     }
 
     // 回合结束自移除（参考 TempStrengthPower）
-#if BETA
     public override async Task AfterSideTurnEnd(PlayerChoiceContext ctx, CombatSide side, IEnumerable<Creature> participants)
-#else
-    public override async Task AfterTurnEnd(PlayerChoiceContext ctx, CombatSide side)
-#endif
     {
         if (Owner == null) return;
         if (side != Owner.Side) return;

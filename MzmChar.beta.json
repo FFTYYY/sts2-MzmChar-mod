@@ -3,12 +3,12 @@
   "name": "Mutsumi",
   "author": "巫游",
   "description": "若叶睦 / Wakaba Mutsumi character mod.",
-  "version": "0.2.2",
+  "version": "0.2.4",
   "has_pck": true,
   "has_dll": true,
   "affects_gameplay": true,
   "dependencies": [
-    { "id": "BaseLib", "min_version": "3.1.2" }
+    { "id": "BaseLib", "min_version": "3.3.0" }
   ],
-  "min_game_version": "0.105.0"
+  "min_game_version": "0.107.0"
 }

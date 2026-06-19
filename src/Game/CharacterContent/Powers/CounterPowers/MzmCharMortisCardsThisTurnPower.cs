@@ -31,27 +31,16 @@ public class MzmCharMortisCardsThisTurnPower : CustomPowerModel
     public override PowerType Type => PowerType.Buff;
     public override PowerStackType StackType => PowerStackType.Counter;
 
-    // 0.106: IsVisibleInternal 是 protected virtual
     protected override bool IsVisibleInternal => false;
 
     // 占位 icon（永不渲染）
     public override string? CustomPackedIconPath => "res://MzmChar/powers/performance_passion.png";
     public override string? CustomBigIconPath    => "res://MzmChar/powers/performance_passion.png";
 
-    // 0.106: AfterTurnEndLate → AfterSideTurnEndLate(ctx, side, participants)
-    // beta 用 participants.Contains(Owner) 做 guard，stable 退回 side == Owner.Side
-#if BETA
     public override async Task AfterSideTurnEndLate(PlayerChoiceContext ctx, CombatSide side, IEnumerable<Creature> participants)
-#else
-    public override async Task AfterTurnEndLate(PlayerChoiceContext ctx, CombatSide side)
-#endif
     {
         if (Owner == null) return;
-#if BETA
         if (!participants.Contains(Owner)) return;
-#else
-        if (side != Owner.Side) return;
-#endif
         await PowerCmd.Remove<MzmCharMortisCardsThisTurnPower>(Owner);
     }
 

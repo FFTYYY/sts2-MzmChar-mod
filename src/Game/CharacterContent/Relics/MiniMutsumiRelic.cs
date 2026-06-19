@@ -40,15 +40,8 @@ public class MiniMutsumiRelic : CustomRelicModel
         }
     }
 
-    // stable: AfterPowerAmountChanged(PowerModel, decimal, Creature, CardModel)
-    // beta:   AfterPowerAmountChanged(PlayerChoiceContext, PowerModel, decimal, Creature?, CardModel?)
-#if BETA
     public override async Task AfterPowerAmountChanged(
         PlayerChoiceContext ctx, PowerModel power, decimal amount, Creature? applier, CardModel? cardSource)
-#else
-    public override async Task AfterPowerAmountChanged(
-        PowerModel power, decimal amount, Creature? applier, CardModel? cardSource)
-#endif
     {
         if (UsedThisTurn) return;
         if (Owner == null) return;
@@ -58,20 +51,10 @@ public class MiniMutsumiRelic : CustomRelicModel
 
         UsedThisTurn = true;
         Flash();
-#if BETA
         await Sts2Compat.PowerApply<DexterityPower>(ctx, Owner.Creature, 1, Owner.Creature, null, false);
-#else
-        // stable 无 ctx，Sts2Compat 在 #else 分支调 PowerCmd.Apply 也不要 ctx
-        await Sts2Compat.PowerApply<DexterityPower>(null, Owner.Creature, 1, Owner.Creature, null, false);
-#endif
     }
 
-    // 0.106: AfterTurnEnd → AfterSideTurnEnd
-#if BETA
     public override Task AfterSideTurnEnd(PlayerChoiceContext ctx, CombatSide side, IEnumerable<Creature> participants)
-#else
-    public override Task AfterTurnEnd(PlayerChoiceContext ctx, CombatSide side)
-#endif
     {
         if (Owner != null && side == Owner.Creature.Side)
             UsedThisTurn = false;

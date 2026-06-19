@@ -38,17 +38,17 @@
 
   <!-- BaseLib：社区 mod 框架，提供 CustomCharacterModel / CustomCardModel 等所有基类 + 自动注册。
        玩家需要在 Slay the Spire 2 mods 目录下安装 BaseLib mod。
-       版本范围 [3.1.2,)：build 时允许 3.1.2 及任何更新版本，但 NuGet 会优先选满足范围的最低版本（3.1.2），
-       避免 build 出依赖 latest 而玩家本机装的是稍旧版本时找不到 assembly 的崩溃 (System.IO.FileNotFoundException)。
-       玩家侧最低版本约束由 MzmChar.json 的 "dependencies" 字段声明。
-       要主动升级到更新版本就显式改成 "[3.1.5,)" 之类。 -->
+       版本范围 [3.3.0,)：3.3.0 是兼容 v0.107.1 vanilla 的版本，旧 BaseLib 在 v0.107.1 上崩
+       AdjustCustomMessageKeys + RelicCollectionTranspiler 两个 patch，多人游戏会炸。
+       NuGet 会优先选满足范围的最低版本，避免 build 出依赖 latest 而玩家本机装的是稍旧版本时
+       找不到 assembly 的崩溃 (System.IO.FileNotFoundException)。
+       玩家侧最低版本约束由 MzmChar.json 的 "dependencies" 字段声明（也是 3.3.0）。 -->
   <ItemGroup>
-    <PackageReference Include="Alchyr.Sts2.BaseLib" Version="[3.1.2,)" PrivateAssets="all" />
+    <PackageReference Include="Alchyr.Sts2.BaseLib" Version="[3.3.0,)" PrivateAssets="all" />
   </ItemGroup>
 
-  <!-- 把 MzmChar.json 一起带到输出目录。
-       Beta build（含 BETA define）用 MzmChar.beta.json（新 schema：dependencies 对象数组 + min_game_version）；
-       否则用 MzmChar.json（老 schema，stable 兼容）。
+  <!-- 部署哪份 manifest 按 BETA define 切换。当前两份内容一致；保留双 manifest 骨架，
+       未来 beta 改了 manifest schema 时只动 MzmChar.beta.json。
        下方 DeployMod 复制时统一重命名成 MzmChar.json。 -->
   <ItemGroup Condition="!$(DefineConstants.Contains('BETA'))">
     <None Include="..\MzmChar.json" Link="MzmChar.json">
@@ -92,7 +92,7 @@
       <DeployFiles Include="$(OutputPath)$(ModId).dll" />
       <DeployFiles Include="$(OutputPath)$(ModId).pdb" Condition="Exists('$(OutputPath)$(ModId).pdb')" />
       <DeployPck Include="$(PackPckPath)" Condition="Exists('$(PackPckPath)')" />
-      <!-- BETA define 时部署新 schema 的 MzmChar.beta.json，重命名成 MzmChar.json -->
+      <!-- BETA define 时部署 MzmChar.beta.json，重命名成 MzmChar.json -->
       <DeployManifestStable Include="..\MzmChar.json" Condition="!$(DefineConstants.Contains('BETA'))" />
       <DeployManifestBeta Include="..\MzmChar.beta.json" Condition="$(DefineConstants.Contains('BETA'))" />
     </ItemGroup>

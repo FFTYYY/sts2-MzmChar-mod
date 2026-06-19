@@ -71,12 +71,7 @@ public class ConcertPower : CustomPowerModel
         }
     }
 
-    // 0.106: AfterTurnEnd(ctx, side) → AfterSideTurnEnd(ctx, side, participants)
-#if BETA
     public override async Task AfterSideTurnEnd(PlayerChoiceContext ctx, CombatSide side, IEnumerable<Creature> participants)
-#else
-    public override async Task AfterTurnEnd(PlayerChoiceContext ctx, CombatSide side)
-#endif
     {
         if (side != Owner.Side) return;
         // 先让聚光灯淡出（0.5s 后自销毁，不 await，跟 Remove 并行进行）

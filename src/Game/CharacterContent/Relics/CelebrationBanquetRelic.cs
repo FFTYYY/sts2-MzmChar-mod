@@ -50,16 +50,8 @@ public class CelebrationBanquetRelic : CustomRelicModel
         get { yield return HoverTipFactory.FromPower<ConcertPower>(); }
     }
 
-    // stable: AfterPowerAmountChanged(PowerModel, decimal, Creature, CardModel)
-    // beta:   AfterPowerAmountChanged(PlayerChoiceContext, PowerModel, decimal, Creature?, CardModel?)
-    // body 不使用 ctx，两签名共用
-#if BETA
     public override Task AfterPowerAmountChanged(
         PlayerChoiceContext ctx, PowerModel power, decimal amount, Creature? applier, CardModel? cardSource)
-#else
-    public override Task AfterPowerAmountChanged(
-        PowerModel power, decimal amount, Creature? applier, CardModel? cardSource)
-#endif
     {
         if (UsedThisCombat) return Task.CompletedTask;
         if (Owner == null) return Task.CompletedTask;
@@ -72,12 +64,7 @@ public class CelebrationBanquetRelic : CustomRelicModel
         return Task.CompletedTask;
     }
 
-    // 0.106 命名变更：AfterTurnEnd(ctx, side) → AfterSideTurnEnd(ctx, side, participants)
-#if BETA
     public override async Task AfterSideTurnEnd(PlayerChoiceContext ctx, CombatSide side, IEnumerable<Creature> participants)
-#else
-    public override async Task AfterTurnEnd(PlayerChoiceContext ctx, CombatSide side)
-#endif
     {
         if (Owner == null) return;
         if (side != Owner.Creature.Side) return;

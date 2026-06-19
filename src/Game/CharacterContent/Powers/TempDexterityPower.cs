@@ -31,12 +31,7 @@ public class TempDexterityPower : CustomPowerModel
     public override string? CustomPackedIconPath => "res://MzmChar/powers/lose_dexterity.png";
     public override string? CustomBigIconPath => "res://MzmChar/powers/lose_dexterity.png";
 
-    // 0.106: AfterTurnEnd(ctx, side) → AfterSideTurnEnd(ctx, side, participants)
-#if BETA
     public override async Task AfterSideTurnEnd(PlayerChoiceContext ctx, CombatSide side, IEnumerable<Creature> participants)
-#else
-    public override async Task AfterTurnEnd(PlayerChoiceContext ctx, CombatSide side)
-#endif
     {
         if (side != Owner.Side) return;
         int amt = (int)Amount;

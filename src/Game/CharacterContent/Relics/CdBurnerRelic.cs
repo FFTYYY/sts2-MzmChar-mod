@@ -21,7 +21,7 @@ namespace MzmChar.Game;
 /// 每张牌的第一次打出免费，之后恢复正常费用。所有 3 张牌都获得附魔[gold]迅捷[/gold] 1。
 ///
 /// 触发时机：<c>_firedThisCombat</c> 私有 flag，<c>BeforeCombatStart</c> 重置，
-/// <c>AfterPlayerTurnStart</c> check + set。stable / beta 通用。
+/// <c>AfterPlayerTurnStart</c> check + set。
 ///
 /// 候选池：<c>MzmCharCardPool</c> unlocked cards 过滤 <c>Keywords.Contains(Perform)</c>
 /// + <c>CanBeGeneratedInCombat</c>，rng 取 3 张 distinct。

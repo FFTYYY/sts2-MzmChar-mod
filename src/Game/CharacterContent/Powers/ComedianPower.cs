@@ -22,11 +22,7 @@ public class ComedianPower : CustomPowerModel
 {
     public override PowerType Type => PowerType.Buff;
     public override PowerStackType StackType => PowerStackType.Counter;
-#if BETA
     public override PowerInstanceType InstanceType => PowerInstanceType.Instanced;
-#else
-    public override bool IsInstanced => true;
-#endif
 
     public override string? CustomPackedIconPath => "res://MzmChar/powers/comedian.png";
     public override string? CustomBigIconPath => "res://MzmChar/powers/comedian.png";

@@ -83,12 +83,7 @@ public class AncientSecondPersonaRelic : CustomRelicModel
             new List<CardModel> { front, back }, PileType.Hand, player, addedByPlayer: true);
     }
 
-    // 0.106: AfterTurnEnd(ctx, side) → AfterSideTurnEnd(ctx, side, participants)
-#if BETA
     public override Task AfterSideTurnEnd(PlayerChoiceContext choiceContext, CombatSide side, IEnumerable<Creature> participants)
-#else
-    public override Task AfterTurnEnd(PlayerChoiceContext choiceContext, CombatSide side)
-#endif
     {
         var p = Owner;
         if (p != null && side == p.Creature.Side)
@@ -96,7 +91,7 @@ public class AncientSecondPersonaRelic : CustomRelicModel
         return Task.CompletedTask;
     }
 
-    // 诊断日志：见 SecondPersonaRelic.AfterDeath 注释。两版 relic 都挂同一个日志，覆盖 ancient 玩家
+    // 诊断日志：见 SecondPersonaRelic.AfterDeath 注释
     public override Task AfterDeath(PlayerChoiceContext ctx, Creature creature, bool wasRemovalPrevented, float deathAnimLength)
     {
         var ownerId = Owner?.NetId.ToString() ?? "?";

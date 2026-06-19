@@ -61,16 +61,8 @@ public class EncorePower : CustomPowerModel
         }
     }
 
-    // stable: AfterPowerAmountChanged(PowerModel, decimal, Creature, CardModel)
-    // beta:   AfterPowerAmountChanged(PlayerChoiceContext, PowerModel, decimal, Creature?, CardModel?)
-    // body 不使用 ctx，两签名共用
-#if BETA
     public override Task AfterPowerAmountChanged(
         PlayerChoiceContext ctx, PowerModel power, decimal amount, Creature? applier, CardModel? cardSource)
-#else
-    public override Task AfterPowerAmountChanged(
-        PowerModel power, decimal amount, Creature? applier, CardModel? cardSource)
-#endif
     {
         if (Owner == null) return Task.CompletedTask;
         if (power.Owner != Owner) return Task.CompletedTask;
@@ -94,11 +86,7 @@ public class EncorePower : CustomPowerModel
         return Task.CompletedTask;
     }
 
-#if BETA
     public override async Task AfterSideTurnEnd(PlayerChoiceContext ctx, CombatSide side, IEnumerable<Creature> participants)
-#else
-    public override async Task AfterTurnEnd(PlayerChoiceContext ctx, CombatSide side)
-#endif
     {
         if (Owner == null) return;
         if (side != Owner.Side) return;
