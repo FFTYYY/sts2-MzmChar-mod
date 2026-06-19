@@ -8,21 +8,21 @@ A custom character mod developed for **Slay the Spire 2**, adding the new charac
 
 ## Player Installation
 
-1. Download the latest release zip of this mod and extract it.
-   * For the stable version of the game, use `MzmChar.zip`; for the beta version of the game, use `MzmChar-beta.zip`.
+**Requirements**: game v0.107.0 or newer (stable or beta both fine); BaseLib v3.3.0 or newer.
+
+1. Download the latest release's `MzmChar.zip` and extract it.
 2. Copy the extracted `MzmChar/` folder into `<game directory>/mods/`.
-   * This mod depends on [BaseLib](https://github.com/Alchyr/BaseLib-StS2). For convenience, we also provide a BaseLib installation package, `BaseLib.zip`. If you have not installed BaseLib before, please install it as well.
-3. Launch the game. The first launch may crash; launching it again should work. Make sure the bottom-right corner shows “Mods loaded”.
+   * This mod depends on [BaseLib](https://github.com/Alchyr/BaseLib-StS2). For convenience, we also provide a BaseLib installation package, `BaseLib.zip`. If you haven't installed BaseLib before, or your installed version is too old, please install it as well.
+3. Launch the game. The first launch may crash; launching again should work. Make sure the bottom-right corner shows "Mods loaded".
 
 **Notes:**
 
-* After installing mods, the game will create a brand-new save file. To return to the unmodded game and your original save, simply delete the `mods/` folder or rename it.
-* Recommended for use together with the [Slay the Spire 2 Mod Manager](https://github.com/liwenhao0427/StS2ModManager), which makes it convenient to switch mods and choose whether to launch the game in unmodded mode.
-* You can find the game directory in Steam by selecting “Browse local files”. For Windows users, the default game directory is `C:\Program Files (x86)\Steam\steamapps\common\Slay the Spire 2\`.
+* Slay the Spire 2 now supports Steam Workshop. The mod will be updated on the Workshop going forward; this repository is kept only as a backup and reference.
+* Note for returning players: starting with v0.2.4, stable and beta share the same mod package (previously you had to pick `MzmChar.zip` or `MzmChar-beta.zip` based on your game branch). The minimum required BaseLib version is now **3.3.0**. BaseLib versions older than 3.3.0 are incompatible with the current game and will break multiplayer.
 
 ## Developer Guide
 
-For the complete development documentation, including project structure, adding new cards / powers / relics, the stable/beta dual-version mechanism, release workflow, and common troubleshooting, see **[DEVELOPER_GUIDE.md](DEVELOPER_GUIDE.md)**.
+For the complete development documentation, including project structure, adding new cards / powers / relics, the version-compatibility mechanism, release workflow, and common troubleshooting, see **[DEVELOPER_GUIDE.md](DEVELOPER_GUIDE.md)**.
 
 ## License
 
