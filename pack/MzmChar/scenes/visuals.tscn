@@ -1,16 +1,24 @@
 [gd_scene format=3 uid="uid://tb0en0jg4y3u"]
 
 [ext_resource type="SpriteFrames" uid="uid://bblktu2yns33q" path="res://MzmChar/resources/mu_anime.tres" id="1_11boj"]
+[ext_resource type="Texture2D" uid="uid://c2li7a50hv4qh" path="res://MzmChar/vfx/shadow.png" id="Shadow_tex"]
 
 [node name="MzmCharVisuals" type="Node2D" unique_id=1775501699]
 
 [node name="Visuals" type="AnimatedSprite2D" parent="." unique_id=1143599260]
 unique_name_in_owner = true
 position = Vector2(33, -141)
-scale = Vector2(0.34666667, 0.34666667)
+scale = Vector2(0.34666666, 0.34666666)
 sprite_frames = ExtResource("1_11boj")
 animation = &"idle"
 autoplay = "idle"
+
+[node name="Shadow" type="Sprite2D" parent="Visuals" unique_id=701234567]
+modulate = Color(1, 1, 1, 0.55)
+show_behind_parent = true
+position = Vector2(-57.69228, 380.76923)
+scale = Vector2(2.419872, 1.6914333)
+texture = ExtResource("Shadow_tex")
 
 [node name="Bounds" type="Control" parent="." unique_id=1167258580]
 unique_name_in_owner = true

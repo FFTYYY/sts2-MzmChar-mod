@@ -16,7 +16,7 @@ namespace MzmChar.Game;
 
 /// <summary>
 /// 独处：1 费金色技能（rare）。
-///   小睦：获得 10/15 格挡。自己每有 3 层敏捷，就额外获得 1 力量。
+///   小睦：获得 8/12 格挡。自己每有 3 层敏捷，就额外获得 1 力量。
 ///   小墨：造成 10/15 伤害。自己每有 3 层力量，就额外获得 1 敏捷。
 /// </summary>
 [Pool(typeof(MzmCharCardPool))]
@@ -31,7 +31,7 @@ public class Alone : MzmCharBaseCard
         _vars = new List<DynamicVar>
         {
             new DamageVar(10, ValueProp.Move),                  // Mo damage
-            new BlockVar("MuBlock", 10m, ValueProp.Move),       // Mu block (custom name)
+            new BlockVar("MuBlock", 8m, ValueProp.Move),        // Mu block (custom name)
             // Mu 实算：bonus strength = floor(dex / 3)
             new LambdaVar("MuStrBonus", card =>
             {
@@ -71,7 +71,7 @@ public class Alone : MzmCharBaseCard
     protected override void OnUpgrade()
     {
         DynamicVars.Damage.UpgradeValueBy(5);              // Mo 10 → 15
-        DynamicVars["MuBlock"].UpgradeValueBy(5);          // Mu 10 → 15
+        DynamicVars["MuBlock"].UpgradeValueBy(4);          // Mu 8 → 12
     }
 
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay play)

@@ -6,10 +6,13 @@ using BaseLib.Utils;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Nodes.Rooms;
+using MegaCrit.Sts2.Core.Nodes.Vfx;
 using MegaCrit.Sts2.Core.ValueProps;
 
 namespace MzmChar.Game;
@@ -46,6 +49,18 @@ public class MuGrandFinale : MzmCharBaseCard
 
     public MuGrandFinale() : base(1, CardType.Attack, CardRarity.Rare, TargetType.Self) { }
 
+    // 演奏会中且手中只剩这张牌时金色发光（出了它就触发全敌伤害）。模仿 vanilla GoForTheEyes
+    // 的「override ShouldGlowGoldInternal + 检查 combat 状态」模式，不动 IsPlayable
+    protected override bool ShouldGlowGoldInternal
+    {
+        get
+        {
+            if (CombatState == null || !IsInConcert()) return false;
+            var hand = PileType.Hand.GetPile(Owner);
+            return hand != null && hand.Cards.Count == 1 && hand.Cards.Contains(this);
+        }
+    }
+
     protected override void OnUpgrade() { DynamicVars.Damage.UpgradeValueBy(3); /* 5→8 */ }
 
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay play)
@@ -64,10 +79,29 @@ public class MuGrandFinale : MzmCharBaseCard
                 var cs = Owner.Creature.CombatState;
                 if (cs != null && cs.HittableEnemies.Count > 0)
                 {
+                    // 镜像 vanilla Silent「华丽谢幕」OnPlay（IL-verified）：
+                    //   1. 蓄力 VFX：NGrandFinaleVfx 挂到 CombatVfxContainer
+                    //   2. await Cmd.Wait(totalAnticipationDuration, ignoreCombatEnd: false)
+                    //   3. 每次命中 VFX：NGrandFinaleImpactVfx.Create（Impact 类，跟蓄力不是同一个）
+                    //   4. 每次命中音效："blunt_attack.mp3" 走 WithHitFx 第 3 参 tmpSfx
+                    // NHorizontalLinesVfx._Ready 的 vanilla bug 由 NHorizontalLinesVfxReadyPatch
+                    // (src/Game/VanillaVfxPatch.cs) 全局兜底
+                    var anticipationVfx = NGrandFinaleVfx.Create(Owner.Creature);
+                    if (anticipationVfx != null)
+                    {
+                        var combatRoom = NCombatRoom.Instance;
+                        if (combatRoom != null)
+                            combatRoom.CombatVfxContainer.AddChildSafely(anticipationVfx);
+                    }
+                    await Cmd.Wait(NGrandFinaleVfx.totalAnticipationDuration, false);
+
                     int hits = (int)DynamicVars["Hits"].BaseValue;
                     await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
                         .FromCard(this).TargetingAllOpponents(cs)
-                        .WithHitCount(hits).Execute(ctx);
+                        .WithHitCount(hits)
+                        .WithHitVfxNode(NGrandFinaleImpactVfx.Create)
+                        .WithHitFx(null, null, "blunt_attack.mp3")
+                        .Execute(ctx);
                 }
             }
         }

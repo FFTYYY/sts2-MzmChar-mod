@@ -27,6 +27,14 @@ public static class Forms
     private static readonly Godot.Vector2 MortisPosition  = new(30.692335f, -152.73175f);
     private static readonly Godot.Vector2 MortisScale     = new(0.330693f, 0.33069295f);
 
+    // 阴影（Visuals 的子节点）。每形态本地坐标不同，但**世界位置 / 视觉 scale 相同** —— 这样切形态时
+    // 脚下阴影位置不偏。Mu 数值跟 visuals.tscn 手调一致；Mo 是按相同世界坐标反算得到。
+    // 改了 Mu 数值要同步重算 Mo（公式：local = (world - parent.pos) / parent.scale）
+    private static readonly Godot.Vector2 ShadowPositionMu = new(-58.43079f, 379.3269f);
+    private static readonly Godot.Vector2 ShadowScaleMu    = new(2.688205f, 1.18007f);
+    private static readonly Godot.Vector2 ShadowPositionMo = new(-45.207f, 430.107f);
+    private static readonly Godot.Vector2 ShadowScaleMo    = new(2.8181f, 1.2371f);
+
     private static SpriteFrames? _mutsumiFrames;
     private static SpriteFrames? _mortisFrames;
 
@@ -174,9 +182,19 @@ public static class Forms
 
             // 保留当前 X 符号——某些 boss（如帝王蟹）会通过设置负 Scale.X 让玩家立绘面朝左
             float xSign = anim.Scale.X >= 0 ? 1f : -1f;
-            var target = IsMortisForm(p) ? MortisScale : MutsumiScale;
-            anim.Position = IsMortisForm(p) ? MortisPosition : MutsumiPosition;
+            bool isMortis = IsMortisForm(p);
+            var target = isMortis ? MortisScale : MutsumiScale;
+            anim.Position = isMortis ? MortisPosition : MutsumiPosition;
             anim.Scale = new Godot.Vector2(xSign * System.Math.Abs(target.X), target.Y);
+
+            // 同步 shadow 子节点的本地 position/scale（不动这俩 Visuals 转完会让阴影漂离脚底）
+            var shadow = anim.GetNodeOrNull<Sprite2D>("Shadow");
+            if (shadow != null && GodotObject.IsInstanceValid(shadow))
+            {
+                shadow.Position = isMortis ? ShadowPositionMo : ShadowPositionMu;
+                var shadowScale = isMortis ? ShadowScaleMo : ShadowScaleMu;
+                shadow.Scale = shadowScale;
+            }
 
             if (frames.HasAnimation("idle"))
                 anim.Play("idle");

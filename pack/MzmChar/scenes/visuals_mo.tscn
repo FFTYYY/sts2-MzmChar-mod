@@ -2,6 +2,7 @@
 
 [ext_resource type="SpriteFrames" uid="uid://bblktu2yns33q" path="res://MzmChar/resources/mu_anime.tres" id="1_11boj"]
 [ext_resource type="SpriteFrames" uid="uid://b4d36f8ysrhlt" path="res://MzmChar/resources/mo_anime.tres" id="2_m84fr"]
+[ext_resource type="Texture2D" uid="uid://c2li7a50hv4qh" path="res://MzmChar/vfx/shadow.png" id="Shadow_tex"]
 
 [node name="MzmCharVisuals" type="Node2D" unique_id=1775501699]
 
@@ -14,6 +15,13 @@ animation = &"cast"
 autoplay = "idle"
 frame = 47
 frame_progress = 1.0
+
+[node name="Shadow" type="Sprite2D" parent="_VisualsMu" unique_id=701234568]
+show_behind_parent = true
+position = Vector2(0, 406)
+scale = Vector2(1.73, 1.44)
+modulate = Color(1, 1, 1, 0.55)
+texture = ExtResource("Shadow_tex")
 
 [node name="Bounds" type="Control" parent="." unique_id=1167258580]
 unique_name_in_owner = true

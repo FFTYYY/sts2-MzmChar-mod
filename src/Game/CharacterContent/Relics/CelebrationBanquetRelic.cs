@@ -77,6 +77,18 @@ public class CelebrationBanquetRelic : CustomRelicModel
         await CreatureCmd.Heal(Owner.Creature, 8, false);
     }
 
+    // 演奏会回合中途结束战斗时 AfterSideTurnEnd 不触发；这里兜底
+    public override async Task AfterCombatVictory(CombatRoom room)
+    {
+        if (Owner == null) return;
+        if (UsedThisCombat) return;
+        if (!ConcertActiveThisTurn) return;
+
+        UsedThisCombat = true;
+        Flash();
+        await CreatureCmd.Heal(Owner.Creature, 8, false);
+    }
+
     // 每场战斗开始时重置 flag — 比 AfterCombatVictory 更鲁棒（覆盖逃跑/中途结束等情况）。
     public override Task BeforeCombatStart()
     {

@@ -49,6 +49,13 @@ public class EncorePower : CustomPowerModel
     {
         if (Amount > MaxStack)
             SetAmount(MaxStack, false);
+
+        // 如果在演奏会回合内被首次 apply，AfterPowerAmountChanged 监听 Concert 0→正 那一刻 EncorePower
+        // 还不存在 → 错过了置 flag → 本回合结束不触发。这里补上：现在 owner 有 ConcertPower → 当前就是
+        // 演奏会回合 → 直接置 flag
+        if (Owner != null && Owner.HasPower<ConcertPower>())
+            ConcertActiveThisTurn = true;
+
         return Task.CompletedTask;
     }
 

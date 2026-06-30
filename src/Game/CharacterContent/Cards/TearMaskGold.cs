@@ -17,7 +17,7 @@ namespace MzmChar.Game;
 
 /// <summary>
 /// 撕下面具（金）：1 费金色技能。
-///   小睦：获得 2/4 格挡 × 4 次（不切形态）
+///   小睦：获得 2/3 格挡 × 4 次（不切形态）
 ///   小墨：获得 1/2 费，获得 5 活力，进入小睦
 /// </summary>
 [Pool(typeof(MzmCharCardPool))]
@@ -47,7 +47,7 @@ public class TearMaskGold : MzmCharBaseCard
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Block.UpgradeValueBy(2);   // 2 → 4
+        DynamicVars.Block.UpgradeValueBy(1);   // 2 → 3
         DynamicVars.Energy.UpgradeValueBy(1);  // 1 → 2
     }
 

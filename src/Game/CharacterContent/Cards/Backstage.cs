@@ -14,7 +14,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 namespace MzmChar.Game;
 
 /// <summary>
-/// 候场：0 费白色技能。获得 10/15 格挡。演奏 / 虚无 / 消耗。
+/// 候场：0 费白色技能。获得 12/16 格挡。演奏 / 虚无 / 消耗。
 /// </summary>
 [Pool(typeof(MzmCharCardPool))]
 public class Backstage : MzmCharBaseCard
@@ -23,7 +23,7 @@ public class Backstage : MzmCharBaseCard
 
     private readonly List<DynamicVar> _vars = new()
     {
-        new BlockVar(10, ValueProp.Move),
+        new BlockVar(12, ValueProp.Move),
     };
     protected override IEnumerable<DynamicVar> CanonicalVars => _vars;
 
@@ -46,7 +46,7 @@ public class Backstage : MzmCharBaseCard
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Block.UpgradeValueBy(5);   // 10 → 15
+        DynamicVars.Block.UpgradeValueBy(4);   // 12 → 16
     }
 
     protected override async Task OnPlay(PlayerChoiceContext ctx, CardPlay play)

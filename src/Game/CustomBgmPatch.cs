@@ -33,6 +33,11 @@ internal static class CustomBgmPatch
     private static readonly Dictionary<string, AudioStream> _streamCache = new();
     private static int _bgmBusIndex = -2;
 
+    // 游戏的 BGM/Master 音量滑条走 FMOD 总线（NAudioManager.SetBgmVol → _audioNode.Call），
+    // 跟 Godot AudioServer 是两套系统；不手动同步过来，我们的 AudioStreamPlayer 听不见滑条变化。
+    private static float _bgmLinearVol = 1f;
+    private static float _masterLinearVol = 1f;
+
     private static bool IsOurCharInCombat(NRunMusicController? controller)
     {
         controller ??= NRun.Instance?.RunMusicController;
@@ -103,6 +108,36 @@ internal static class CustomBgmPatch
         return true;
     }
 
+    // 跟踪游戏 BGM/Master 滑条值并实时同步给我们的 player。两个 slider 都会调对应 setter，
+    // 包括游戏启动时载入持久化设置那一次，所以这里挂 postfix 就够了。
+    [HarmonyPatch(typeof(NAudioManager), "SetBgmVol")]
+    [HarmonyPostfix]
+    private static void SetBgmVol_Postfix(float volume)
+    {
+        _bgmLinearVol = volume;
+        ApplyUserVolume();
+    }
+
+    [HarmonyPatch(typeof(NAudioManager), "SetMasterVol")]
+    [HarmonyPostfix]
+    private static void SetMasterVol_Postfix(float volume)
+    {
+        _masterLinearVol = volume;
+        ApplyUserVolume();
+    }
+
+    private static void ApplyUserVolume()
+    {
+        if (_player == null || !GodotObject.IsInstanceValid(_player)) return;
+        _player.VolumeDb = ComputeVolumeDb();
+    }
+
+    private static float ComputeVolumeDb()
+    {
+        var linear = Math.Max(_bgmLinearVol * _masterLinearVol, 0.0001f);
+        return StartVolumeDb + (float)(20.0 * Math.Log10(linear));
+    }
+
     // Hook both victory (EndCombatInternal) and defeat (LoseCombat) so the fade-out always runs.
     // Skip the config gate: if music is playing it should stop regardless of toggle state.
     [HarmonyPatch(typeof(CombatManager), "EndCombatInternal")]
@@ -161,7 +196,7 @@ internal static class CustomBgmPatch
         {
             Stream = stream,
             Bus = ResolveBgmBusName(),
-            VolumeDb = StartVolumeDb,
+            VolumeDb = ComputeVolumeDb(),
         };
         container.AddChild(_player);
         _player.Play();

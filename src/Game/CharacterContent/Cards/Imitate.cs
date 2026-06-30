@@ -9,6 +9,7 @@ using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.Hooks;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
@@ -55,22 +56,39 @@ public class Imitate : MzmCharBaseCard
     {
         new BlockVar("MuBlock", 12m, ValueProp.Move),
         new PowerVar<WeakPower>(2),
-        // Mo 实算：被瞄准的敌人意图攻击值（GetTotalDamage 含 Repeats + 怪物自身 modifier），无攻击意图则 1
-        // ModifierKind.Damage 让显示值额外走 Hook.ModifyDamage —— 套上**我们**的 vigor / strength + 目标的 vuln / weak
-        // 这样显示值就 == OnPlay 里 DamageCmd.Attack(dmg) 实际打出的伤害（OnPlay 也走同套 modifier 链）
+        // Mo 阶段 1：怪打到出牌玩家头上的单次伤害（吃怪 strength/weak/back attack + 我方 vulnerable）
+        // ModifierKind.Damage 在外层补阶段 2：再跑一次 Hook.ModifyDamage(dealer=我, target=怪)
+        // 套上我方 strength/vigor + 怪的 vulnerable —— 跟 OnPlay 实际造成的伤害一致
         new MoDmgVar("MoDmg", (card, t) =>
-        {
-            // Target-aware lambda：直接拿 UpdateCardPreview 的 target 参数，比 card.CurrentTarget 可靠
-            // （hover 预览时 CurrentTarget 不一定及时同步）
-            if (t == null || !t.IsMonster || t.Monster == null) return 1;
-            var attackIntent = t.Monster.NextMove?.Intents?.OfType<AttackIntent>().FirstOrDefault();
-            if (attackIntent == null) return 1;
-            var targets = card.Owner?.Creature != null ? new[] { card.Owner.Creature } : System.Array.Empty<Creature>();
-            int total = attackIntent.GetTotalDamage(targets, t);
-            return total > 0 ? total : 1;
-        }),
+            ComputeMimickedIntentDamage(card.Owner?.Creature, t, card)),
     };
     protected override IEnumerable<DynamicVar> CanonicalVars => _vars;
+
+    // AttackIntent.GetTotalDamage 内部走 LocalContext.GetMe，每个 client 算「打到本机玩家头上」
+    // 的伤害 → 联机两 client 算出不同 dmg → desync。手算 Hook.ModifyDamage 显式传出牌玩家作
+    // target，全 client 一致。详 notes/baselib_and_game_apis.md
+    private static int ComputeMimickedIntentDamage(Creature? ourCreature, Creature? target, CardModel sourceCard)
+    {
+        if (ourCreature == null || target?.IsMonster != true || target.Monster == null) return 1;
+        var attackIntent = target.Monster.NextMove?.Intents?.OfType<AttackIntent>().FirstOrDefault();
+        if (attackIntent == null) return 1;
+        var combatState = target.CombatState;
+        var runState = combatState?.RunState;
+        if (combatState == null || runState == null) return 1;
+
+        if (attackIntent.DamageCalc == null) return 1;
+        decimal rawSingle = attackIntent.DamageCalc();
+        decimal modifiedSingle = Hook.ModifyDamage(
+            runState, combatState,
+            target: ourCreature, dealer: target,
+            damage: rawSingle, ValueProp.Move, sourceCard,
+            ModifyDamageHookType.All, CardPreviewMode.None, out _);
+
+        // SingleAttackIntent.GetTotalDamage 不乘 Repeats；MultiAttackIntent 才乘（IL-verified）
+        int multiplier = attackIntent is MultiAttackIntent ? System.Math.Max(1, attackIntent.Repeats) : 1;
+        int total = (int)(modifiedSingle * multiplier);
+        return System.Math.Max(1, total);
+    }
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips
     {
@@ -88,22 +106,10 @@ public class Imitate : MzmCharBaseCard
     {
         if (Forms.IsMortisForm(Owner))
         {
-            // 复算 dmg —— 跟 LambdaVar 一致，不依赖 BaseValue（它可能为 stale 的 preview value）
-            int dmg = 1;
-            if (play.Target?.IsMonster == true && play.Target.Monster != null)
-            {
-                var attackIntent = play.Target.Monster.NextMove?.Intents?.OfType<AttackIntent>().FirstOrDefault();
-                if (attackIntent != null)
-                {
-                    var targets = new[] { Owner.Creature };
-                    int total = attackIntent.GetTotalDamage(targets, play.Target);
-                    if (total > 0) dmg = total;
-                }
-            }
+            // 阶段 1：手算「怪打到我头上的伤害」。DamageCmd.Attack 内部跑阶段 2 套我方 strength/vigor + 怪的 vulnerable
+            int dmg = ComputeMimickedIntentDamage(Owner.Creature, play.Target, this);
             if (play.Target != null)
-            {
                 await DamageCmd.Attack(dmg).FromCard(this).Targeting(play.Target).Execute(ctx);
-            }
         }
         else
         {

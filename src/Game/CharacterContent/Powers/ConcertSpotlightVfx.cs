@@ -17,12 +17,13 @@ namespace MzmChar.Game;
 ///
 /// 本类的状态机：
 ///   Spawn       → cone.Play("intro") + 0.7s 后切 "idle"
-///                 同时 shadow modulate.a 渐入 (Tween, Sine.InOut, 0.5s, 0.25s delay)
 ///                 0.7s 后 cone modulate.a Tween 1.0→0.7 (Quad.Out, 0.3s) 转持续 dim
 ///   Hold        → idle 循环，modulate.a 0.7
 ///   Despawn     → cone.Play("outro") + 0.6s 后 QueueFree
-///                 同时 shadow modulate.a 渐出 (Tween, Quad.In, 0.5s)
 ///                 outro 帧自带 alpha 烘焙淡出，不需要 cone modulate tween
+///
+/// Shadow 节点：.tscn 里仍存在但**始终 alpha=0**。脚下阴影由 visuals.tscn 的 Shadow 节点常驻
+/// 提供，演奏会期间不再叠加这个 spotlight shadow。删 Shadow 节点会让 SpawnFor null-check 早退
 ///
 /// 联机：ConcertPower hooks per-client 跑 → SpawnFor/DespawnFor 各 client 渲染各自的 VFX。
 /// </summary>
@@ -38,12 +39,6 @@ public static class ConcertSpotlightVfx
     // cone modulate dim transition (intro 完成后过渡到 hold)
     private const float ConeDimDuration = 0.3f;
     private const float ConeAlphaHold   = 0.45f;
-
-    // shadow
-    private const float ShadowFadeInDuration = 0.5f;
-    private const float ShadowFadeInDelay    = 0.25f;
-    private const float ShadowFadeOutDuration = 0.5f;
-    private const float ShadowAlphaHold = 0.7f;
 
     // 位置 offset —— 全部从 .tscn 里节点 Position 读，编辑器拖即可
     //   - Cone.Position   = "锥光 landing peak 相对角色 GlobalPosition 的偏移"
@@ -165,11 +160,9 @@ public static class ConcertSpotlightVfx
                .SetTrans(Tween.TransitionType.Quad)
                .SetEase(Tween.EaseType.Out);
 
-        // shadow 渐入
-        var shadowFade = tween.TweenProperty(shadow, "modulate:a", ShadowAlphaHold, ShadowFadeInDuration);
-        shadowFade.SetDelay(ShadowFadeInDelay)
-                  .SetTrans(Tween.TransitionType.Sine)
-                  .SetEase(Tween.EaseType.InOut);
+        // shadow 不再渐入 —— 脚下阴影由 visuals.tscn 的 Shadow 节点常驻；
+        // 演奏会期间不再额外叠这个 spotlight 阴影。Shadow 节点保留（ConcertSpotlightVfx 不能没有它，
+        // 否则 SpawnFor 的 null-check 早退），只是不动它的 modulate（始终 alpha=0 不可见）
 
         _active[creature] = new Instance { Root = root, Cone = cone, Shadow = shadow };
     }
@@ -186,16 +179,10 @@ public static class ConcertSpotlightVfx
         if (GodotObject.IsInstanceValid(inst.Cone))
             inst.Cone.Play("outro");
 
-        // ===== Tween：shadow 淡出 + outro 完成后 free root =====
-        var tween = inst.Root.CreateTween().SetParallel(true);
-
-        var fadeShadow = tween.TweenProperty(inst.Shadow, "modulate:a", 0f, ShadowFadeOutDuration);
-        fadeShadow.SetTrans(Tween.TransitionType.Quad).SetEase(Tween.EaseType.In);
-
-        // outro 帧自带 intensity 1.0→0 烘焙，cone modulate 保持 0.7 不动 → 显示 0.7→0
-
-        // 等 outro 跑完后 free（不能跟 fadeShadow 抢 parallel，所以独立 tween）
-        tween.SetParallel(false);
+        // shadow 不再淡出（intro 没渐入，alpha 一直是 0）。outro 帧自带 intensity 1.0→0 烘焙，
+        // cone modulate 保持 0.7 不动 → 显示 0.7→0
+        // 等 outro 跑完后 free
+        var tween = inst.Root.CreateTween();
         var captured = inst.Root;
         tween.TweenInterval(OutroDuration);
         tween.TweenCallback(Callable.From(() =>
