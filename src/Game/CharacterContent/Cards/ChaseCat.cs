@@ -58,7 +58,7 @@ public class ChaseCat : MzmCharBaseCard
             {
                 // 单 AttackCommand + WithHitCount + TargetingRandomOpponents(allowDuplicates=true)
                 // → 每次 hit 框架内部独立选随机敌人；vigor / strength modifier 算一次但应用到每次 hit
-                await DamageCmd.Attack(dmg).FromCard(this)
+                await DamageCmd.Attack(dmg).FromCardCompat(this, play)
                     .TargetingRandomOpponents(cs, allowDuplicates: true)
                     .WithHitCount(hits).Execute(ctx);
             }

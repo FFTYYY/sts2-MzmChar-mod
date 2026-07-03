@@ -65,7 +65,7 @@ public class Catharsis : MzmCharBaseCard
             if (play.Target != null)
             {
                 await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-                    .FromCard(this).Targeting(play.Target).WithHitCount(hits).Execute(ctx);
+                    .FromCardCompat(this, play).Targeting(play.Target).WithHitCount(hits).Execute(ctx);
             }
         }
         else

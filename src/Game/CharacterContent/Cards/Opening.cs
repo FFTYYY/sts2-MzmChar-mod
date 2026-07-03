@@ -78,7 +78,7 @@ public class Opening : MzmCharBaseCard
             if (cs != null && cs.HittableEnemies.Count > 0)
             {
                 await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-                    .FromCard(this).TargetingAllOpponents(cs).Execute(ctx);
+                    .FromCardCompat(this, play).TargetingAllOpponents(cs).Execute(ctx);
             }
         }
         else

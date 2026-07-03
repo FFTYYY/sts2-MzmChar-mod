@@ -78,10 +78,12 @@ public class Imitate : MzmCharBaseCard
 
         if (attackIntent.DamageCalc == null) return 1;
         decimal rawSingle = attackIntent.DamageCalc();
-        decimal modifiedSingle = Hook.ModifyDamage(
+        // v0.108 加了 CardPlay 参；helper 同时被 display lambda + OnPlay 调用，统一传 null
+        // （vanilla Thrash.OnPlay 也是传 null，IL-verified，见 report_57 §4.3）
+        decimal modifiedSingle = Sts2Compat.ModifyDamageCompat(
             runState, combatState,
             target: ourCreature, dealer: target,
-            damage: rawSingle, ValueProp.Move, sourceCard,
+            damage: rawSingle, props: ValueProp.Move, cardSource: sourceCard, cardPlay: null,
             ModifyDamageHookType.All, CardPreviewMode.None, out _);
 
         // SingleAttackIntent.GetTotalDamage 不乘 Repeats；MultiAttackIntent 才乘（IL-verified）
@@ -109,7 +111,7 @@ public class Imitate : MzmCharBaseCard
             // 阶段 1：手算「怪打到我头上的伤害」。DamageCmd.Attack 内部跑阶段 2 套我方 strength/vigor + 怪的 vulnerable
             int dmg = ComputeMimickedIntentDamage(Owner.Creature, play.Target, this);
             if (play.Target != null)
-                await DamageCmd.Attack(dmg).FromCard(this).Targeting(play.Target).Execute(ctx);
+                await DamageCmd.Attack(dmg).FromCardCompat(this, play).Targeting(play.Target).Execute(ctx);
         }
         else
         {

@@ -62,9 +62,9 @@ public class BullyingYou : MzmCharBaseCard
 
         // 走 CreatureCmd.Damage 而非 SetCurrentHp，让队友的 AfterDamageReceived 遗物（百年积木等）能触发。
         // ValueProp 14 = Unblockable | Unpowered | Move。不钳制 —— 霸凌允许杀死队友。
-        await CreatureCmd.Damage(ctx, play.Target, DynamicVars["HpLoss"].BaseValue,
+        await Sts2Compat.CreatureDamage(ctx, play.Target, DynamicVars["HpLoss"].BaseValue,
             ValueProp.Unblockable | ValueProp.Unpowered | ValueProp.Move,
-            Owner.Creature, this);
+            Owner.Creature, this, play);
 
         await Sts2Compat.PowerApply<VulnerablePower>(ctx, play.Target,
             DynamicVars["VulnerablePower"].BaseValue, Owner.Creature, this, false);

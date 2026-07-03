@@ -83,9 +83,11 @@ public class LambdaVar : DynamicVar
         {
             var dealer = creature;
             var dmgTarget = target ?? creature;
-            modified = Hook.ModifyDamage(
+            // v0.108 加了 CardPlay 参数；display preview 无 CardPlay context，传 null
+            // （vanilla DamageVar.UpdateCardPreview 也这么做，IL-verified，见 report_57 §4.3）
+            modified = Sts2Compat.ModifyDamageCompat(
                 card.Owner.RunState!, card.CombatState, dmgTarget, dealer,
-                raw, ValueProp.Move, card,
+                raw, ValueProp.Move, card, null,
                 ModifyDamageHookType.All, previewMode, out _);
         }
         else // Block

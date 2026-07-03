@@ -60,7 +60,7 @@ public class Disharmony : MzmCharBaseCard
         if (cs != null && cs.HittableEnemies.Count > 0)
         {
             await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-                .FromCard(this).TargetingAllOpponents(cs).WithHitCount(dmgHits).Execute(ctx);
+                .FromCardCompat(this, play).TargetingAllOpponents(cs).WithHitCount(dmgHits).Execute(ctx);
         }
 
         for (int i = 0; i < blockHits; i++)

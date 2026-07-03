@@ -60,7 +60,7 @@ public class Reminisce : MzmCharBaseCard
             if (cs != null)
             {
                 await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-                    .FromCard(this).TargetingAllOpponents(cs).Execute(ctx);
+                    .FromCardCompat(this, play).TargetingAllOpponents(cs).Execute(ctx);
             }
             await Forms.EnterMutsumi(Owner, this, ctx);
         }

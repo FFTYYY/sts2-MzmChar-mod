@@ -64,7 +64,7 @@ public class Distort : MzmCharBaseCard
                 if (target != null)
                 {
                     await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-                        .FromCard(this).Targeting(target).Execute(ctx);
+                        .FromCardCompat(this, play).Targeting(target).Execute(ctx);
                 }
             }
         }

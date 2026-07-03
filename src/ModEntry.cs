@@ -17,12 +17,17 @@ namespace MzmChar;
 public static class ModEntry
 {
     public const string ModId   = "MzmChar";
-    public const string Version = "0.2.5";
+    public const string Version = "0.2.6";
     public static HarmonyLib.Harmony? Harmony { get; private set; }
 
     public static void OnModLoaded()
     {
         Log($"Loading {ModId} v{Version} ...");
+
+        // 触发 Sts2Compat 静态 ctor：探测 vanilla 版本（v0.107 stable / v0.108 beta），缓存 MethodInfo。
+        // 出错的话（vanilla 又破了签名让反射找不到 overload）在这里立刻 crash，比等到第一次
+        // 进战斗时炸清晰得多。
+        Log($"Sts2Compat init: IsBeta={Sts2Compat.IsBeta}");
 
         Harmony = new HarmonyLib.Harmony($"com.yongyi.{ModId}");
         Harmony.PatchAll(Assembly.GetExecutingAssembly());

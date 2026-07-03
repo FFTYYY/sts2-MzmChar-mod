@@ -60,7 +60,7 @@ public class DollWaltz : MzmCharBaseCard
         if (cs != null && cs.HittableEnemies.Count > 0 && attackHits > 0)
         {
             await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-                .FromCard(this).TargetingRandomOpponents(cs, allowDuplicates: true)
+                .FromCardCompat(this, play).TargetingRandomOpponents(cs, allowDuplicates: true)
                 .WithHitCount(attackHits).Execute(ctx);
         }
         for (int i = 0; i < blockHits; i++)

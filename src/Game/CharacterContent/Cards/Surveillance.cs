@@ -63,7 +63,7 @@ public class Surveillance : MzmCharBaseCard
             if (cs != null && cs.HittableEnemies.Count > 0)
             {
                 await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-                    .FromCard(this).TargetingRandomOpponents(cs, true).Execute(ctx);
+                    .FromCardCompat(this, play).TargetingRandomOpponents(cs, true).Execute(ctx);
             }
             var dex = DynamicVars["MoDex"].BaseValue;
             await Sts2Compat.PowerApply<DexterityPower>(ctx, Owner.Creature, dex, Owner.Creature, this, false);

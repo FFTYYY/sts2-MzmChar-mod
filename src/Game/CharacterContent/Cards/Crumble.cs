@@ -77,7 +77,7 @@ public class Crumble : MzmCharBaseCard
                 int per = (int)DynamicVars["BonusPerVuln"].BaseValue;
                 int bonus = vuln != null ? (int)vuln.Amount * per : 0;
                 await DamageCmd.Attack(baseDmg + bonus)
-                    .FromCard(this).Targeting(play.Target).WithHitCount(hits).Execute(ctx);
+                    .FromCardCompat(this, play).Targeting(play.Target).WithHitCount(hits).Execute(ctx);
             }
         }
         else

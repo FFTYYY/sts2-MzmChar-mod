@@ -82,7 +82,7 @@ public class PlayHaruhikage : MzmCharBaseCard
             if (cs != null && cs.HittableEnemies.Count > 0)
             {
                 await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-                    .FromCard(this).TargetingAllOpponents(cs).WithHitCount(hits).Execute(ctx);
+                    .FromCardCompat(this, play).TargetingAllOpponents(cs).WithHitCount(hits).Execute(ctx);
             }
         }
         else

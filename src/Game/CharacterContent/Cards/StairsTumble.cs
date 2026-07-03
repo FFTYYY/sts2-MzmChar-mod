@@ -61,7 +61,7 @@ public class StairsTumble : MzmCharBaseCard
             {
                 // 单 AttackCommand + WithHitCount → vigor / strength 等 modifier 算一次但应用于每次 hit；
                 // VigorPower.AfterAttack 也只 fire 一次（消耗一次活力）
-                await DamageCmd.Attack(dmg).FromCard(this).Targeting(play.Target).WithHitCount(hits).Execute(ctx);
+                await DamageCmd.Attack(dmg).FromCardCompat(this, play).Targeting(play.Target).WithHitCount(hits).Execute(ctx);
             }
         }
         else

@@ -81,7 +81,7 @@ public class Alone : MzmCharBaseCard
             if (play.Target != null)
             {
                 await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-                    .FromCard(this).Targeting(play.Target).Execute(ctx);
+                    .FromCardCompat(this, play).Targeting(play.Target).Execute(ctx);
             }
             var sp = Owner.Creature.GetPower<StrengthPower>();
             int bonus = sp != null ? (int)sp.Amount / 3 : 0;

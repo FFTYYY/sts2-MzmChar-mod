@@ -97,7 +97,7 @@ public class MuGrandFinale : MzmCharBaseCard
 
                     int hits = (int)DynamicVars["Hits"].BaseValue;
                     await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-                        .FromCard(this).TargetingAllOpponents(cs)
+                        .FromCardCompat(this, play).TargetingAllOpponents(cs)
                         .WithHitCount(hits)
                         .WithHitVfxNode(NGrandFinaleImpactVfx.Create)
                         .WithHitFx(null, null, "blunt_attack.mp3")

@@ -62,7 +62,7 @@ public class OutOfControl : MzmCharBaseCard
             if (play.Target != null)
             {
                 await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-                    .FromCard(this).Targeting(play.Target).Execute(ctx);
+                    .FromCardCompat(this, play).Targeting(play.Target).Execute(ctx);
             }
         }
         else

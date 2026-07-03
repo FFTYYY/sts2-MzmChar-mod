@@ -63,7 +63,7 @@ public class GuitarSmash : MzmCharBaseCard
             if (play.Target != null)
             {
                 await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-                    .FromCard(this).Targeting(play.Target).Execute(ctx);
+                    .FromCardCompat(this, play).Targeting(play.Target).Execute(ctx);
             }
             await CardPileCmd.Draw(ctx, DynamicVars.Cards.BaseValue, Owner, false);
         }

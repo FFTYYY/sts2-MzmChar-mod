@@ -59,7 +59,7 @@ public class BrainBully : MzmCharBaseCard
             if (play.Target != null)
             {
                 await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-                    .FromCard(this).Targeting(play.Target).Execute(ctx);
+                    .FromCardCompat(this, play).Targeting(play.Target).Execute(ctx);
                 await Sts2Compat.PowerApply<WeakDoublePower>(ctx, play.Target,
                     DynamicVars["WeakDoublePower"].BaseValue, Owner.Creature, this, false);
             }

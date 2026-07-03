@@ -74,7 +74,7 @@ public class GhostScream : MzmCharBaseCard
             if (play.Target != null)
             {
                 await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-                    .FromCard(this).Targeting(play.Target).Execute(ctx);
+                    .FromCardCompat(this, play).Targeting(play.Target).Execute(ctx);
                 await Sts2Compat.PowerApply<WeakPower>(ctx, play.Target, DynamicVars["WeakPower"].BaseValue, Owner.Creature, this, false);
             }
         }

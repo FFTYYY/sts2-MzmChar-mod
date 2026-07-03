@@ -62,8 +62,9 @@ public class LittleCucumber : MzmCharBaseCard
             int hpLoss = (int)DynamicVars["MoHpLoss"].BaseValue;
             int clamped = System.Math.Min(hpLoss, Owner.Creature.CurrentHp - 1);
             if (clamped > 0)
-                await CreatureCmd.Damage(ctx, Owner.Creature, clamped,
-                    ValueProp.Unblockable | ValueProp.Unpowered | ValueProp.Move, this);
+                await Sts2Compat.CreatureDamage(ctx, Owner.Creature, clamped,
+                    ValueProp.Unblockable | ValueProp.Unpowered | ValueProp.Move,
+                    Owner.Creature, this, play);
             await Sts2Compat.PowerApply<StrengthPower>(ctx, Owner.Creature,
                 DynamicVars["MoStrGain"].BaseValue, Owner.Creature, this, false);
             await PlayerCmd.GainEnergy(DynamicVars.Energy.IntValue, Owner);

@@ -57,7 +57,7 @@ public class Harmony : MzmCharBaseCard
             if (play.Target != null)
             {
                 await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-                    .FromCard(this).Targeting(play.Target).Execute(ctx);
+                    .FromCardCompat(this, play).Targeting(play.Target).Execute(ctx);
             }
             // Mo 升级额外抽 1 张
             if (IsUpgraded)

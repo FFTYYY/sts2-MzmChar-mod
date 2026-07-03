@@ -86,7 +86,7 @@ public class MirrorDoll : MzmCharBaseCard
             if (play.Target != null && hits > 0)
             {
                 await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-                    .FromCard(this).Targeting(play.Target).WithHitCount(hits).Execute(ctx);
+                    .FromCardCompat(this, play).Targeting(play.Target).WithHitCount(hits).Execute(ctx);
             }
             await Forms.EnterMutsumi(Owner, this, ctx);
         }

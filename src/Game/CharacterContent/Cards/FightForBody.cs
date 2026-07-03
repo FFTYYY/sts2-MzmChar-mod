@@ -96,7 +96,7 @@ public class FightForBody : MzmCharBaseCard
             // 不 guard dmg > 0 —— extraDraws=0 时仍要让力量加成生效（framework 内部加 Str）
             if (play.Target != null)
             {
-                await DamageCmd.Attack(dmg).FromCard(this).Targeting(play.Target).Execute(ctx);
+                await DamageCmd.Attack(dmg).FromCardCompat(this, play).Targeting(play.Target).Execute(ctx);
             }
             await Forms.EnterMutsumi(Owner, this, ctx);
         }
