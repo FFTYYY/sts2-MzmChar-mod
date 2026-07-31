@@ -104,7 +104,7 @@ public static class Sts2Compat
 
     public static int MaxCardsInHand => CardPile.MaxCardsInHand;
 
-    public static Task AddGeneratedCardsToCombat(
+    public static Task<IReadOnlyList<CardPileAddResult>> AddGeneratedCardsToCombat(
         IEnumerable<CardModel> cards,
         PileType newPileType,
         Player creator,

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Godot;
 using HarmonyLib;
 using MegaCrit.Sts2.Core.Combat;
@@ -140,12 +141,28 @@ internal static class CustomBgmPatch
 
     // Hook both victory (EndCombatInternal) and defeat (LoseCombat) so the fade-out always runs.
     // Skip the config gate: if music is playing it should stop regardless of toggle state.
-    [HarmonyPatch(typeof(CombatManager), "EndCombatInternal")]
-    [HarmonyPrefix]
-    private static void EndCombatInternal_Prefix()
+    //
+    // v0.110 起 EndCombatInternal 有 0 参 + 1 参(CombatTurnState) 两个重载：0 参只是转发壳，
+    // 真实胜利路径 CheckWinCondition 直调 1 参版（IL-verified）。属性写法遇重载歧义时 Harmony
+    // 回退绑 0 参壳 → prefix 不触发。TargetMethod 选参数最多的重载：stable v0.107 只有 0 参，
+    // beta 选 1 参真路径（0 参壳转发进 1 参，两条入口都覆盖）。
+    [HarmonyPatch]
+    private static class EndCombatInternalPatch
     {
-        if (_player == null) return;
-        FadeOutAndStop(FadeOutSeconds);
+        private static System.Reflection.MethodBase TargetMethod() =>
+            typeof(CombatManager)
+                .GetMethods(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic |
+                            System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Static)
+                .Where(m => m.Name == "EndCombatInternal")
+                .OrderByDescending(m => m.GetParameters().Length)
+                .First();
+
+        [HarmonyPrefix]
+        private static void Prefix()
+        {
+            if (_player == null) return;
+            FadeOutAndStop(FadeOutSeconds);
+        }
     }
 
     [HarmonyPatch(typeof(CombatManager), "LoseCombat")]

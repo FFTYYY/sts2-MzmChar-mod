@@ -17,7 +17,7 @@ namespace MzmChar;
 public static class ModEntry
 {
     public const string ModId   = "MzmChar";
-    public const string Version = "0.2.6";
+    public const string Version = "0.2.7";
     public static HarmonyLib.Harmony? Harmony { get; private set; }
 
     public static void OnModLoaded()

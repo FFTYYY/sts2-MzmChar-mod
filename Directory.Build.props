@@ -8,7 +8,7 @@
 
   <PropertyGroup>
     <ModId>MzmChar</ModId>
-    <ModVersion>0.1.0</ModVersion>
+    <ModVersion>0.2.7</ModVersion>
 
     <TargetFramework>net9.0</TargetFramework>
     <LangVersion>latest</LangVersion>
@@ -21,21 +21,25 @@
   </PropertyGroup>
 
   <!--
-    BETA define 自动检测：读 $(GameDir)\release_info.json 的 version 字段，
-      含 "v0.105" / "v0.106" / "v0.107" / "v0.108" / "v0.109" / "v0.11" 之一 → 自动 define BETA
-      （stable v0.103 / v0.104 不命中）
+    BETA define 自动检测（已废弃 / dormant，2026-07-03 起 v0.107 vs v0.108 走**运行时反射派发**）：
 
-    手动覆盖：dotnet build -c Beta 强制 define BETA（不读 release_info.json）。
+    v0.108 beta 加了 CardPlay 参到 AttackCommand.FromCard / Hook.ModifyDamage / CreatureCmd.Damage /
+    AbstractModel.ModifyDamageMultiplicative。历史上用 #if BETA 编译期分双路，需要发两份 dll。
 
-    背景：vanilla v0.105+ 的若干 cmd 签名跟 v0.103 不兼容（PowerCmd.Apply 加 ctx 参数、
-    PowerModel.IsInstanced 改名 InstanceType 等）。代码里用 #if BETA / #else 走两套调用，
-    wrapper 集中在 src/Game/Sts2Compat.cs。
+    改用运行时派发后：一份 dll 通吃 v0.107 stable + v0.108 beta。
+       - cmd 分歧：Sts2Compat 静态 ctor 探测 Hook.ModifyDamage 参数数 → 设 IsBeta bool
+         → 3 个 wrapper (FromCardCompat / ModifyDamageCompat / CreatureDamage) 用 MethodInfo.Invoke 分派
+       - override 分歧（HalfDamagePower.ModifyDamageMultiplicative）：改成 Harmony patch
+         on AbstractModel.ModifyDamageMultiplicative，Harmony 按参数名匹配跨版本
 
-    未来 stable 升到 v0.105+ 之后两版 API 自动一致，可以删 #if BETA 走单一路径。
+    因此 _IsBetaDll 触发字符串关到 v0.999 = dormant 状态，`dotnet build -c Beta` 也不再需要。
+    保留骨架防未来 vanilla 破坏严重到只能编译期分路（如某个基础类型改名 / 删除）时可以快速开门。
+
+    完整状态记录：notes/api_version_gating.md
   -->
   <PropertyGroup Condition="'$(Configuration)' != 'Beta' And Exists('$(GameDir)\release_info.json')">
     <_ReleaseInfoText>$([System.IO.File]::ReadAllText('$(GameDir)\release_info.json'))</_ReleaseInfoText>
-    <_IsBetaDll Condition="$(_ReleaseInfoText.Contains('v0.105')) Or $(_ReleaseInfoText.Contains('v0.106')) Or $(_ReleaseInfoText.Contains('v0.107')) Or $(_ReleaseInfoText.Contains('v0.108')) Or $(_ReleaseInfoText.Contains('v0.109')) Or $(_ReleaseInfoText.Contains('v0.11'))">true</_IsBetaDll>
+    <_IsBetaDll Condition="$(_ReleaseInfoText.Contains('v0.999'))">true</_IsBetaDll>
     <DefineConstants Condition="'$(_IsBetaDll)' == 'true'">$(DefineConstants);BETA</DefineConstants>
   </PropertyGroup>
 
