@@ -115,7 +115,9 @@ public class HugThigh : MzmCharBaseCard
 /// <summary>
 /// 跳过 HugThigh 的能力牌出牌动画（PlayPowerCardFlyVfx：升起+消散），给飞向队友的
 /// NCardFlyVfx 让位。按 __instance 类型判定 → 各客户端确定性一致地跳过其中的同步
-/// CustomScaledWait，不影响 action 流。方法不存在的版本 Prepare() 跳过整个 patch。
+/// CustomScaledWait，不影响 action 流。
+/// 与 HugThighFlyVfx.Available 绑死：飞卡重载不存在（stable v0.107）时不跳过 ——
+/// 保留 vanilla 能力牌动画，避免"两头都没动画"。
 /// </summary>
 [HarmonyPatch]
 internal static class HugThighPowerFlyVfxSkipPatch
@@ -123,7 +125,7 @@ internal static class HugThighPowerFlyVfxSkipPatch
     internal static readonly MethodBase? Target =
         AccessTools.Method(typeof(CardModel), "PlayPowerCardFlyVfx");
 
-    internal static bool Active => Target != null;
+    internal static bool Active => Target != null && HugThighFlyVfx.Available;
 
     private static bool Prepare() => Active;
     private static MethodBase TargetMethod() => Target!;
@@ -144,12 +146,20 @@ internal static class HugThighPowerFlyVfxSkipPatch
 ///   2. 飞向 creature = 复刻 GiveToAnotherPlayer（IL-verified）：Reparent 到目标 creature 的
 ///      VfxContainer → NCardFlyVfx.Create(node, target, 接收方 Character.TrailPath) 挂在卡节点下，
 ///      _Ready 自动播放，卡节点退树时 VFX 自清理
-/// 单独成类：老版本缺这些类型时 JIT 本方法即抛，由调用方 catch —— 不碰游戏状态，丢的只是视觉。
+/// 版本兼容：`Create(NCard, Creature, string)` 是 beta 专有重载（stable v0.107.1 只有
+/// `(NCard, PileType, bool, string)` 版，CS7036 实证）→ 反射探测 + Invoke，缺失时 Available=false，
+/// 上面的 skip patch 一并不装，stable 回退 vanilla 能力牌动画。其余引用的类型/方法两版都有（编译实证）。
 /// </summary>
 internal static class HugThighFlyVfx
 {
+    private static readonly MethodInfo? _createToCreature =
+        typeof(NCardFlyVfx).GetMethod("Create", new[] { typeof(NCard), typeof(Creature), typeof(string) });
+
+    internal static bool Available => _createToCreature != null;
+
     internal static void Play(HugThigh card, Creature target, Player allyPlayer)
     {
+        if (_createToCreature == null) return;
         var room = NCombatRoom.Instance;
         if (room == null) return;
         var container = room.CombatVfxContainer;
@@ -170,7 +180,7 @@ internal static class HugThighFlyVfx
         node.Reparent(targetContainer);
 
         var trail = allyPlayer.Character?.TrailPath ?? "";
-        var vfx = NCardFlyVfx.Create(node, target, trail);
+        var vfx = _createToCreature.Invoke(null, new object[] { node, target, trail }) as Node;
         // vfx 必须挂 creature 的 VfxContainer（IL [534-540]：AddChildSafely(loc1=容器, vfx)），
         // 不能挂卡节点 —— _Ready 里拖尾 NCardTrailVfx 挂到 vfx.GetParent()，父节点若会动
         // 拖尾坐标系就跟着卡漂移
