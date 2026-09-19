@@ -22,7 +22,7 @@
 
 ## 开发者指南
 
-完整开发文档（项目结构、加新卡/power/遗物、版本兼容机制、发布流程、常见故障排查）见**[DEVELOPER_GUIDE.md](DEVELOPER_GUIDE.md)**。
+完整开发文档（项目结构、加新卡/power/遗物、版本兼容机制、发布流程、常见故障排查）见[DEVELOPER_GUIDE.md](DEVELOPER_GUIDE.md)。
 
 ## License
 
