@@ -22,7 +22,7 @@ namespace MzmChar.Game;
 [Pool(typeof(MzmCharCardPool))]
 public class Alone : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/alone.png";
+    public override string PortraitPath => Art("alone");
 
     private readonly List<DynamicVar> _vars;
 

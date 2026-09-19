@@ -23,7 +23,7 @@ namespace MzmChar.Game;
 [Pool(typeof(MzmCharCardPool))]
 public class HideHeart : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/hide_heart.png";
+    public override string PortraitPath => Art("hide_heart");
 
     private readonly List<DynamicVar> _vars = new()
     {

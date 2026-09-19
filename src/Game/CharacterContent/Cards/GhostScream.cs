@@ -22,7 +22,7 @@ namespace MzmChar.Game;
 [Pool(typeof(MzmCharCardPool))]
 public class GhostScream : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/ghost_scream.png";
+    public override string PortraitPath => Art("ghost_scream");
 
     private readonly List<DynamicVar> _vars;
 

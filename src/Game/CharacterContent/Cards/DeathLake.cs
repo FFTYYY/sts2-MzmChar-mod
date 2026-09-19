@@ -20,7 +20,7 @@ namespace MzmChar.Game;
 [Pool(typeof(MzmCharCardPool))]
 public class DeathLake : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/death_lake.png";
+    public override string PortraitPath => Art("death_lake");
 
     private readonly HashSet<CardKeyword> _keywords = new() { CardKeyword.Ethereal };
     public override IEnumerable<CardKeyword> CanonicalKeywords => _keywords;

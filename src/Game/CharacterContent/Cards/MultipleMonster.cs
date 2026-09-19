@@ -18,7 +18,7 @@ namespace MzmChar.Game;
 [Pool(typeof(MzmCharCardPool))]
 public class MultipleMonster : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/multiple_monster.png";
+    public override string PortraitPath => Art("multiple_monster");
 
     private readonly HashSet<CardKeyword> _keywords = new() { CardKeyword.Ethereal };
     public override IEnumerable<CardKeyword> CanonicalKeywords => _keywords;

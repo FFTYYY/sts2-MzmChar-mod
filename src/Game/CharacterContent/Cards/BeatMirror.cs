@@ -24,7 +24,7 @@ namespace MzmChar.Game;
 [Pool(typeof(MzmCharCardPool))]
 public class BeatMirror : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/beat_mirror.png";
+    public override string PortraitPath => Art("beat_mirror");
 
     private readonly List<DynamicVar> _vars = new()
     {

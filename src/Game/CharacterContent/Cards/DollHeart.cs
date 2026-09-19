@@ -17,7 +17,7 @@ namespace MzmChar.Game;
 [Pool(typeof(MzmCharCardPool))]
 public class DollHeart : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/doll_heart.png";
+    public override string PortraitPath => Art("doll_heart");
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips
     {

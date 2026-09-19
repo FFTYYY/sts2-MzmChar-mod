@@ -18,7 +18,7 @@ namespace MzmChar.Game;
 [Pool(typeof(MzmCharCardPool))]
 public class FearlessOfDeath : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/fearless_of_death.png";
+    public override string PortraitPath => Art("fearless_of_death");
 
     private readonly List<DynamicVar> _vars = new()
     {

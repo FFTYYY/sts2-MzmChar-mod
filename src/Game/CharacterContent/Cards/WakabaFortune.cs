@@ -18,7 +18,7 @@ namespace MzmChar.Game;
 [Pool(typeof(MzmCharCardPool))]
 public class WakabaFortune : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/wakaba_fortune.png";
+    public override string PortraitPath => Art("wakaba_fortune");
 
     private readonly HashSet<CardKeyword> _keywords = new() { CardKeyword.Exhaust };
     public override IEnumerable<CardKeyword> CanonicalKeywords => _keywords;

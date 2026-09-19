@@ -20,7 +20,7 @@ namespace MzmChar.Game;
 [Pool(typeof(MzmCharCardPool))]
 public class Escape : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/escape.png";
+    public override string PortraitPath => Art("escape");
 
     private readonly List<DynamicVar> _vars = new()
     {

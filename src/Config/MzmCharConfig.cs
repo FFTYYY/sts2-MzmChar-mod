@@ -20,5 +20,22 @@ public class MzmCharConfig : SimpleModConfig
     [ConfigHoverTip]
     public static bool EnableCustomBgmBoss { get; set; } = false;
 
+    /// <summary>
+    /// 卡图风格（enum → BaseLib 自动渲染成下拉菜单）。默认用原本的卡图。
+    /// 目录映射与"怎么加新风格"见 <see cref="MzmChar.Game.CardArtStyles"/>；
+    /// 读取点只有一处：<see cref="MzmChar.Game.MzmCharBaseCard.Art"/>。
+    /// </summary>
+    [ConfigSection("卡面设置")]
+    [ConfigHoverTip]
+    [ConfigVisibleIf(nameof(HasAlternateCardArt))]
+    public static MzmChar.Game.CardArtStyleId CardArtStyle { get; set; } = MzmChar.Game.CardArtStyleId.Default;
+
+    /// <summary>
+    /// 只有真的装了两套以上卡图时，才显示上面那个下拉框。
+    /// 目前只有默认图集 → 整行自动隐藏；将来把新图集丢进 pack 后，它会自己出现。
+    /// </summary>
+    [ConfigIgnore]
+    public static bool HasAlternateCardArt => MzmChar.Game.CardArtStyles.AvailableCount > 1;
+
     public MzmCharConfig() : base() { }
 }

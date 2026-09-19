@@ -24,7 +24,7 @@ namespace MzmChar.Game;
 [Pool(typeof(MzmCharCardPool))]
 public class GuitarSmash : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/guitar_smash.png";
+    public override string PortraitPath => Art("guitar_smash");
 
     private readonly List<DynamicVar> _vars = new()
     {

@@ -20,7 +20,7 @@ namespace MzmChar.Game;
 [Pool(typeof(MzmCharCardPool))]
 public class NobleHouse : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/noble_house.png";
+    public override string PortraitPath => Art("noble_house");
 
     // 用 plain DynamicVar 不是 BlockVar —— 能力卡数值固定字面值，不应吃敏捷加成
     // （BlockVar 会让 :diff() PreviewValue 跑 Hook.ModifyBlock 叠 dex/frail 等 modifier）

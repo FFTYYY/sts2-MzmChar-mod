@@ -1,10 +1,16 @@
 {
-  "MZMCHAR.mod_title": "Mutsumi Character - v0.2.7",
+  "MZMCHAR.mod_title": "Mutsumi Character - v0.2.8",
   "MZMCHAR-音频设置.title": "Audio",
   "MZMCHAR-ENABLE_CUSTOM_BGM.title": "Custom BGM in Non-Boss Combat",
   "MZMCHAR-ENABLE_CUSTOM_BGM.hover.title": "Custom BGM in Non-Boss Combat",
   "MZMCHAR-ENABLE_CUSTOM_BGM.hover.desc": "Replace vanilla combat music with custom tracks in regular combats.",
   "MZMCHAR-ENABLE_CUSTOM_BGM_BOSS.title": "Custom BGM in Boss Combat",
   "MZMCHAR-ENABLE_CUSTOM_BGM_BOSS.hover.title": "Custom BGM in Boss Combat",
-  "MZMCHAR-ENABLE_CUSTOM_BGM_BOSS.hover.desc": "Replace vanilla boss music with custom tracks during boss fights."
+  "MZMCHAR-ENABLE_CUSTOM_BGM_BOSS.hover.desc": "Replace vanilla boss music with custom tracks during boss fights.",
+  "MZMCHAR-卡面设置.title": "Card Art",
+  "MZMCHAR-CARD_ART_STYLE.title": "Card Art Style",
+  "MZMCHAR-CARD_ART_STYLE.hover.title": "Card Art Style",
+  "MZMCHAR-CARD_ART_STYLE.hover.desc": "Switch the illustration style of every card. Cards already on the table won't refresh instantly; restart the game for it to fully apply.",
+  "MZMCHAR-CARD_ART_STYLE.Default": "Default",
+  "MZMCHAR-CARD_ART_STYLE.ChildDrawing": "Child's Drawing"
 }

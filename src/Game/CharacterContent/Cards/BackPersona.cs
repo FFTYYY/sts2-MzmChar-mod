@@ -22,7 +22,7 @@ namespace MzmChar.Game;
 [Pool(typeof(MzmCharCardPool))]
 public class BackPersona : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/back_persona.png";
+    public override string PortraitPath => Art("back_persona");
 
     // 升级时给 7 格挡（Mu 形态语义不在意，纯粹是上升级后的加成）
     private readonly List<DynamicVar> _vars = new()

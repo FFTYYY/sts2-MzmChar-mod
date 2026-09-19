@@ -17,7 +17,7 @@ namespace MzmChar.Game;
 [Pool(typeof(MzmCharCardPool))]
 public class Disintegration : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/disintegration.png";
+    public override string PortraitPath => Art("disintegration");
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips
     {

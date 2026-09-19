@@ -29,7 +29,7 @@ namespace MzmChar.Game;
 [Pool(typeof(MzmCharCardPool))]
 public class MuOneForAll : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/mu_one_for_all.png";
+    public override string PortraitPath => Art("mu_one_for_all");
 
     public override CardMultiplayerConstraint MultiplayerConstraint => CardMultiplayerConstraint.MultiplayerOnly;
 

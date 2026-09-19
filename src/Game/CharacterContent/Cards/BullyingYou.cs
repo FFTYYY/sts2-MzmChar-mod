@@ -22,7 +22,7 @@ namespace MzmChar.Game;
 [Pool(typeof(MzmCharCardPool))]
 public class BullyingYou : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/bullying_you_test.png";
+    public override string PortraitPath => Art("bullying_you_test");
 
     public override CardMultiplayerConstraint MultiplayerConstraint => CardMultiplayerConstraint.MultiplayerOnly;
 

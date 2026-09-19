@@ -21,7 +21,7 @@ namespace MzmChar.Game;
 [Pool(typeof(MzmCharCardPool))]
 public class NoStayingUp : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/no_staying_up.png";
+    public override string PortraitPath => Art("no_staying_up");
 
     private readonly List<DynamicVar> _vars;
 

@@ -23,7 +23,7 @@ namespace MzmChar.Game;
 [Pool(typeof(MzmCharCardPool))]
 public class TearMaskGold : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/tear_mask_gold.png";
+    public override string PortraitPath => Art("tear_mask_gold");
 
     private readonly List<DynamicVar> _vars = new()
     {

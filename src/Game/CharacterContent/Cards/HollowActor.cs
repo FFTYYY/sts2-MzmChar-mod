@@ -18,7 +18,7 @@ namespace MzmChar.Game;
 [Pool(typeof(MzmCharCardPool))]
 public class HollowActor : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/hollow_actor.png";
+    public override string PortraitPath => Art("hollow_actor");
 
     protected override bool HasEnergyCostX => true;
 

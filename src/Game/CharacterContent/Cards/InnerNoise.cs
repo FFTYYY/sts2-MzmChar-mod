@@ -20,7 +20,7 @@ namespace MzmChar.Game;
 [Pool(typeof(MzmCharCardPool))]
 public class InnerNoise : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/inner_noise.png";
+    public override string PortraitPath => Art("inner_noise");
 
     public InnerNoise() : base(1, CardType.Skill, CardRarity.Rare, TargetType.Self) { }
 

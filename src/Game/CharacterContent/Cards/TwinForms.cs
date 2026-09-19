@@ -17,7 +17,7 @@ namespace MzmChar.Game;
 [Pool(typeof(MzmCharCardPool))]
 public class TwinForms : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/twin_forms.png";
+    public override string PortraitPath => Art("twin_forms");
 
     private readonly List<DynamicVar> _vars = new()
     {

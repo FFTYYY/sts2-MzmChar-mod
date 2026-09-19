@@ -35,7 +35,7 @@ namespace MzmChar.Game;
 [Pool(typeof(MzmCharCardPool))]
 public class HugThigh : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/hug_thigh.png";
+    public override string PortraitPath => Art("hug_thigh");
 
     public override CardMultiplayerConstraint MultiplayerConstraint => CardMultiplayerConstraint.MultiplayerOnly;
 

@@ -22,7 +22,7 @@ namespace MzmChar.Game;
 [Pool(typeof(MzmCharCardPool))]
 public class Pluck : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/pluck.png";
+    public override string PortraitPath => Art("pluck");
 
     private readonly List<DynamicVar> _vars = new()
     {

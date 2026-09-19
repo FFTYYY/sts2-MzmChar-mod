@@ -29,7 +29,7 @@ namespace MzmChar.Game;
 [Pool(typeof(MzmCharCardPool))]
 public class Madness : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/madness.png";
+    public override string PortraitPath => Art("madness");
 
     private const int BaseGain = 0;            // 初始 0（再不获得费用）；PlayCount 决定增长
     private const int CardsBaseUnupgraded = 3;

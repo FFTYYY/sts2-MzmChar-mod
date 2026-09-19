@@ -20,7 +20,7 @@ namespace MzmChar.Game;
 [Pool(typeof(MzmCharCardPool))]
 public class PlayDoubleMoon : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/play_double_moon.png";
+    public override string PortraitPath => Art("play_double_moon");
 
     private readonly List<DynamicVar> _vars = new() { new CardsVar(4) };
     protected override IEnumerable<DynamicVar> CanonicalVars => _vars;

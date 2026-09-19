@@ -23,7 +23,7 @@ namespace MzmChar.Game;
 [Pool(typeof(MzmCharCardPool))]
 public class MuGrandFinale : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/mzmchar_grand_finale.png";
+    public override string PortraitPath => Art("mzmchar_grand_finale");
 
     private readonly List<DynamicVar> _vars = new()
     {

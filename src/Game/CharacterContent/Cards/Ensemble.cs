@@ -28,7 +28,7 @@ namespace MzmChar.Game;
 [Pool(typeof(MzmCharCardPool))]
 public class Ensemble : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/ensemble.png";
+    public override string PortraitPath => Art("ensemble");
 
     public override CardMultiplayerConstraint MultiplayerConstraint => CardMultiplayerConstraint.MultiplayerOnly;
 

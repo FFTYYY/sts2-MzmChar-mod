@@ -24,7 +24,7 @@ namespace MzmChar.Game;
 [Pool(typeof(MzmCharCardPool))]
 public class Disharmony : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/disharmony.png";
+    public override string PortraitPath => Art("disharmony");
 
     // 由古老牙齿转化得到的特殊卡，不应该被印牌/变化牌机制随机产生
     public override bool CanBeGeneratedInCombat => false;

@@ -22,7 +22,7 @@ namespace MzmChar.Game;
 [Pool(typeof(MzmCharCardPool))]
 public class Sidekick : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/sidekick.png";
+    public override string PortraitPath => Art("sidekick");
 
     private readonly List<DynamicVar> _vars = new()
     {

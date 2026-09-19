@@ -22,7 +22,7 @@ namespace MzmChar.Game;
 [Pool(typeof(MzmCharCardPool))]
 public class Contemplate : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/contemplate.png";
+    public override string PortraitPath => Art("contemplate");
 
     private readonly List<DynamicVar> _vars = new()
     {
@@ -42,7 +42,10 @@ public class Contemplate : MzmCharBaseCard
         if (Forms.IsMortisForm(Owner))
         {
             var discard = PileType.Discard.GetPile(Owner);
-            var candidates = discard?.Cards.ToList() ?? new List<CardModel>();
+
+            // 过滤掉自己（同 MoveCard / GreenhouseGirl）—— 打出期间本卡已经在弃牌堆里，
+            // 选回手牌会跟出牌管线的收尾争抢同一张卡
+            var candidates = discard?.Cards.Where(c => c != this).ToList() ?? new List<CardModel>();
             if (candidates.Count > 0)
             {
                 var prefs = new CardSelectorPrefs(SelectionScreenPrompt, selectCount: 1);

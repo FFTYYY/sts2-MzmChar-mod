@@ -17,7 +17,7 @@ namespace MzmChar.Game;
 [Pool(typeof(MzmCharCardPool))]
 public class MemoryOfBand : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/memory_of_band.png";
+    public override string PortraitPath => Art("memory_of_band");
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips
     {

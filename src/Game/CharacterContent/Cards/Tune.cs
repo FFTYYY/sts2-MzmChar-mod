@@ -22,7 +22,7 @@ namespace MzmChar.Game;
 [Pool(typeof(MzmCharCardPool))]
 public class Tune : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/tune.png";
+    public override string PortraitPath => Art("tune");
 
     private readonly List<DynamicVar> _vars = new()
     {

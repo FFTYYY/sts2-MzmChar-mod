@@ -17,7 +17,7 @@ namespace MzmChar.Game;
 [Pool(typeof(MzmCharCardPool))]
 public class LookAway : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/look_away.png";
+    public override string PortraitPath => Art("look_away");
 
     private readonly HashSet<CardKeyword> _keywords = new() { CardKeyword.Exhaust };
     public override IEnumerable<CardKeyword> CanonicalKeywords => _keywords;

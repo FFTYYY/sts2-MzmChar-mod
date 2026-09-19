@@ -23,7 +23,7 @@ namespace MzmChar.Game;
 [Pool(typeof(MzmCharCardPool))]
 public class Mutsumi : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/mutsumi.png";
+    public override string PortraitPath => Art("mutsumi");
 
     private readonly List<DynamicVar> _vars = new()
     {

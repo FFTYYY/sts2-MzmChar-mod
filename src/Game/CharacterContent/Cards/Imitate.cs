@@ -27,7 +27,7 @@ namespace MzmChar.Game;
 [Pool(typeof(MzmCharCardPool))]
 public class Imitate : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/imitate.png";
+    public override string PortraitPath => Art("imitate");
 
     // canonical-safe LambdaVar：卡组大全里 base.UpdateCardPreview 访问 card.Owner 抛
     // CanonicalModelException → BaseValue 留在 base(name, 0) 的 0 → 显示 0。

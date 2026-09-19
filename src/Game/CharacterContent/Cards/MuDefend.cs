@@ -25,7 +25,7 @@ namespace MzmChar.Game;
 [Pool(typeof(MzmCharCardPool))]
 public class MuDefend : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/defend.png";
+    public override string PortraitPath => Art("defend");
 
     // 初始卡，不应被印牌/变化牌随机产生
     public override bool CanBeGeneratedInCombat => false;

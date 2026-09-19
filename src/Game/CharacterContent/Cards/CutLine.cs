@@ -20,7 +20,7 @@ namespace MzmChar.Game;
 [Pool(typeof(MzmCharCardPool))]
 public class CutLine : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/cut_line.png";
+    public override string PortraitPath => Art("cut_line");
 
     private readonly List<DynamicVar> _vars = new()
     {

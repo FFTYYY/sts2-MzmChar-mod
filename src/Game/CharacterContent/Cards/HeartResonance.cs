@@ -31,7 +31,7 @@ namespace MzmChar.Game;
 [Pool(typeof(MzmCharCardPool))]
 public class HeartResonance : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/heart_resonance.png";
+    public override string PortraitPath => Art("heart_resonance");
 
     public override CardMultiplayerConstraint MultiplayerConstraint => CardMultiplayerConstraint.MultiplayerOnly;
 

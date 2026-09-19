@@ -22,6 +22,18 @@ public abstract class MzmCharBaseCard : CustomCardModel
         bool showInCardLibrary = true, bool autoAdd = true)
         : base(baseCost, type, rarity, target, showInCardLibrary, autoAdd) { }
 
+    /// <summary>
+    /// 卡图路径：按设置在各套图集之间切换。风格登记在 <see cref="CardArtStyles.All"/>。
+    ///
+    /// 每张卡写 <c>public override string PortraitPath =&gt; Art("xxx");</c>，
+    /// <c>xxx</c> 是各套图集里**同名**的文件（cards/xxx.png、cards_child/xxx.png …）。
+    ///
+    /// PortraitPath 是表达式属性、每次访问都求值，所以切换设置后新渲染的卡就会换图；
+    /// 已经画在桌面上的卡不会即时刷新 —— 设置项说明里写了「重启生效」保底。
+    /// </summary>
+    protected static string Art(string name) =>
+        $"res://MzmChar/{CardArtStyles.CurrentDir}/{name}.png";
+
     protected override void AddExtraArgsToDescription(LocString description)
     {
         base.AddExtraArgsToDescription(description);

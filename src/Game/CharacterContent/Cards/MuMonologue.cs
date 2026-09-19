@@ -19,7 +19,7 @@ namespace MzmChar.Game;
 [Pool(typeof(MzmCharCardPool))]
 public class MuMonologue : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/mzmchar_monologue.png";
+    public override string PortraitPath => Art("mzmchar_monologue");
 
     private readonly List<DynamicVar> _vars = new()
     {

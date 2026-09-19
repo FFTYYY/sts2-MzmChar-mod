@@ -17,6 +17,10 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 config/name="MzmCharPack"
 config/features=PackedStringArray("4.6", "Mobile")
 
+[dotnet]
+
+project/assembly_name="MzmCharPack"
+
 [editor]
 
 export/convert_text_resources_to_binary=false

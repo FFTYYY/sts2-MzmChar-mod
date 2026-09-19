@@ -19,7 +19,7 @@ namespace MzmChar.Game;
 [Pool(typeof(MzmCharCardPool))]
 public class FallIntoAbyss : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/fall_into_abyss.png";
+    public override string PortraitPath => Art("fall_into_abyss");
 
     private readonly List<DynamicVar> _vars = new()
     {

@@ -18,7 +18,7 @@ namespace MzmChar.Game;
 [Pool(typeof(MzmCharCardPool))]
 public class Megaphone : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/megaphone.png";
+    public override string PortraitPath => Art("megaphone");
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips
     {

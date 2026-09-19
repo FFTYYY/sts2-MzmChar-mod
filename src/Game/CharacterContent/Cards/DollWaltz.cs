@@ -21,7 +21,7 @@ namespace MzmChar.Game;
 [Pool(typeof(MzmCharCardPool))]
 public class DollWaltz : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/doll_waltz.png";
+    public override string PortraitPath => Art("doll_waltz");
 
     protected override bool HasEnergyCostX => true;
 

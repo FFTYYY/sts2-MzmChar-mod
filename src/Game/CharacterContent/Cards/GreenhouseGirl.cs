@@ -22,7 +22,7 @@ namespace MzmChar.Game;
 [Pool(typeof(MzmCharCardPool))]
 public class GreenhouseGirl : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/greenhouse_girl.png";
+    public override string PortraitPath => Art("greenhouse_girl");
 
     private readonly List<DynamicVar> _vars = new()
     {
@@ -45,12 +45,16 @@ public class GreenhouseGirl : MzmCharBaseCard
         {
             int count = (int)DynamicVars["MoExhaust"].BaseValue;
             var discard = PileType.Discard.GetPile(Owner);
-            var candidates = discard?.Cards.ToList() ?? new List<CardModel>();
+
+            // 过滤掉自己 —— OnPlayWrapper 在 await OnPlay **之前**就把本卡放进了结果牌堆（这里是弃牌堆），
+            // 所以打出期间温室少女自己就在候选里。选中它去 Exhaust 会跟出牌管线的收尾抢同一张卡：
+            // 卡面卡在半空、行动队列死锁（同 MoveCard 的处理）
+            var candidates = discard?.Cards.Where(c => c != this).ToList() ?? new List<CardModel>();
             if (candidates.Count > 0)
             {
                 var prefs = new CardSelectorPrefs(SelectionScreenPrompt, 0, count);
                 var selected = await CardSelectCmd.FromSimpleGrid(ctx, candidates, Owner, prefs);
-                foreach (var c in selected) await CardCmd.Exhaust(ctx, c, false, false);
+                foreach (var c in selected) await Sts2Compat.CardExhaust(ctx, c);
             }
         }
         else

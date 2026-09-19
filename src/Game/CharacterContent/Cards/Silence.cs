@@ -24,7 +24,7 @@ namespace MzmChar.Game;
 [Pool(typeof(MzmCharCardPool))]
 public class Silence : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/silence.png";
+    public override string PortraitPath => Art("silence");
 
     private const int BaseDraw = 1;
 

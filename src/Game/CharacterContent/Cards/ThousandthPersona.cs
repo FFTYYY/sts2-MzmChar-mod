@@ -23,7 +23,7 @@ namespace MzmChar.Game;
 [Pool(typeof(MzmCharCardPool))]
 public class ThousandthPersona : MzmCharBaseCard, ITomeCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/thousandth_persona.png";
+    public override string PortraitPath => Art("thousandth_persona");
 
     // 先古卡，不应被印牌/变化牌随机产生
     public override bool CanBeGeneratedInCombat => false;

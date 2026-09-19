@@ -23,7 +23,7 @@ namespace MzmChar.Game;
 [Pool(typeof(MzmCharCardPool))]
 public class OutOfControl : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/out_of_control.png";
+    public override string PortraitPath => Art("out_of_control");
 
     private readonly List<DynamicVar> _vars = new()
     {

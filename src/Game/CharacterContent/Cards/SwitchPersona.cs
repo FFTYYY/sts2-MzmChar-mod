@@ -19,7 +19,7 @@ namespace MzmChar.Game;
 [Pool(typeof(MzmCharCardPool))]
 public class SwitchPersona : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/switch_persona.png";
+    public override string PortraitPath => Art("switch_persona");
 
     // 初始卡（人格转换），不应被印牌/变化牌随机产生
     public override bool CanBeGeneratedInCombat => false;

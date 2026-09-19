@@ -18,7 +18,7 @@ namespace MzmChar.Game;
 [Pool(typeof(MzmCharCardPool))]
 public class MortisCard : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/mortis_card.png";
+    public override string PortraitPath => Art("mortis_card");
 
     private readonly List<DynamicVar> _vars = new()
     {

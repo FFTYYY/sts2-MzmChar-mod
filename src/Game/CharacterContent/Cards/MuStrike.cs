@@ -22,7 +22,7 @@ namespace MzmChar.Game;
 [Pool(typeof(MzmCharCardPool))]
 public class MuStrike : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/strike.png";
+    public override string PortraitPath => Art("strike");
 
     // 初始卡，不应被印牌/变化牌随机产生
     public override bool CanBeGeneratedInCombat => false;

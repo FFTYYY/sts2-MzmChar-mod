@@ -30,7 +30,7 @@ namespace MzmChar.Game;
 [Pool(typeof(MzmCharCardPool))]
 public class Emptiness : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/emptiness.png";
+    public override string PortraitPath => Art("emptiness");
 
     private const int BaseDex = 3;
 

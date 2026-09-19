@@ -23,7 +23,7 @@ namespace MzmChar.Game;
 [Pool(typeof(MzmCharCardPool))]
 public class Rebellion : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/rebellion.png";
+    public override string PortraitPath => Art("rebellion");
 
     private readonly HashSet<CardKeyword> _keywords = new() { CardKeyword.Exhaust };
     public override IEnumerable<CardKeyword> CanonicalKeywords => _keywords;

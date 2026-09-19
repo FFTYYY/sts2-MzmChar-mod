@@ -17,7 +17,7 @@ namespace MzmChar.Game;
 [Pool(typeof(MzmCharCardPool))]
 public class Comedian : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/comedian.png";
+    public override string PortraitPath => Art("comedian");
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips
     {

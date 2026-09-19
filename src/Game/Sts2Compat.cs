@@ -43,6 +43,7 @@ public static class Sts2Compat
     private static readonly MethodInfo _fromCard;
     private static readonly MethodInfo _modifyDamage;
     private static readonly MethodInfo _creatureDamage;
+    private static readonly MethodInfo _cardExhaust;
 
     static Sts2Compat()
     {
@@ -71,6 +72,12 @@ public static class Sts2Compat
         _creatureDamage = typeof(CreatureCmd).GetMethod("Damage", damageTypes)
             ?? throw new InvalidOperationException(
                 $"Sts2Compat init: CreatureCmd.Damage(IsBeta={IsBeta}) not found");
+
+        // CardCmd.Exhaust：v0.111.0 只改了**返回类型**（Task → Task<CardPileAddResult?>），参数表没动。
+        // GetMethod(name, types) 只按参数类型匹配、忽略返回类型 —— 一次查找通吃所有版本，不需要 IsBeta 分支。
+        _cardExhaust = typeof(CardCmd).GetMethod("Exhaust",
+            new[] { typeof(PlayerChoiceContext), typeof(CardModel), typeof(bool), typeof(bool) })
+            ?? throw new InvalidOperationException("Sts2Compat init: CardCmd.Exhaust not found");
     }
 
     // ============ 签名未变的 wrapper（直调，无版本分歧）============
@@ -103,6 +110,24 @@ public static class Sts2Compat
         => CardPileCmd.AddGeneratedCardToCombat(card, newPileType, creator, position);
 
     public static int MaxCardsInHand => CardPile.MaxCardsInHand;
+
+    /// <summary>
+    /// CardCmd.Exhaust 版本兼容（**返回类型**分歧，不是参数分歧）。
+    ///
+    /// v0.111.0 把返回类型从 <c>Task</c> 改成 <c>Task&lt;CardPileAddResult?&gt;</c>。C# 编译出的方法引用
+    /// **连返回类型一起记录**，所以直调会把 dll 焊死在编译时那一版游戏上：8/1 发布的包（绑 <c>-&gt; Task</c>）
+    /// 在 v0.111 打「温室少女」时，JIT 编译 OnPlay 状态机就抛 <c>MissingMethodException</c>
+    /// —— 选牌界面根本来不及弹、卡面卡在半空、行动队列死锁（gotchas #70）。
+    ///
+    /// 反射按参数表查找 + 用基类 <c>Task</c> 接收，v0.107.1 stable 与 v0.111 beta 同一份 dll 通吃。
+    /// 调用方都不需要返回值，所以丢掉 <c>CardPileAddResult</c> 无损。
+    /// </summary>
+    public static Task CardExhaust(
+        PlayerChoiceContext ctx,
+        CardModel card,
+        bool causedByEthereal = false,
+        bool skipVisuals = false)
+        => (Task)_cardExhaust.Invoke(null, new object?[] { ctx, card, causedByEthereal, skipVisuals })!;
 
     public static Task<IReadOnlyList<CardPileAddResult>> AddGeneratedCardsToCombat(
         IEnumerable<CardModel> cards,

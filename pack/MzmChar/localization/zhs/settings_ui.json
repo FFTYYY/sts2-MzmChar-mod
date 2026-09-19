@@ -1,10 +1,16 @@
 {
-  "MZMCHAR.mod_title": "若叶睦角色 - v0.2.7",
+  "MZMCHAR.mod_title": "若叶睦角色 - v0.2.8",
   "MZMCHAR-音频设置.title": "音频设置",
   "MZMCHAR-ENABLE_CUSTOM_BGM.title": "非Boss战启用自定义BGM",
   "MZMCHAR-ENABLE_CUSTOM_BGM.hover.title": "非Boss战启用自定义BGM",
   "MZMCHAR-ENABLE_CUSTOM_BGM.hover.desc": "非Boss战斗中，把战斗BGM替换为自定义音乐。",
   "MZMCHAR-ENABLE_CUSTOM_BGM_BOSS.title": "Boss战启用自定义BGM",
   "MZMCHAR-ENABLE_CUSTOM_BGM_BOSS.hover.title": "Boss战启用自定义BGM",
-  "MZMCHAR-ENABLE_CUSTOM_BGM_BOSS.hover.desc": "Boss战中，把战斗BGM替换为自定义音乐。"
+  "MZMCHAR-ENABLE_CUSTOM_BGM_BOSS.hover.desc": "Boss战中，把战斗BGM替换为自定义音乐。",
+  "MZMCHAR-卡面设置.title": "卡面设置",
+  "MZMCHAR-CARD_ART_STYLE.title": "卡图风格",
+  "MZMCHAR-CARD_ART_STYLE.hover.title": "卡图风格",
+  "MZMCHAR-CARD_ART_STYLE.hover.desc": "切换全部卡牌的插画风格。已经显示在桌面上的卡不会立刻刷新，重启游戏后完全生效。",
+  "MZMCHAR-CARD_ART_STYLE.Default": "默认",
+  "MZMCHAR-CARD_ART_STYLE.ChildDrawing": "儿童简笔画"
 }

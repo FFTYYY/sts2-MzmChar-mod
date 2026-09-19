@@ -18,7 +18,7 @@ namespace MzmChar.Game;
 [Pool(typeof(MzmCharCardPool))]
 public class MoonForestUniform : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/moon_forest.png";
+    public override string PortraitPath => Art("moon_forest");
 
     private readonly List<DynamicVar> _vars = new()
     {

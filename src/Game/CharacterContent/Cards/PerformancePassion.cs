@@ -19,7 +19,7 @@ namespace MzmChar.Game;
 [Pool(typeof(MzmCharCardPool))]
 public class PerformancePassion : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/passion_card.png";
+    public override string PortraitPath => Art("passion_card");
 
     private readonly List<DynamicVar> _vars = new() { new CardsVar(2) };
     protected override IEnumerable<DynamicVar> CanonicalVars => _vars;

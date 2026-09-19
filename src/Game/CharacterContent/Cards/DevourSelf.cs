@@ -27,7 +27,7 @@ namespace MzmChar.Game;
 [Pool(typeof(MzmCharCardPool))]
 public class DevourSelf : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/devour_self.png";
+    public override string PortraitPath => Art("devour_self");
 
     private readonly List<DynamicVar> _vars;
 

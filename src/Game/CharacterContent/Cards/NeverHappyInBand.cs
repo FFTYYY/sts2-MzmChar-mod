@@ -25,7 +25,7 @@ namespace MzmChar.Game;
 [Pool(typeof(MzmCharCardPool))]
 public class NeverHappyInBand : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/never_happy_in_band.png";
+    public override string PortraitPath => Art("never_happy_in_band");
 
     private readonly HashSet<CardKeyword> _keywords = new() { CardKeyword.Exhaust };
     public override IEnumerable<CardKeyword> CanonicalKeywords => _keywords;

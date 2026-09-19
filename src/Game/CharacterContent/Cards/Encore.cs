@@ -19,7 +19,7 @@ namespace MzmChar.Game;
 [Pool(typeof(MzmCharCardPool))]
 public class Encore : MzmCharBaseCard
 {
-    public override string PortraitPath => "res://MzmChar/cards/encore.png";
+    public override string PortraitPath => Art("encore");
 
     private readonly List<DynamicVar> _vars = new()
     {
