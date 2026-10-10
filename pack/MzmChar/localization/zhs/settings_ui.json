@@ -1,5 +1,5 @@
 {
-  "MZMCHAR.mod_title": "若叶睦角色 - v0.2.8",
+  "MZMCHAR.mod_title": "若叶睦角色 - v0.2.9",
   "MZMCHAR-音频设置.title": "音频设置",
   "MZMCHAR-ENABLE_CUSTOM_BGM.title": "非Boss战启用自定义BGM",
   "MZMCHAR-ENABLE_CUSTOM_BGM.hover.title": "非Boss战启用自定义BGM",
@@ -7,6 +7,9 @@
   "MZMCHAR-ENABLE_CUSTOM_BGM_BOSS.title": "Boss战启用自定义BGM",
   "MZMCHAR-ENABLE_CUSTOM_BGM_BOSS.hover.title": "Boss战启用自定义BGM",
   "MZMCHAR-ENABLE_CUSTOM_BGM_BOSS.hover.desc": "Boss战中，把战斗BGM替换为自定义音乐。",
+  "MZMCHAR-USE_BGM_FOR_ALL_CHARACTERS.title": "所有角色都用本Mod的BGM",
+  "MZMCHAR-USE_BGM_FOR_ALL_CHARACTERS.hover.title": "所有角色都用本Mod的BGM",
+  "MZMCHAR-USE_BGM_FOR_ALL_CHARACTERS.hover.desc": "默认只有若叶睦在场时才替换战斗BGM。打开后，玩任何角色都会用本Mod的BGM（上面两个开关依然生效）。BGM是纯本地效果，不影响联机。",
   "MZMCHAR-卡面设置.title": "卡面设置",
   "MZMCHAR-CARD_ART_STYLE.title": "卡图风格",
   "MZMCHAR-CARD_ART_STYLE.hover.title": "卡图风格",

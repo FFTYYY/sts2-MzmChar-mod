@@ -21,6 +21,13 @@ public class MzmCharConfig : SimpleModConfig
     public static bool EnableCustomBgmBoss { get; set; } = false;
 
     /// <summary>
+    /// 非若叶睦角色也用本 mod 的战斗 BGM。默认关：只有若叶睦在场时才替换。
+    /// 打开后，上面两个 BGM 开关对任意角色都生效（BGM 是纯本地效果，不影响联机同步）。
+    /// </summary>
+    [ConfigHoverTip]
+    public static bool UseBgmForAllCharacters { get; set; } = false;
+
+    /// <summary>
     /// 卡图风格（enum → BaseLib 自动渲染成下拉菜单）。默认用原本的卡图。
     /// 目录映射与"怎么加新风格"见 <see cref="MzmChar.Game.CardArtStyles"/>；
     /// 读取点只有一处：<see cref="MzmChar.Game.MzmCharBaseCard.Art"/>。

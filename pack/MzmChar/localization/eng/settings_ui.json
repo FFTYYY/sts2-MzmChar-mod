@@ -1,5 +1,5 @@
 {
-  "MZMCHAR.mod_title": "Mutsumi Character - v0.2.8",
+  "MZMCHAR.mod_title": "Mutsumi Character - v0.2.9",
   "MZMCHAR-音频设置.title": "Audio",
   "MZMCHAR-ENABLE_CUSTOM_BGM.title": "Custom BGM in Non-Boss Combat",
   "MZMCHAR-ENABLE_CUSTOM_BGM.hover.title": "Custom BGM in Non-Boss Combat",
@@ -7,6 +7,9 @@
   "MZMCHAR-ENABLE_CUSTOM_BGM_BOSS.title": "Custom BGM in Boss Combat",
   "MZMCHAR-ENABLE_CUSTOM_BGM_BOSS.hover.title": "Custom BGM in Boss Combat",
   "MZMCHAR-ENABLE_CUSTOM_BGM_BOSS.hover.desc": "Replace vanilla boss music with custom tracks during boss fights.",
+  "MZMCHAR-USE_BGM_FOR_ALL_CHARACTERS.title": "Use This Mod’s BGM for All Characters",
+  "MZMCHAR-USE_BGM_FOR_ALL_CHARACTERS.hover.title": "Use This Mod’s BGM for All Characters",
+  "MZMCHAR-USE_BGM_FOR_ALL_CHARACTERS.hover.desc": "By default the combat BGM is only replaced when Mutsumi is in the run. Turn this on to use this mod’s BGM with any character (the two switches above still apply). BGM is local-only and does not affect multiplayer.",
   "MZMCHAR-卡面设置.title": "Card Art",
   "MZMCHAR-CARD_ART_STYLE.title": "Card Art Style",
   "MZMCHAR-CARD_ART_STYLE.hover.title": "Card Art Style",
