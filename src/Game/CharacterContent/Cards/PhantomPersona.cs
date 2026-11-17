@@ -20,7 +20,7 @@ namespace MzmChar.Game;
 ///         （复制品也是升级版且也带本效果，无限链；带 Ethereal → 进手未打则回合末自消耗，链自然终止）
 ///
 /// 升级"放副本"实现：参考 vanilla `Undeath`（`CreateClone` + `AddGeneratedCardToCombat`）
-/// + 我们已有 `DisintegrationPower.OnPersonaSwitch` 的多人安全 `CardCmd.ApplyKeyword(Ethereal)` 模式。
+/// + 我们已有 `MuDisintegrationPower.OnPersonaSwitch` 的多人安全 `CardCmd.ApplyKeyword(Ethereal)` 模式。
 /// `CreateClone` 走 `CombatState.CloneCard` → `AbstractModel.ClonePreservingMutability` 深克隆，
 /// 保留升级状态（IL 实证 `_currentUpgradeLevel` 也复制）。
 /// </summary>

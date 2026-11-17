@@ -110,6 +110,20 @@ internal static class CustomBgmPatch
         return false;
     }
 
+    /// <summary>当前房间是否是战斗房间（怪物 / 精英 / Boss）。拿不到房间信息时保守返回 false（不劫持）。</summary>
+    private static bool IsInCombatRoom(NRunMusicController controller)
+    {
+        try
+        {
+            var runState = AccessTools.Field(typeof(NRunMusicController), "_runState")?.GetValue(controller);
+            if (runState == null) return false;
+            if (AccessTools.Property(runState.GetType(), "CurrentRoom")?.GetValue(runState) is not AbstractRoom room)
+                return false;
+            return room.RoomType is RoomType.Monster or RoomType.Elite or RoomType.Boss;
+        }
+        catch { return false; }
+    }
+
     /// <summary>本局是否该由我们接管 BGM：若叶睦在场，或用户开了「所有角色都用」。</summary>
     private static bool BgmApplies(NRunMusicController? controller) =>
         MzmCharConfig.UseBgmForAllCharacters || IsOurCharInRun(controller);
@@ -148,8 +162,15 @@ internal static class CustomBgmPatch
 
         // vanilla 子类 override CustomBgm 返回 FMOD event 时基类 postfix 不触发；
         // 用非空 customMusic 兜底识别 boss/elite。
+        //
+        // ⚠️ 兜底只在**战斗房间**里生效：v0.112+ 起「欢迎来到 Wongo's」事件（WelcomeToWongos.OnRoomEnter）
+        // 也会调 PlayCustomMusic 放它自己的曲子。不加房间判定的话，开了 Boss 替换就会把这个非战斗事件的
+        // 音乐也劫持成战斗 BGM，并把调度器错误地置成「战斗中」无限循环。
+        // 不能用 CombatManager.IsInProgress 判断 —— StartCombatInternal 里 PlayCustomMusic 在
+        // set_IsInProgress **之前**调用（IL 验证），此刻它还是 false。
         bool ours = customMusic == DummyBgmKey
-                    || (!string.IsNullOrEmpty(customMusic) && MzmCharConfig.EnableCustomBgmBoss);
+                    || (!string.IsNullOrEmpty(customMusic) && MzmCharConfig.EnableCustomBgmBoss
+                        && IsInCombatRoom(__instance));
         if (!ours)
         {
             // 这场战斗不归我们管（例如没开 boss 替换的 boss 战）。

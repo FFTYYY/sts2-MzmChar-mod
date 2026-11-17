@@ -92,11 +92,11 @@ public class AncientSecondPersonaRelic : CustomRelicModel
     }
 
     // 诊断日志：见 SecondPersonaRelic.AfterDeath 注释
-    public override Task AfterDeath(PlayerChoiceContext ctx, Creature creature, bool wasRemovalPrevented, float deathAnimLength)
+    public override Task AfterDeath(PlayerChoiceContext ctx, Creature creature, CardModel? source, bool wasRemovalPrevented, float deathAnimLength)
     {
         var ownerId = Owner?.NetId.ToString() ?? "?";
         var deadId = creature.Player?.NetId.ToString() ?? (creature.IsMonster ? "monster" : "?");
-        Diag.Trace($"AncientSecondPersonaRelic[owner={ownerId}].AfterDeath: observed dead={deadId} prevented={wasRemovalPrevented} animLen={deathAnimLength}");
+        Diag.Trace($"AncientSecondPersonaRelic[owner={ownerId}].AfterDeath: observed dead={deadId} src={source?.Id.ToString() ?? "-"} prevented={wasRemovalPrevented} animLen={deathAnimLength}");
         return Task.CompletedTask;
     }
 

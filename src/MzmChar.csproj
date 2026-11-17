@@ -44,7 +44,7 @@
        找不到 assembly 的崩溃 (System.IO.FileNotFoundException)。
        玩家侧最低版本约束由 MzmChar.json 的 "dependencies" 字段声明（也是 3.3.0）。 -->
   <ItemGroup>
-    <PackageReference Include="Alchyr.Sts2.BaseLib" Version="[3.3.0,)" PrivateAssets="all" />
+    <PackageReference Include="Alchyr.Sts2.BaseLib" Version="[3.4.8,)" PrivateAssets="all" />
   </ItemGroup>
 
   <!-- 部署哪份 manifest 按 BETA define 切换。当前两份内容一致；保留双 manifest 骨架，

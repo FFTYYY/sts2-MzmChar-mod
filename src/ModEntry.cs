@@ -17,7 +17,7 @@ namespace MzmChar;
 public static class ModEntry
 {
     public const string ModId   = "MzmChar";
-    public const string Version = "0.2.9";
+    public const string Version = "0.2.10";
     public static HarmonyLib.Harmony? Harmony { get; private set; }
 
     public static void OnModLoaded()
@@ -31,6 +31,8 @@ public static class ModEntry
 
         Harmony = new HarmonyLib.Harmony($"com.yongyi.{ModId}");
         Harmony.PatchAll(Assembly.GetExecutingAssembly());
+        // 改过类名的卡/能力：旧存档 ID → 新 ID（期望输出 CARD.MZMCHAR-MU_ENCORE / POWER.MZMCHAR-MU_DISINTEGRATION_POWER）
+        Log($"LegacyModelIdPatch self-check: {LegacyModelIdPatch.SelfCheck()}");
 
         // 注册 mod 设置：游戏 Settings → Mods 里会出现 Mzm Character 子菜单
         // 持久化 / UI 全由 BaseLib 自动处理；属性是 static，patch 入口直接读 MzmCharConfig.X
@@ -46,7 +48,8 @@ public static class ModEntry
 
     internal static void Log(string msg)
     {
-        // 游戏会把 stdout 写进 %AppData%\Roaming\SlayTheSpire2\logs\godot.log
-        System.Console.WriteLine($"[{ModId}] {msg}");
+        // ⚠️ 不能用 Console.WriteLine：Godot mono 下 stdout 进不了玩家日志 godot.log（见 Diagnostics.cs）。
+        // 以前这里就是 Console.WriteLine，导致 [Bgm] 等所有 ModEntry.Log 输出从未出现在日志里（2026-11-16 实测发现）
+        Game.Diag.Trace(msg);
     }
 }

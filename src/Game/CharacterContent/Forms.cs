@@ -130,9 +130,9 @@ public static class Forms
         // MoveNext 抛 InvalidOperationException "Collection was modified"。
         foreach (var pw in p.Creature.GetPowerInstances<ComedianPower>().ToList())
             await pw.OnPersonaSwitch(ctx, source);
-        if (p.Creature.HasPower<DisintegrationPower>())
+        if (p.Creature.HasPower<MuDisintegrationPower>())
         {
-            var pw = p.Creature.GetPower<DisintegrationPower>();
+            var pw = p.Creature.GetPower<MuDisintegrationPower>();
             if (pw != null) await pw.OnPersonaSwitch(ctx, source);
         }
         // WakabaFortunePower 不再监听形态切换 —— 层数只在打出 WakabaFortune 卡时按当时 snapshot 叠加
